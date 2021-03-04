@@ -1,11 +1,9 @@
-#include "SFML/Graphics.hpp"
-#include "SFML/System.hpp"
-#include "SFML/Window.hpp"
-#include "box2d/box2d.h"
+#include "Game.h"
 
 int main()
 {
-    // Nothing here yet
+    Game game;
+    game.run();
 
     return 0;
 }
