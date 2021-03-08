@@ -4,6 +4,7 @@
 #include "SFML/System/NonCopyable.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Graphics/RenderStates.hpp"
+#include "DebugBox2D.h"
 #include "box2d/box2d.h"
 
 #include "Resources/Resources.h"
@@ -28,6 +29,7 @@ private:
 	TextureManager world_textures; 
 
 	b2World b2_World;
+	DebugBox2D debugDraw;
 
 	NodeScene root_scene;
 };

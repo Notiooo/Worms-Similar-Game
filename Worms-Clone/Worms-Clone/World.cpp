@@ -1,6 +1,6 @@
 #include "World.h"
 #include "SFML/Graphics/RectangleShape.hpp"
-#include "NodeRectangularPhysical.h"
+#include "Nodes/Physical/NodeRectangularPhysical.h"
 #include <memory>
 #include <array>
 #include <random>
@@ -8,8 +8,16 @@
 World::World(sf::RenderWindow& window) :
 world_window(window),
 world_view(window.getDefaultView()),
-b2_World(b2Vec2(0.f, 9.8f))
+b2_World(b2Vec2(0.f, 9.8f)),
+debugDraw(window)
 {
+	// Tells the physical world what to draw
+	b2_World.SetDebugDraw(&debugDraw);
+
+	// draw only shapes
+	debugDraw.SetFlags(b2Draw::e_shapeBit);
+	
+
 	loadResources();
 	createWorld();
 }
@@ -23,6 +31,9 @@ void World::update(sf::Time deltaTime)
 void World::draw()
 {
 	world_window.draw(root_scene);
+
+	// Draw the debug part of physical objects
+	b2_World.DebugDraw();
 }
 
 void World::processEvents(const sf::Event& event)

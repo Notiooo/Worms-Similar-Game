@@ -2,11 +2,9 @@
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/RenderStates.hpp"
 
-const float NodeRectangularPhysical::B2_SCALAR = 30.f;
-
 NodeRectangularPhysical::NodeRectangularPhysical(b2World& world, sf::Vector2f size, sf::Vector2f position, sf::Color color, Physical_Types physical_type):
-	rectangle(size),
-	physical_type(physical_type)
+	NodePhysical(world, physical_type, position),
+	rectangle(size)
 {
 	// set origin to the center
 	sf::FloatRect boundaries_of_rectangle = rectangle.getLocalBounds();
@@ -17,24 +15,6 @@ NodeRectangularPhysical::NodeRectangularPhysical(b2World& world, sf::Vector2f si
 
 	// Set color
 	rectangle.setFillColor(color);
-
-
-	// Defines properties of the body
-	b2BodyDef BodyDef;
-	BodyDef.position = b2Vec2(position.x / B2_SCALAR, position.y / B2_SCALAR);
-	switch (physical_type)
-	{
-	case Physical_Types::Kinematic_Type:
-		BodyDef.type = b2_kinematicBody; 
-		break;
-	case Physical_Types::Static_Type:
-		BodyDef.type = b2_staticBody;
-		break;
-	case Physical_Types::Dynamic_Type:
-		BodyDef.type = b2_dynamicBody;
-		break;
-	}
-	Body = world.CreateBody(&BodyDef);
 
 	// Defines its shape
 	b2PolygonShape Shape;
