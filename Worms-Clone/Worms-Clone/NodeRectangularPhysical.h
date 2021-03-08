@@ -25,6 +25,7 @@ public:
 private:
 	sf::RectangleShape rectangle;
 	Physical_Types physical_type;
+	static const float B2_SCALAR;
 
 	b2Body* Body;
 };

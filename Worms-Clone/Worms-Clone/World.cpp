@@ -48,10 +48,9 @@ void World::loadResources()
 
 void World::createWorld()
 {
-	std::unique_ptr<NodeRectangularPhysical> ground = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(640, 50), sf::Vector2f(320, 300), sf::Color::Blue, NodeRectangularPhysical::Physical_Types::Static_Type);
+	std::unique_ptr<NodeRectangularPhysical> ground = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(640, 50), sf::Vector2f(320, 460), sf::Color::Blue, NodeRectangularPhysical::Physical_Types::Static_Type);
 	std::unique_ptr<NodeRectangularPhysical> box = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(20, 20), sf::Vector2f(320, 60), sf::Color::Red, NodeRectangularPhysical::Physical_Types::Dynamic_Type);
 	std::unique_ptr<NodeRectangularPhysical> box2 = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(20, 20), sf::Vector2f(325, 0), sf::Color::Cyan, NodeRectangularPhysical::Physical_Types::Dynamic_Type);
-
 
 	root_scene.pinNode(std::move(ground));
 	root_scene.pinNode(std::move(box));
