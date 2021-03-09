@@ -3,6 +3,7 @@
 Status: ❌ not approved yet
 
 Status of the code:
+
 ![There supposed to be an image](readme_images/code_status.JPG)
 
 ### Current description of the project and some sketches
@@ -15,6 +16,7 @@ The main idea of the project is to prepare a game similar to *Worms*. The idea i
 Worms are turn-based artillery games presented in 2D environment. Each player has his own worm team consisting of X worms. Subsequently each player in his turn can move one worm from his team (there is no choice here, they are chosen in turn). Each worm has its own arsenal of weapons that it can replenish over the course of the game. To win a player have to defeat all opponent's worms.
 
 ![There supposed to be an image](readme_images/worms2.jpg)
+
 An exemplary Worms 2 screenshot
 
 During gameplay, the map is gradually flooded, causing the worms to have to flee up the map. The terrain is fully destructible by the arsenal of weapons of the worms.
