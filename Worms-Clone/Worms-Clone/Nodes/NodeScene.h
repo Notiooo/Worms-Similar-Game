@@ -7,6 +7,7 @@
 #include "SFML/Graphics/Transformable.hpp"
 #include "SFML/System/NonCopyable.hpp"
 #include "SFML/System/Time.hpp"
+#include "SFML/Window/Event.hpp"
 
 // It derives from sf::Drawable as it is suppossed to be drawn on the screen.
 // It derives from sf::Transformable which gives all members related with position, rotation and scale
@@ -50,6 +51,10 @@ class NodeScene : public sf::Drawable, public sf::Transformable, private sf::Non
 
 		// Works analogues to the drawThis(), updates all things related to itself
 		virtual void updateThis(sf::Time deltaTime);
+
+		// ====== Handling events ====== //
+		void handleEvents(const sf::Event& event);
+		virtual void handleThisEvents(const sf::Event& event);
 
 		virtual ~NodeScene() = default;
 

@@ -82,3 +82,17 @@ void NodeScene::updateThis(sf::Time deltaTime)
 {
 	// Nothing here
 }
+
+void NodeScene::handleEvents(const sf::Event& event)
+{
+	// Handle event in this node
+	handleThisEvents(event);
+
+	// And next pass the event to all pinned nodes
+	for (auto& pinned_node : pinned_Nodes)
+		pinned_node->handleEvents(event);
+}
+
+void NodeScene::handleThisEvents(const sf::Event& event)
+{
+}

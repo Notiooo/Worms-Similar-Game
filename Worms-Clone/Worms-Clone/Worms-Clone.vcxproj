@@ -151,6 +151,7 @@
     <ClCompile Include="Nodes\NodeSprite.cpp" />
     <ClCompile Include="Nodes\Physical\NodePhysical.cpp" />
     <ClCompile Include="Nodes\Physical\NodeRectangularPhysical.cpp" />
+    <ClCompile Include="Nodes\Physical\Specified\Worm.cpp" />
     <ClCompile Include="States\State.cpp" />
     <ClCompile Include="States\StateStack.cpp" />
     <ClCompile Include="World.cpp" />
@@ -161,8 +162,10 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Nodes\NodeScene.h" />
     <ClInclude Include="Nodes\NodeSprite.h" />
+    <ClInclude Include="Nodes\Physical\CollideTypes.h" />
     <ClInclude Include="Nodes\Physical\NodePhysical.h" />
     <ClInclude Include="Nodes\Physical\NodeRectangularPhysical.h" />
+    <ClInclude Include="Nodes\Physical\Specified\Worm.h" />
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Resources\Resources.h" />
     <ClInclude Include="States\State.h" />

@@ -34,6 +34,12 @@
     <Filter Include="Source Files\Nodes\Physical">
       <UniqueIdentifier>{96c72fe2-c387-4f5a-9939-e75636ae52d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Nodes\Physical\Specified">
+      <UniqueIdentifier>{383a6552-b78f-4cb2-a36f-c903734a63ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Nodes\Physical\Specified">
+      <UniqueIdentifier>{667163f3-2d92-46eb-b9bf-38d70ed77b8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Worms-Clone.cpp">
@@ -65,6 +71,9 @@
     </ClCompile>
     <ClCompile Include="Nodes\Physical\NodePhysical.cpp">
       <Filter>Source Files\Nodes\Physical</Filter>
+    </ClCompile>
+    <ClCompile Include="Nodes\Physical\Specified\Worm.cpp">
+      <Filter>Source Files\Nodes\Physical\Specified</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +111,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Nodes\Physical\NodePhysical.h">
+      <Filter>Header Files\Nodes\Physical</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Physical\Specified\Worm.h">
+      <Filter>Header Files\Nodes\Physical\Specified</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Physical\CollideTypes.h">
       <Filter>Header Files\Nodes\Physical</Filter>
     </ClInclude>
   </ItemGroup>

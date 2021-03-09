@@ -8,7 +8,7 @@ NodePhysical::NodePhysical(b2World& world, Physical_Types physical_type, sf::Vec
 {
 	// Defines properties of the body
 	b2BodyDef BodyDef;
-	BodyDef.position = b2Vec2(position.x / B2_SCALAR, position.y / B2_SCALAR);
+	BodyDef.position = sfVector_to_b2Vec(position);
 	switch (physical_type)
 	{
 	case Physical_Types::Kinematic_Type:
@@ -23,3 +23,14 @@ NodePhysical::NodePhysical(b2World& world, Physical_Types physical_type, sf::Vec
 	}
 	Body = world.CreateBody(&BodyDef);
 }
+
+float NodePhysical::angleToRadians(const float& angle)
+{
+	return angle * (b2_pi / 180.0);
+}
+
+float NodePhysical::radiansToAngle(const float& radians)
+{
+	return radians * 180 / b2_pi;
+}
+
