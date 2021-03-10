@@ -1,6 +1,6 @@
 # efb56ad3-gr12-repo
 ## Worms - SFML & Box2D Clone
-Status: ❌ not approved yet
+Status: ✔️ Approved by Instructor.
 
 Status of the code:
 
