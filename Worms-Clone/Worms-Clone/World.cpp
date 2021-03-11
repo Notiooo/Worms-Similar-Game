@@ -15,8 +15,10 @@ debugDraw(window)
 	// Tells the physical world what to draw
 	b2_World.SetDebugDraw(&debugDraw);
 
+	#ifdef _DEBUG
 	// set flag to draw the debug shapes
-	debugDraw.SetFlags(b2Draw::e_shapeBit);
+	//debugDraw.SetFlags(b2Draw::e_shapeBit);
+	#endif
 
 	loadResources();
 	createWorld();

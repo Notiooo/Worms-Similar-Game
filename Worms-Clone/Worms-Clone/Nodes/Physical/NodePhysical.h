@@ -26,7 +26,12 @@ public:
 	template <typename Vector2>
 	Vector2 b2Vec_to_sfVector(const b2Vec2& vec);
 
+	// Converts from angle to radians -- useful for conversion
+	// between Box2D and the SFML
 	float angleToRadians(const float& angle);
+
+	// Converts from radians to angles -- useful for conversion
+	// between Box2D and the SFML
 	float radiansToAngle(const float& radians);
 
 protected:

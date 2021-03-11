@@ -1,13 +1,21 @@
 #include "Game.h"
+#include "States/States.h"
+#include "States/Application_States/GameState.h"
 
 const sf::Time Game::time_per_frame = sf::seconds(1.f / 60.f);
 
 Game::Game():
-	gameWindow(sf::VideoMode(1280, 720), "Worms Clone"),
-	gameWorld(gameWindow)
+	gameWindow(sf::VideoMode(1280, 720), "Worms Clone")
 {
 	// Limit the framerate to 60 frames per second
 	gameWindow.setFramerateLimit(60);
+
+	// Setup all application-flow states
+	appStack.saveState<GameState>(State_ID::GameState, gameWindow);
+
+
+	// Initial state of the statestack is GameState (for this moment)
+	appStack.push(State_ID::GameState);
 }
 
 void Game::run()
@@ -38,32 +46,24 @@ void Game::processEvents()
 	sf::Event event;
 	while (gameWindow.pollEvent(event))
 	{
-		// Send all events to the game world
-		// so the game world can handle them later
-		gameWorld.processEvents(event);
+		appStack.handleEvent(event);
 	}
 }
 
 void Game::update(sf::Time deltaTime)
 {
-	// Send deltaTime to the gameWorld
-	// so it can update itself with proper time
-	
-	// Because some for example moving object
-	// works according to
-	// d = st (distane = speed * time)
-	gameWorld.update(deltaTime);
+	appStack.update(deltaTime);
 }
 
 void Game::render()
 {
-	// First clear the window before
-	// we ready to draw something
+	// before drawing anything clean
+	// the previous frame
 	gameWindow.clear();
 
-	// Now draw object on the empty window
-	gameWorld.draw();
+	// draw the application
+	appStack.draw();
 
-	// And display it
+	// display to the window
 	gameWindow.display();
 }

@@ -4,6 +4,7 @@
 enum class State_ID
 {
 	// Application flow states
+	TitleState,
 	GameState,
 
 

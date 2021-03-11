@@ -89,7 +89,7 @@ inline void StateStack::saveState(State_ID stateID, Args&&... args)
 	// By default it of course just pass an information
 	// to the factory how to create such an object
 	// nothing is yet created
-	factory[stateID] = [this]()
+	factory[stateID] = [&args..., this]()
 	{
 		return State::Ptr(std::make_unique<State>(*this, args...));
 	};

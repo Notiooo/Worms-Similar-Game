@@ -7,6 +7,7 @@
 #include "box2d/box2d.h"
 
 #include "World.h"
+#include "States/StateStack.h"
 
 class Game
 {
@@ -21,8 +22,9 @@ private:
 
 	static const sf::Time time_per_frame;
 	sf::RenderWindow gameWindow;
-
-	World gameWorld;
+	
+	// Main stack 
+	StateStack appStack;
 };
 
 

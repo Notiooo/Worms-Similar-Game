@@ -152,6 +152,8 @@
     <ClCompile Include="Nodes\Physical\NodePhysical.cpp" />
     <ClCompile Include="Nodes\Physical\NodeRectangularPhysical.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm.cpp" />
+    <ClCompile Include="States\Application_States\GameState.cpp" />
+    <ClCompile Include="States\Application_States\TitleState.cpp" />
     <ClCompile Include="States\State.cpp" />
     <ClCompile Include="States\StateStack.cpp" />
     <ClCompile Include="World.cpp" />
@@ -168,6 +170,8 @@
     <ClInclude Include="Nodes\Physical\Specified\Worm.h" />
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Resources\Resources.h" />
+    <ClInclude Include="States\Application_States\GameState.h" />
+    <ClInclude Include="States\Application_States\TitleState.h" />
     <ClInclude Include="States\State.h" />
     <ClInclude Include="States\States.h" />
     <ClInclude Include="States\StateStack.h" />

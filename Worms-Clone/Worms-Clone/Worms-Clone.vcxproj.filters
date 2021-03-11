@@ -40,6 +40,12 @@
     <Filter Include="Source Files\Nodes\Physical\Specified">
       <UniqueIdentifier>{667163f3-2d92-46eb-b9bf-38d70ed77b8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\States\Application_States">
+      <UniqueIdentifier>{24acbe70-b796-4049-bb53-d7ef9c449a5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\States\Application_States">
+      <UniqueIdentifier>{6d3aabf6-04b3-425f-ad85-eb8e982c1ac2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Worms-Clone.cpp">
@@ -74,6 +80,12 @@
     </ClCompile>
     <ClCompile Include="Nodes\Physical\Specified\Worm.cpp">
       <Filter>Source Files\Nodes\Physical\Specified</Filter>
+    </ClCompile>
+    <ClCompile Include="States\Application_States\GameState.cpp">
+      <Filter>Source Files\States\Application_States</Filter>
+    </ClCompile>
+    <ClCompile Include="States\Application_States\TitleState.cpp">
+      <Filter>Source Files\States\Application_States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +130,12 @@
     </ClInclude>
     <ClInclude Include="Nodes\Physical\CollideTypes.h">
       <Filter>Header Files\Nodes\Physical</Filter>
+    </ClInclude>
+    <ClInclude Include="States\Application_States\GameState.h">
+      <Filter>Header Files\States\Application_States</Filter>
+    </ClInclude>
+    <ClInclude Include="States\Application_States\TitleState.h">
+      <Filter>Header Files\States\Application_States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
