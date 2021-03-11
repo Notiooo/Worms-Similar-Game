@@ -17,7 +17,7 @@ debugDraw(window)
 
 	#ifdef _DEBUG
 	// set flag to draw the debug shapes
-	//debugDraw.SetFlags(b2Draw::e_shapeBit);
+	debugDraw.SetFlags(b2Draw::e_shapeBit);
 	#endif
 
 	loadResources();
@@ -68,6 +68,9 @@ void World::loadResources()
 {
 	// will load some later
 	world_textures.storeResource(Textures_ID::AnExamplaryWorm, "Resources/Textures/An_example_worm.png");
+	world_textures.storeResource(Textures_ID::Rope, "Resources/Textures/World/rope.png");
+	world_textures.getResourceReference(Textures_ID::Rope).setRepeated(true);
+
 
 }
 

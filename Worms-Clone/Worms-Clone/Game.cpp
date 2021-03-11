@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "States/States.h"
 #include "States/Application_States/GameState.h"
+#include "States/Application_States/TitleState.h"
 
 const sf::Time Game::time_per_frame = sf::seconds(1.f / 60.f);
 
@@ -11,11 +12,15 @@ Game::Game():
 	gameWindow.setFramerateLimit(60);
 
 	// Setup all application-flow states
+	appStack.saveState<TitleState>(State_ID::TitleState, gameWindow, fonts);
 	appStack.saveState<GameState>(State_ID::GameState, gameWindow);
 
 
-	// Initial state of the statestack is GameState (for this moment)
-	appStack.push(State_ID::GameState);
+	// load resources
+	loadResources();
+
+	// Initial state of the statestack is TitleState
+	appStack.push(State_ID::TitleState);
 }
 
 void Game::run()
@@ -66,4 +71,10 @@ void Game::render()
 
 	// display to the window
 	gameWindow.display();
+}
+
+
+void Game::loadResources()
+{
+	fonts.storeResource(Fonts_ID::Arial_Narrow, "Resources/Fonts/arial_narrow.ttf");
 }

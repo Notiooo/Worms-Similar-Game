@@ -33,6 +33,7 @@ public:
 
 private:
 	sf::Sprite wormSprite;
+	sf::Sprite ropeSprite;
 
 	// Worm properties
 	float jumpStrength = 300.f;

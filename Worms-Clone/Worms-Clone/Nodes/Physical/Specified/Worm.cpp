@@ -8,6 +8,15 @@ Worm::Worm(b2World& world, TextureManager& textures, sf::Vector2f position):
 	NodePhysical(world, Physical_Types::Dynamic_Type, position),
 	wormSprite(textures.getResourceReference(Textures_ID::AnExamplaryWorm))
 {
+	ropeSprite.setTexture(textures.getResourceReference(Textures_ID::Rope));
+
+	// Makes the rope really long (I should in future pass the window y size)
+	ropeSprite.setTextureRect(sf::IntRect(sf::Vector2i(0,0), sf::Vector2i(ropeSprite.getTexture()->getSize().x, 1000)));
+
+	// Set origin to centered-bottom of the rope
+	sf::FloatRect boundaries_of_rope = ropeSprite.getLocalBounds();
+	ropeSprite.setOrigin(boundaries_of_rope.width / 2.f, boundaries_of_rope.height);
+
 	// Set origin to the center
 	sf::FloatRect boundaries_of_worm = wormSprite.getLocalBounds();
 	wormSprite.setOrigin(boundaries_of_worm.width / 2.f, boundaries_of_worm.height / 2.f);
@@ -53,6 +62,7 @@ Worm::Worm(b2World& world, TextureManager& textures, sf::Vector2f position):
 
 void Worm::drawThis(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	target.draw(ropeSprite, states);
 	target.draw(wormSprite, states);
 }
 
@@ -71,7 +81,11 @@ void Worm::updateThis(sf::Time deltaTime)
 
 	// Recalculates the sprite so it is in the position of the physical object
 	wormSprite.setPosition(B2_SCALAR * Body->GetPosition().x, B2_SCALAR * Body->GetPosition().y);
+
+	// In theory it is unnecessary as the worm has a fixed rotation
 	wormSprite.setRotation(Body->GetAngle() * 180 / b2_pi);
+
+	ropeSprite.setPosition(wormSprite.getPosition());
 }
 
 void Worm::handleThisEvents(const sf::Event& event)
