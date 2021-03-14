@@ -3,6 +3,12 @@
 #include "SFML/Graphics/RenderStates.hpp"
 #include <iostream>
 
+// States
+#include "../../../../States/States.h"
+#include "WormHideState.h"
+#include "WormPlayState.h"
+#include "WormWaitState.h"
+
 
 Worm::Worm(b2World& world, TextureManager& textures, sf::Vector2f position):
 	NodePhysical(world, Physical_Types::Dynamic_Type, position),
@@ -23,8 +29,8 @@ Worm::Worm(b2World& world, TextureManager& textures, sf::Vector2f position):
 
 	// Defines its shape
 	b2PolygonShape Shape;
-	Shape.SetAsBox((getSpriteSize().x / 2.f) / B2_SCALAR, 
-				   (getSpriteSize().y / 2.f) / B2_SCALAR);
+	Shape.SetAsBox((getSpriteSize(wormSprite).x / 2.f) / B2_SCALAR, 
+				   (getSpriteSize(wormSprite).y / 2.f) / B2_SCALAR);
 
 	// Set physical properties of the Worm object
 	b2FixtureDef FixtureDef;
@@ -41,8 +47,8 @@ Worm::Worm(b2World& world, TextureManager& textures, sf::Vector2f position):
 	// It will register all collisions to we can
 	// know when the worm can jump, and when it is
 	// in the air.
-	Shape.SetAsBox((getSpriteSize().x /2.f) / B2_SCALAR, (0.5 / 2.f) / B2_SCALAR, 
-					b2Vec2(0, (getSpriteSize().y / 2.f) / B2_SCALAR), 0);
+	Shape.SetAsBox((getSpriteSize(wormSprite).x /2.f) / B2_SCALAR, (0.5 / 2.f) / B2_SCALAR, 
+					b2Vec2(0, (getSpriteSize(wormSprite).y / 2.f) / B2_SCALAR), 0);
 	FixtureDef.isSensor = true;
 
 	// It stores our object inside the userData pointer.
@@ -57,6 +63,14 @@ Worm::Worm(b2World& world, TextureManager& textures, sf::Vector2f position):
 	// I also ask the world to listen for the possible
 	// collisions with legs of my worm
 	world.SetContactListener(&listen_footsteps);
+
+
+	// Save states of the worms
+	wormStack.saveState<WormHideState>(State_ID::WormHideState, *this);
+	wormStack.saveState<WormPlayState>(State_ID::WormPlayState, *this);
+	wormStack.saveState<WormWaitState>(State_ID::WormWaitState, *this);
+
+	wormStack.push(State_ID::WormWaitState);
 	
 }
 
@@ -64,20 +78,14 @@ void Worm::drawThis(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(ropeSprite, states);
 	target.draw(wormSprite, states);
+
+	wormStack.draw();
 }
 
 void Worm::updateThis(sf::Time deltaTime)
 {
-	// If the Worm's legs collide with the ground
-	// Then it should be possible to make a jump
-	if (footCollisions)
-	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-			Body->SetLinearVelocity({ -movingSpeed, Body->GetLinearVelocity().y });
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-			Body->SetLinearVelocity({ movingSpeed, Body->GetLinearVelocity().y });
-	}
+	// Update current state of the worm
+	wormStack.update(deltaTime);
 
 	// Recalculates the sprite so it is in the position of the physical object
 	wormSprite.setPosition(B2_SCALAR * Body->GetPosition().x, B2_SCALAR * Body->GetPosition().y);
@@ -90,55 +98,32 @@ void Worm::updateThis(sf::Time deltaTime)
 
 void Worm::handleThisEvents(const sf::Event& event)
 {
-	// Controls single inputs
-	switch (event.type)
-	{
-		// When key is released, and worm collide with the ground
-		// then it velocity should be instantly reduced to zero
-		case (sf::Event::KeyReleased):
-		{
-			if (footCollisions && (
-				event.key.code == sf::Keyboard::A ||
-				event.key.code == sf::Keyboard::D ||
-				event.key.code == sf::Keyboard::W ||
-				event.key.code == sf::Keyboard::S))
-				Body->SetLinearVelocity({ 0.f, 0.f });
-			break;
-		}
+	wormStack.handleEvent(event);
+}
 
-		// If ANY key is pressed I should
-		case (sf::Event::KeyPressed):
-		{
-			// Rotate the Sprite in according direction
-			if (event.key.code == leftButton)
-				wormSprite.setScale(std::abs(wormSprite.getScale().x), wormSprite.getScale().y);
-			
-			//Rotate the Sprite in according direction
-			if (event.key.code == sf::Keyboard::D)
-				wormSprite.setScale(-std::abs(wormSprite.getScale().x), wormSprite.getScale().y);
-			
-			// When Worm touches ground we should allow it to make a jump.
-			if (footCollisions)
-			{
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-				{
-					if (wormSprite.getScale().x > 0)
-						Body->ApplyForceToCenter({ -jumpStrength, -3 * jumpStrength }, true);
-					else
-						Body->ApplyForceToCenter({ jumpStrength, -3 * jumpStrength }, true);
-				}
-			} 
-			break;
-		}
+void Worm::activateHideState()
+{
+	wormStack.clear();
+	wormStack.push(State_ID::WormHideState);
+}
 
-	}
+void Worm::activateWaitState()
+{
+	wormStack.clear();
+	wormStack.push(State_ID::WormWaitState);
+}
+
+void Worm::activatePlayState()
+{
+	wormStack.clear();
+	wormStack.push(State_ID::WormPlayState);
 
 }
 
-sf::Vector2f Worm::getSpriteSize()
+sf::Vector2f Worm::getSpriteSize(const sf::Sprite& spr)
 {
-	return sf::Vector2f({wormSprite.getTexture()->getSize().x * wormSprite.getScale().x, 
-						 wormSprite.getTexture()->getSize().y * wormSprite.getScale().y});
+	return sf::Vector2f({spr.getTexture()->getSize().x * spr.getScale().x, 
+						 spr.getTexture()->getSize().y * spr.getScale().y});
 }
 
 void GroundedListener::BeginContact(b2Contact* contact)

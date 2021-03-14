@@ -5,6 +5,9 @@
 #include "SFML/System/Time.hpp"
 #include "SFML/Window/Event.hpp"
 #include "States.h"
+#include "SFML/Graphics/RenderStates.hpp"
+#include "SFML/Graphics/RenderTarget.hpp"
+
 
 class StateStack;
 
@@ -16,7 +19,9 @@ public:
 	State(StateStack& stack);
 	virtual ~State();
 
-	virtual void draw() = 0;
+	virtual void draw() const = 0;
+	virtual void draw(sf::RenderTarget&, sf::RenderStates) const = 0;
+
 	virtual bool update(sf::Time) = 0;
 	virtual bool handleEvent(const sf::Event& event) = 0;
 

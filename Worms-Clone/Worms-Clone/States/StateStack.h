@@ -10,6 +10,10 @@
 #include "SFML/System/Time.hpp"
 #include "SFML/Window/Event.hpp"
 
+#include "SFML/Graphics/RenderTarget.hpp"
+#include "SFML/Graphics/RenderStates.hpp"
+
+
 #include "State.h"
 #include "States.h"
 
@@ -34,7 +38,8 @@ public:
 
 	// Typical cyclic functions in NodeScene system
 	void update(sf::Time deltaTime);
-	void draw();
+	void draw() const;
+	void draw(sf::RenderTarget&, sf::RenderStates) const;
 	void handleEvent(const sf::Event& event);
 
 	// Operations typical for a stack

@@ -14,7 +14,8 @@ class TitleState : public State
 public:
 	TitleState(StateStack& stack, sf::RenderWindow& window, const FontManager& fonts);
 
-	virtual void draw() override;
+	virtual void draw() const override;
+	virtual void draw(sf::RenderTarget&, sf::RenderStates) const override;
 	virtual bool update(sf::Time) override;
 	virtual bool handleEvent(const sf::Event& event) override;
 

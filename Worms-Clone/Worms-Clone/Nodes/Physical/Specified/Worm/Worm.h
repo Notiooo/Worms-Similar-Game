@@ -1,9 +1,10 @@
 #ifndef WORM_H
 #define WORM_H
 
-#include "../NodePhysical.h"
+#include "../../NodePhysical.h"
 #include "SFML/Graphics/Sprite.hpp"
-#include "../../../Resources/Resources.h"
+#include "../../../../Resources/Resources.h"
+#include "../../../../States/StateStack.h"
 
 // Listener that controls collision of the worms legs
 // with the outside world. Next it increments/decrements
@@ -21,6 +22,11 @@ class Worm : public NodePhysical
 public:
 	friend class GroundedListener;
 
+	// States of this worm
+	friend class WormHideState;
+	friend class WormPlayState;
+	friend class WormWaitState;
+
 	Worm(b2World& world, TextureManager& textures, sf::Vector2f position);
 
 	// Function to control flow of the worm
@@ -28,8 +34,14 @@ public:
 	void updateThis(sf::Time deltaTime) override;
 	void handleThisEvents(const sf::Event& event) override;
 
+	void activateHideState();
+	void activateWaitState();
+	void activatePlayState();
+
+
+
 	// Useful additional functions
-	sf::Vector2f getSpriteSize();
+	sf::Vector2f getSpriteSize(const sf::Sprite&);
 
 private:
 	sf::Sprite wormSprite;
@@ -47,6 +59,9 @@ private:
 	sf::Keyboard::Key jumpButton = sf::Keyboard::Space;
 	sf::Keyboard::Key leftButton = sf::Keyboard::A;
 	sf::Keyboard::Key rightButtton = sf::Keyboard::D;
+
+	// Statestack that controls flow of the states of the worm
+	StateStack wormStack;
 
 	// The listener that controls how many
 	// objects collide with it foots

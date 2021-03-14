@@ -31,10 +31,14 @@ TitleState::TitleState(StateStack& stack, sf::RenderWindow& window, const FontMa
 							screen_dimensions.y - information.getLocalBounds().height - text_padding);
 }
 
-void TitleState::draw()
+void TitleState::draw() const
 {
 	window->draw(background_sprite);
 	window->draw(information);
+}
+
+void TitleState::draw(sf::RenderTarget&, sf::RenderStates) const
+{
 }
 
 bool TitleState::update(sf::Time)

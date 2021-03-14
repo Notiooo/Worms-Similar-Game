@@ -8,7 +8,13 @@ enum class State_ID
 	GameState,
 
 
-	// Inside-game objects flow states
+	// == Inside-game objects flow states == //
+	
+	// Worm
+	WormHideState, // Player have ... seconds to hide
+	WormPlayState, // Player can play his turn
+	WormWaitState, // Player can't move with this worm
+
 };
 
 

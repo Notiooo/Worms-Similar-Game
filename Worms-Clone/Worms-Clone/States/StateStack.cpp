@@ -44,17 +44,27 @@ void StateStack::update(sf::Time deltaTime)
         // This allow some states to pause states under it.
         // Like pause for example
         if (!(*beg)->update(deltaTime))
+        {
+            applyChanges();
             return;
+        }
     }
 
     applyChanges();
 }
 
-void StateStack::draw()
+void StateStack::draw() const
 {
     // Drawing starts from the lowest state to the highest state
     for (auto beg = stack.cbegin(), end = stack.cend(); beg != end; ++beg)
         (*beg)->draw();
+}
+
+void StateStack::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    // Drawing starts from the lowest state to the highest state
+    for (auto beg = stack.cbegin(), end = stack.cend(); beg != end; ++beg)
+        (*beg)->draw(target, states);
 }
 
 void StateStack::handleEvent(const sf::Event& event)
@@ -69,7 +79,10 @@ void StateStack::handleEvent(const sf::Event& event)
         // This allow some states to pause states under it.
         // Like pause for example
         if (!(*beg)->handleEvent(event))
+        {
+            applyChanges();
             return;
+        }
     }
 
     applyChanges();

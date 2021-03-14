@@ -151,7 +151,10 @@
     <ClCompile Include="Nodes\NodeSprite.cpp" />
     <ClCompile Include="Nodes\Physical\NodePhysical.cpp" />
     <ClCompile Include="Nodes\Physical\NodeRectangularPhysical.cpp" />
-    <ClCompile Include="Nodes\Physical\Specified\Worm.cpp" />
+    <ClCompile Include="Nodes\Physical\Specified\Worm\Worm.cpp" />
+    <ClCompile Include="Nodes\Physical\Specified\Worm\WormHideState.cpp" />
+    <ClCompile Include="Nodes\Physical\Specified\Worm\WormPlayState.cpp" />
+    <ClCompile Include="Nodes\Physical\Specified\Worm\WormWaitState.cpp" />
     <ClCompile Include="States\Application_States\GameState.cpp" />
     <ClCompile Include="States\Application_States\TitleState.cpp" />
     <ClCompile Include="States\State.cpp" />
@@ -167,7 +170,10 @@
     <ClInclude Include="Nodes\Physical\CollideTypes.h" />
     <ClInclude Include="Nodes\Physical\NodePhysical.h" />
     <ClInclude Include="Nodes\Physical\NodeRectangularPhysical.h" />
-    <ClInclude Include="Nodes\Physical\Specified\Worm.h" />
+    <ClInclude Include="Nodes\Physical\Specified\Worm\Worm.h" />
+    <ClInclude Include="Nodes\Physical\Specified\Worm\WormHideState.h" />
+    <ClInclude Include="Nodes\Physical\Specified\Worm\WormPlayState.h" />
+    <ClInclude Include="Nodes\Physical\Specified\Worm\WormWaitState.h" />
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Resources\Resources.h" />
     <ClInclude Include="States\Application_States\GameState.h" />

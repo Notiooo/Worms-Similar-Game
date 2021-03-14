@@ -35,8 +35,12 @@ bool GameState::update(sf::Time deltaTime)
 	return true;
 }
 
-void GameState::draw()
+void GameState::draw() const
 {
 	// Now draw object on the empty window
 	gameWorld.draw();
+}
+
+void GameState::draw(sf::RenderTarget&, sf::RenderStates) const
+{
 }

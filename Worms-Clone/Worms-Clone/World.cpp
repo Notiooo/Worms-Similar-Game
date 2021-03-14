@@ -1,7 +1,7 @@
 #include "World.h"
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "Nodes/Physical/NodeRectangularPhysical.h"
-#include "Nodes/Physical/Specified/Worm.h"
+#include "Nodes/Physical/Specified/Worm/Worm.h"
 #include <memory>
 #include <array>
 #include <random>
@@ -22,6 +22,8 @@ debugDraw(window)
 
 	loadResources();
 	createWorld();
+
+	wormQueue.front()->activatePlayState();
 }
 
 void World::update(sf::Time deltaTime)
@@ -31,14 +33,22 @@ void World::update(sf::Time deltaTime)
 
 	// Update the physical world
 	b2_World.Step(1 / 60.f, 8, 3);
+
+	checkTurnTime();
 }
 
-void World::draw()
+void World::Box2DdrawDebug()
+{
+	// Draw the debug part of physical objects
+	b2_World.DebugDraw();
+}
+
+void World::draw() const
 {
 	world_window.draw(root_scene);
 
-	// Draw the debug part of physical objects
-	b2_World.DebugDraw();
+	// Some hack as Box2D drawDebug is non-const
+	const_cast<World*>(this)->Box2DdrawDebug();
 }
 
 void World::processEvents(const sf::Event& event)
@@ -82,13 +92,48 @@ void World::createWorld()
 	std::unique_ptr<NodeRectangularPhysical> box = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(20, 20), sf::Vector2f(320, 60), sf::Color::Red, NodeRectangularPhysical::Physical_Types::Dynamic_Type);
 	std::unique_ptr<NodeRectangularPhysical> box2 = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(20, 20), sf::Vector2f(325, 0), sf::Color::Cyan, NodeRectangularPhysical::Physical_Types::Dynamic_Type);
 	std::unique_ptr<Worm> worm = std::make_unique<Worm>(b2_World, world_textures, sf::Vector2f(300, 40));
+	std::unique_ptr<Worm> worm1 = std::make_unique<Worm>(b2_World, world_textures, sf::Vector2f(300, 40));
+	std::unique_ptr<Worm> worm2 = std::make_unique<Worm>(b2_World, world_textures, sf::Vector2f(300, 40));
+
+
+
+	wormQueue.push(worm.get());
+	wormQueue.push(worm1.get());
+	wormQueue.push(worm2.get());
+
+
 
 	ramp->setRotation(40);
 	root_scene.pinNode(std::move(ground));
 	root_scene.pinNode(std::move(ramp));
 
 	root_scene.pinNode(std::move(worm));
+	root_scene.pinNode(std::move(worm1));
+	root_scene.pinNode(std::move(worm2));
 	root_scene.pinNode(std::move(box));
 	root_scene.pinNode(std::move(box2));
+}
 
+void World::checkTurnTime()
+{
+	// Switch Worm if turn has ended
+	static sf::Clock timeRound;
+	if (!hideState && (timeRound.getElapsedTime() > timePerTurn))
+	{
+		wormQueue.front()->activateHideState();
+		hideState = true;
+		timeRound.restart();
+	}
+
+	if (hideState && (timeRound.getElapsedTime() > timePerHide))
+	{
+		Worm* worm = std::move(wormQueue.front());
+		worm->activateWaitState();
+		wormQueue.pop();
+		wormQueue.push(std::move(worm));
+
+		wormQueue.front()->activatePlayState();
+		hideState = false;
+		timeRound.restart();
+	}
 }

@@ -1,25 +1,19 @@
-#ifndef GAMESTATE_H
-#define GAMESTATE_H
+#ifndef WORMPLAYSTATE_H
+#define WORMPLAYSTATE_H
+#include "../../../../States/State.h"
+#include "Worm.h"
 
-#include "../State.h"
-#include "../../World.h"
-
-class StateStack;
-
-class GameState : public State
+class WormPlayState : public State
 {
 public:
-	GameState(StateStack& stack, sf::RenderWindow& window);
+	WormPlayState(StateStack&, Worm&);
 
 	virtual void draw() const override;
 	virtual void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
 	virtual bool update(sf::Time) override;
 	virtual bool handleEvent(const sf::Event& event) override;
-
 private:
-	World gameWorld;
+	Worm& worm;
 };
-
-
 #endif
