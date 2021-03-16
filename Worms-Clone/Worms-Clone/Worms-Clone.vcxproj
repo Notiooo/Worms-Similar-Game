@@ -149,6 +149,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Nodes\NodeScene.cpp" />
     <ClCompile Include="Nodes\NodeSprite.cpp" />
+    <ClCompile Include="Nodes\NodeText.cpp" />
     <ClCompile Include="Nodes\Physical\NodePhysical.cpp" />
     <ClCompile Include="Nodes\Physical\NodeRectangularPhysical.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\Worm.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Nodes\NodeScene.h" />
     <ClInclude Include="Nodes\NodeSprite.h" />
+    <ClInclude Include="Nodes\NodeText.h" />
     <ClInclude Include="Nodes\Physical\CollideTypes.h" />
     <ClInclude Include="Nodes\Physical\NodePhysical.h" />
     <ClInclude Include="Nodes\Physical\NodeRectangularPhysical.h" />

@@ -51,6 +51,8 @@ void Game::processEvents()
 	sf::Event event;
 	while (gameWindow.pollEvent(event))
 	{
+		if (event.type == sf::Event::Closed)
+			gameWindow.close();
 		appStack.handleEvent(event);
 	}
 }

@@ -4,6 +4,9 @@ WormPlayState::WormPlayState(StateStack& stack, Worm& worm) :
 	State(stack),
 	worm(worm)
 {
+	#ifdef _DEBUG
+		worm.wormName.setString("PlayState");
+	#endif // DEBUG
 }
 
 void WormPlayState::draw() const

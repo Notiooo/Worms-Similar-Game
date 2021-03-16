@@ -5,29 +5,25 @@
 #include "SFML/Graphics/Sprite.hpp"
 #include "../../../../Resources/Resources.h"
 #include "../../../../States/StateStack.h"
+#include "SFML/Graphics/Text.hpp"
 
 // Listener that controls collision of the worms legs
 // with the outside world. Next it increments/decrements
 // footCollissions according to how many encounters
-class GroundedListener : public b2ContactListener
-{
-	void BeginContact(b2Contact* contact);
-	void EndContact(b2Contact* contact);
-};
-
 
 // An object the player control
 class Worm : public NodePhysical
 {
 public:
-	friend class GroundedListener;
+	friend class WorldListener;
 
 	// States of this worm
 	friend class WormHideState;
 	friend class WormPlayState;
 	friend class WormWaitState;
 
-	Worm(b2World& world, TextureManager& textures, sf::Vector2f position);
+	Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vector2f position);
+	~Worm();
 
 	// Function to control flow of the worm
 	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -46,6 +42,7 @@ public:
 private:
 	sf::Sprite wormSprite;
 	sf::Sprite ropeSprite;
+	sf::Text wormName;
 
 	// Worm properties
 	float jumpStrength = 300.f;
@@ -62,10 +59,6 @@ private:
 
 	// Statestack that controls flow of the states of the worm
 	StateStack wormStack;
-
-	// The listener that controls how many
-	// objects collide with it foots
-	GroundedListener listen_footsteps;
 };
 
 #endif

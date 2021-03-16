@@ -5,6 +5,7 @@
 #include <memory>
 #include <array>
 #include <random>
+#include "Nodes/Physical/CollideTypes.h"
 
 World::World(sf::RenderWindow& window) :
 world_window(window),
@@ -23,7 +24,14 @@ debugDraw(window)
 	loadResources();
 	createWorld();
 
+
+	// Set up the round timer
+	roundTimeText.setFont(world_fonts.getResourceReference(Fonts_ID::Arial_Narrow));
+	roundTimeText.setOutlineThickness(1.f);
+	roundTimeText.setPosition(world_view.getSize().x / 2, roundTimeText.getCharacterSize());
+
 	wormQueue.front()->activatePlayState();
+	b2_World.SetContactListener(&world_listener);
 }
 
 void World::update(sf::Time deltaTime)
@@ -45,7 +53,11 @@ void World::Box2DdrawDebug()
 
 void World::draw() const
 {
+	// Draw World
 	world_window.draw(root_scene);
+
+	// Draw timer
+	world_window.draw(roundTimeText);
 
 	// Some hack as Box2D drawDebug is non-const
 	const_cast<World*>(this)->Box2DdrawDebug();
@@ -81,7 +93,7 @@ void World::loadResources()
 	world_textures.storeResource(Textures_ID::Rope, "Resources/Textures/World/rope.png");
 	world_textures.getResourceReference(Textures_ID::Rope).setRepeated(true);
 
-
+	world_fonts.storeResource(Fonts_ID::Arial_Narrow, "Resources/Fonts/arial_narrow.ttf");
 }
 
 void World::createWorld()
@@ -89,11 +101,11 @@ void World::createWorld()
 	// Just some world for testing purposes
 	std::unique_ptr<NodeRectangularPhysical> ground = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(640, 50), sf::Vector2f(320, 460), sf::Color::Blue, NodeRectangularPhysical::Physical_Types::Static_Type);
 	std::unique_ptr<NodeRectangularPhysical> ramp = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(640, 50), sf::Vector2f(320, 460), sf::Color::Green, NodeRectangularPhysical::Physical_Types::Static_Type);
-	std::unique_ptr<NodeRectangularPhysical> box = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(20, 20), sf::Vector2f(320, 60), sf::Color::Red, NodeRectangularPhysical::Physical_Types::Dynamic_Type);
-	std::unique_ptr<NodeRectangularPhysical> box2 = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(20, 20), sf::Vector2f(325, 0), sf::Color::Cyan, NodeRectangularPhysical::Physical_Types::Dynamic_Type);
-	std::unique_ptr<Worm> worm = std::make_unique<Worm>(b2_World, world_textures, sf::Vector2f(300, 40));
-	std::unique_ptr<Worm> worm1 = std::make_unique<Worm>(b2_World, world_textures, sf::Vector2f(300, 40));
-	std::unique_ptr<Worm> worm2 = std::make_unique<Worm>(b2_World, world_textures, sf::Vector2f(300, 40));
+	std::unique_ptr<NodeRectangularPhysical> box = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(20, 20), sf::Vector2f(100, 60), sf::Color::Red, NodeRectangularPhysical::Physical_Types::Dynamic_Type);
+	std::unique_ptr<NodeRectangularPhysical> box2 = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(20, 20), sf::Vector2f(100, 0), sf::Color::Cyan, NodeRectangularPhysical::Physical_Types::Dynamic_Type);
+	std::unique_ptr<Worm> worm = std::make_unique<Worm>(b2_World, world_textures, world_fonts, sf::Vector2f(300, 40));
+	std::unique_ptr<Worm> worm1 = std::make_unique<Worm>(b2_World, world_textures, world_fonts, sf::Vector2f(380, 40));
+	std::unique_ptr<Worm> worm2 = std::make_unique<Worm>(b2_World, world_textures, world_fonts, sf::Vector2f(440, 40));
 
 
 
@@ -115,25 +127,92 @@ void World::createWorld()
 }
 
 void World::checkTurnTime()
-{
-	// Switch Worm if turn has ended
-	static sf::Clock timeRound;
-	if (!hideState && (timeRound.getElapsedTime() > timePerTurn))
+{	
+	// On default there is no HideState
+	static bool hideState = false;
+	sf::Time timeElapsed = roundClock.getElapsedTime();
+
+	if (!hideState && (timeElapsed > timePerTurn))
 	{
 		wormQueue.front()->activateHideState();
+
+		// Redundancy
 		hideState = true;
-		timeRound.restart();
+		roundTimeText.setFillColor(sf::Color::Red);
 	}
 
-	if (hideState && (timeRound.getElapsedTime() > timePerHide))
+	if (hideState && (timeElapsed > timePerHide + timePerTurn))
 	{
 		Worm* worm = std::move(wormQueue.front());
 		worm->activateWaitState();
 		wormQueue.pop();
 		wormQueue.push(std::move(worm));
-
 		wormQueue.front()->activatePlayState();
+
+		// Redundancy
 		hideState = false;
-		timeRound.restart();
+		roundTimeText.setFillColor(sf::Color::White);
+		roundClock.restart();
+	}
+
+	// Wrong way to do this!!! Too many setString (need to optimize it later)
+	roundTimeText.setString(std::to_string(static_cast<int>(timeElapsed.asSeconds())));
+}
+
+void WorldListener::BeginContact(b2Contact* contact)
+{
+	// Takes information about the occured collision
+	b2FixtureUserData userData1 = contact->GetFixtureA()->GetUserData();
+	b2FixtureUserData userData2 = contact->GetFixtureB()->GetUserData();
+
+	// All collision informations should be stored as Collision*
+	// So I cast it to this object that it supposed to be.
+	Collision* node1 = reinterpret_cast<Collision*>(userData1.pointer);
+	Collision* node2 = reinterpret_cast<Collision*>(userData2.pointer);
+
+	for (auto& node : { node1, node2 })
+	{
+		if (node == nullptr)
+			continue;
+
+		switch (node->type)
+		{
+			case CollideTypes::WormFoot:
+			{
+				// I'm looking for collisions of my worm's feet
+				// If it is my worm then it should dynamic_cast
+				if (Worm* worm = dynamic_cast<Worm*>(node->object))
+					++(worm->footCollisions);
+			}
+		}
+	}
+}
+
+void WorldListener::EndContact(b2Contact* contact)
+{
+	// Takes information about the occured collision
+	b2FixtureUserData userData1 = contact->GetFixtureA()->GetUserData();
+	b2FixtureUserData userData2 = contact->GetFixtureB()->GetUserData();
+
+	// All collision informations should be stored as NodeScene
+	// So I cast it to this object that it supposed to be.
+	Collision* node1 = reinterpret_cast<Collision*>(userData1.pointer);
+	Collision* node2 = reinterpret_cast<Collision*>(userData2.pointer);
+
+	for (auto& node : { node1, node2 })
+	{
+		if (node == nullptr)
+			continue;
+
+		switch (node->type)
+		{
+			case CollideTypes::WormFoot:
+			{
+				// I'm looking for collisions of my worm's feet
+				// If it is my worm then it should dynamic_cast
+				if (Worm* worm = dynamic_cast<Worm*>(node->object))
+					--(worm->footCollisions);
+			}
+		}
 	}
 }

@@ -12,6 +12,13 @@
 #include "Resources/Resources.h"
 #include "Nodes/NodeScene.h"
 #include "SFML/Window/Event.hpp"
+#include "SFML/Graphics/Text.hpp"
+
+class WorldListener : public b2ContactListener
+{
+	void BeginContact(b2Contact* contact);
+	void EndContact(b2Contact* contact);
+};
 
 class Worm;
 
@@ -20,31 +27,54 @@ class World : private sf::NonCopyable
 public:
 	explicit World(sf::RenderWindow& window);
 
+	// Functions that controls flow of the world
+
+	// Updates the world every iteration
 	void update(sf::Time);
+
+	// Draws the world every frame
 	void draw() const;
+
+	// Draws all collisions (hitboxes) of physical objects to the screen
 	void Box2DdrawDebug();
+
+	// Process every input from the player
 	void processEvents(const sf::Event&);
 
 private:
+	// Loads textures & sounds & fonts
 	void loadResources();
+
+	// Insert object onto the scene
 	void createWorld();
+
+	// Controls time between the states (Round State, and
+	// the gap between player moves -- Hold State)
 	void checkTurnTime();
 
+	// Time destined to control in-game states length
+	sf::Clock roundClock;
+	sf::Time timePerTurn = sf::seconds(10); 
+	sf::Time timePerHide = sf::seconds(5);
+	// Displays timer
+	sf::Text roundTimeText;
+
+	// Managers & Windows
 	sf::RenderWindow& world_window;
 	sf::View world_view;
 	TextureManager world_textures; 
+	FontManager world_fonts;
 
-	sf::Time timePerTurn = sf::seconds(10); 
-	sf::Time timePerHide = sf::seconds(5);
-
-	bool hideState = false;
-
-	std::queue<Worm*> wormQueue;
-
+	// Scene-related objects
 	b2World b2_World;
 	DebugBox2D debugDraw;
-
 	NodeScene root_scene;
+	
+	// Order in which particular worms can play
+	std::queue<Worm*> wormQueue;
+
+	// It carries all collisions inside the world
+	WorldListener world_listener;
 };
 
 

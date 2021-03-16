@@ -15,6 +15,9 @@ public:
 	virtual bool handleEvent(const sf::Event& event) override;
 private:
 	Worm& worm;
+	
+	// It says if player can be moved or not
+	b2Vec2 saved_position;
 };
 
 #endif
