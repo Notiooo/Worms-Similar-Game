@@ -33,6 +33,9 @@ public:
 	void activateHideState();
 	void activateWaitState();
 	void activatePlayState();
+	State_ID getCurrentState() const;
+
+	bool facingRight();
 
 
 
@@ -43,6 +46,7 @@ private:
 	sf::Sprite wormSprite;
 	sf::Sprite ropeSprite;
 	sf::Text wormName;
+	State_ID current_state;
 
 	// Worm properties
 	float jumpStrength = 300.f;
@@ -59,6 +63,8 @@ private:
 
 	// Statestack that controls flow of the states of the worm
 	StateStack wormStack;
+
+	// Weapons
 };
 
 #endif

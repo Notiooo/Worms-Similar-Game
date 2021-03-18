@@ -54,7 +54,7 @@ private:
 
 	// Time destined to control in-game states length
 	sf::Clock roundClock;
-	sf::Time timePerTurn = sf::seconds(10); 
+	sf::Time timePerTurn = sf::seconds(30); 
 	sf::Time timePerHide = sf::seconds(5);
 	// Displays timer
 	sf::Text roundTimeText;

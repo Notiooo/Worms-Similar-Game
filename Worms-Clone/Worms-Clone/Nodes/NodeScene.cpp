@@ -1,6 +1,12 @@
 #include "NodeScene.h"
 #include <cassert>
 
+NodeScene::NodeScene() :
+	pinned_Nodes(),
+	_parent(nullptr)
+{
+}
+
 void NodeScene::pinNode(Node node)
 {
 	// Now this Scene is parent of given node
@@ -42,6 +48,20 @@ sf::Vector2f NodeScene::getAbsolutePosition() const
 	
 	// By applying this transform on empty Vector2f we move it to the desired position
 	return transform * sf::Vector2f();
+}
+
+NodeScene* NodeScene::getRootNode()
+{
+	if (_parent)
+		return _parent->getRootNode();
+	return this;
+}
+
+const NodeScene* NodeScene::getRootNode() const
+{
+	if (_parent)
+		return _parent->getRootNode();
+	return this;
 }
 
 void NodeScene::draw(sf::RenderTarget& target, sf::RenderStates states) const

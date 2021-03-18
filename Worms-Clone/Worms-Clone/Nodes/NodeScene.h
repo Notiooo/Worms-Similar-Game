@@ -3,6 +3,8 @@
 
 #include <memory>
 #include <vector>
+#include <list>
+
 #include "SFML/Graphics/Drawable.hpp"
 #include "SFML/Graphics/Transformable.hpp"
 #include "SFML/System/NonCopyable.hpp"
@@ -20,7 +22,7 @@ class NodeScene : public sf::Drawable, public sf::Transformable, private sf::Non
 		// derived classes
 		using Node = std::unique_ptr<NodeScene>;
 
-		//NodeScene();
+		NodeScene();
 
 		// Steals ownership, and puts it into the vector of pinned_Nods
 		void pinNode(Node);
@@ -58,8 +60,23 @@ class NodeScene : public sf::Drawable, public sf::Transformable, private sf::Non
 
 		virtual ~NodeScene() = default;
 
+	protected:
+	// Returns the root node
+	NodeScene* getRootNode();
+	const NodeScene* getRootNode() const;
+
 	private:
-		std::vector<Node> pinned_Nodes;
+
+		// It was vector before, but I had to change it to the list,
+		// as some object inside range-for loop of this pinned_Nodes
+		// started pin its nodes to this global pinned_Nodes
+		// and that was risky that pinned_Nodes may reallocate durning
+		// its iteration of the range-for loop
+
+		// What objects started to pin some object to the root_node?
+		// Actually missles, I wanted them to be global, thus I put
+		// them in the root node
+		std::list<Node> pinned_Nodes;
 		NodeScene* _parent;
 
 };

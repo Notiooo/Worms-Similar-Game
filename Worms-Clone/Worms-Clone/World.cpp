@@ -130,18 +130,23 @@ void World::checkTurnTime()
 {	
 	// On default there is no HideState
 	static bool hideState = false;
+
+
 	sf::Time timeElapsed = roundClock.getElapsedTime();
 
-	if (!hideState && (timeElapsed > timePerTurn))
+	if (!hideState && ((timeElapsed > timePerTurn) || (wormQueue.front()->getCurrentState() == State_ID::WormHideState)))
 	{
-		wormQueue.front()->activateHideState();
-
 		// Redundancy
 		hideState = true;
+		if(!(wormQueue.front()->getCurrentState() == State_ID::WormHideState))
+			wormQueue.front()->activateHideState();
+
 		roundTimeText.setFillColor(sf::Color::Red);
+		roundClock.restart();
+		timeElapsed = sf::Time::Zero;
 	}
 
-	if (hideState && (timeElapsed > timePerHide + timePerTurn))
+	if (hideState && (timeElapsed > timePerHide))
 	{
 		Worm* worm = std::move(wormQueue.front());
 		worm->activateWaitState();
@@ -156,7 +161,11 @@ void World::checkTurnTime()
 	}
 
 	// Wrong way to do this!!! Too many setString (need to optimize it later)
-	roundTimeText.setString(std::to_string(static_cast<int>(timeElapsed.asSeconds())));
+	if(hideState)
+		roundTimeText.setString(std::to_string(static_cast<int>((timePerHide - timeElapsed).asSeconds())));
+	else
+		roundTimeText.setString(std::to_string(static_cast<int>((timePerTurn - timeElapsed).asSeconds())));
+
 }
 
 void WorldListener::BeginContact(b2Contact* contact)

@@ -34,9 +34,12 @@ public:
 	// between Box2D and the SFML
 	float radiansToAngle(const float& radians);
 
+	void applyForce(sf::Vector2f vector);
+
 protected:
 	const Physical_Types physical_type;
 	b2Body* Body;
+	b2World* World;
 
 };
 

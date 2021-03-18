@@ -4,7 +4,8 @@
 const float NodePhysical::B2_SCALAR = 30.f;
 
 NodePhysical::NodePhysical(b2World& world, Physical_Types physical_type, sf::Vector2f position ):
-	physical_type(physical_type)
+	physical_type(physical_type),
+	World(&world)
 {
 	// Defines properties of the body
 	b2BodyDef BodyDef;
@@ -32,5 +33,10 @@ float NodePhysical::angleToRadians(const float& angle)
 float NodePhysical::radiansToAngle(const float& radians)
 {
 	return radians * 180 / b2_pi;
+}
+
+void NodePhysical::applyForce(sf::Vector2f vector)
+{
+	Body->ApplyForceToCenter(sfVector_to_b2Vec(vector), true);
 }
 
