@@ -2,8 +2,9 @@
 #define WORMHIDESTATE_H
 #include "../../../../States/State.h"
 #include "Worm.h"
+#include "WormMoveableState.h"
 
-class WormHideState : public State
+class WormHideState : public WormMoveableState
 {
 public:
 	WormHideState(StateStack&, Worm&);
@@ -13,8 +14,6 @@ public:
 
 	virtual bool update(sf::Time) override;
 	virtual bool handleEvent(const sf::Event& event) override;
-private:
-	Worm& worm;
 };
 
 #endif

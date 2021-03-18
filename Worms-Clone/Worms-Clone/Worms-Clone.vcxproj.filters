@@ -105,6 +105,9 @@
     <ClCompile Include="Nodes\NodeText.cpp">
       <Filter>Source Files\Nodes</Filter>
     </ClCompile>
+    <ClCompile Include="Nodes\Physical\Specified\Worm\WormMoveableState.cpp">
+      <Filter>Source Files\Nodes\Physical\Specified\Worm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -166,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="Nodes\NodeText.h">
       <Filter>Header Files\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Physical\Specified\Worm\WormMoveableState.h">
+      <Filter>Header Files\Nodes\Physical\Specified\Worm</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

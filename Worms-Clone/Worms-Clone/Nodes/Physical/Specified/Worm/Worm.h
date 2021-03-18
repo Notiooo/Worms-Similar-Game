@@ -21,6 +21,7 @@ public:
 	friend class WormHideState;
 	friend class WormPlayState;
 	friend class WormWaitState;
+	friend class WormMoveableState;
 
 	Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vector2f position);
 	~Worm();

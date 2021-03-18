@@ -6,8 +6,11 @@
 #include "SFML/System/Vector2.hpp"
 #include "SFML/Graphics/CircleShape.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
+#include "WormMoveableState.h"
 
-class WormPlayState : public State
+#include "Weapons/Weapon.h"
+
+class WormPlayState : public WormMoveableState
 {
 public:
 	WormPlayState(StateStack&, Worm&);
@@ -18,28 +21,29 @@ public:
 	virtual bool update(sf::Time) override;
 	virtual bool handleEvent(const sf::Event& event) override;
 
-	bool facingRight();
+	// === Useful functions == //
 	void shoot();
 
 private:
-	Worm& worm;
+	void handleShooting(const sf::Event& event);
+	void updateShooting(sf::Time);
 
+private:
 	// Pointing the direction of shooting
 	sf::Vector2f pointer;
 	float pointer_length = 100.f;
 	float pointer_speed = 0.05f;
 	float pointer_angle = b2_pi / 2.f;
 
-	// 1 if looks right, -1 if looks left
-	// Thanks to this I can easily set some vectors
-	// so they're pointing the proper direction
-	int direction;
+	// Point the direction of shooting
 	sf::CircleShape triangular_pointer;
 
 	// === Shooting Bar === //
 
 	// Button to used to shoot
-	sf::Keyboard::Key shooting_key = sf::Keyboard::Q;
+	sf::Keyboard::Key shooting_key = sf::Keyboard::Enter;
+	sf::Keyboard::Key point_higher = sf::Keyboard::Left;
+	sf::Keyboard::Key point_lower = sf::Keyboard::Right;
 
 	// How far we can shoot
 	float max_shooting_force = 20000.f;
@@ -55,6 +59,12 @@ private:
 
 	// Graphical element of the shooting bar
 	sf::RectangleShape shootingBar;
+
+
+	// === Weapons === //
+	using slot = std::pair<unsigned, std::unique_ptr<Weapon>>;
+	std::vector<slot> inventory;
+	slot* selected_weapon;
 
 
 };
