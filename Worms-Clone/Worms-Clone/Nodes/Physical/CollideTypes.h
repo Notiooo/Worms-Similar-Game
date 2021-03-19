@@ -9,6 +9,7 @@ enum class CollideTypes
 {
 	WormFoot,
 	WormBody,
+	Bullet,
 };
 
 struct Collision

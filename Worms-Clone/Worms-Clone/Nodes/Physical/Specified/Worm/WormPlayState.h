@@ -46,7 +46,7 @@ private:
 	sf::Keyboard::Key point_lower = sf::Keyboard::Right;
 
 	// How far we can shoot
-	float max_shooting_force = 20000.f;
+	float max_shooting_force = 35000.f;
 
 	// It measures current shooting force load
 	float current_shooting_force = 0.f;
@@ -59,13 +59,5 @@ private:
 
 	// Graphical element of the shooting bar
 	sf::RectangleShape shootingBar;
-
-
-	// === Weapons === //
-	using slot = std::pair<unsigned, std::unique_ptr<Weapon>>;
-	std::vector<slot> inventory;
-	slot* selected_weapon;
-
-
 };
 #endif

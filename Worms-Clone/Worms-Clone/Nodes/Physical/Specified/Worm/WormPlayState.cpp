@@ -34,6 +34,10 @@ void WormPlayState::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 	// Draw the shooting bar only if player is shooting
 	if(current_shooting_force)
 		target.draw(shootingBar, states);
+
+	states.transform *= worm.wormSprite.getTransform();
+	worm.selected_weapon->second->rotateWeapon((pointer_angle * 180 / b2_pi) - 90);
+	worm.selected_weapon->second->drawThis(target, states);
 }
 
 bool WormPlayState::update(sf::Time deltatime)
@@ -75,9 +79,7 @@ bool WormPlayState::handleEvent(const sf::Event& event)
 
 void WormPlayState::shoot()
 {
-	std::unique_ptr<NodeRectangularPhysical> box2 = std::make_unique<NodeRectangularPhysical>(*worm.World, sf::Vector2f(20, 20), worm.getAbsolutePosition() + triangular_pointer.getPosition(), sf::Color::Cyan, NodeRectangularPhysical::Physical_Types::Dynamic_Type);
-	box2->applyForce({ direction * pointer.x * 10000.f, pointer.y * 10000.f });
-	worm.getRootNode()->pinNode(std::move(box2));
+	worm.selected_weapon->second->shoot(worm.getRootNode(), worm.getAbsolutePosition() + triangular_pointer.getPosition(), sf::Vector2f(direction * pointer.x * current_shooting_force, pointer.y * current_shooting_force));
 
 	worm.activateHideState();
 }

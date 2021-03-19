@@ -52,6 +52,12 @@
     <Filter Include="Source Files\Nodes\Physical\Specified\Worm">
       <UniqueIdentifier>{071eab7a-a578-4003-b884-31f2d110d43f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Nodes\Physical\Specified\Worm\Weapons">
+      <UniqueIdentifier>{37ebbdea-8934-4eca-8f6d-a2706cf378c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Nodes\Physical\Specified\Worm\Weapons">
+      <UniqueIdentifier>{50184757-3906-40e6-85b4-ce4a10f02048}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Worms-Clone.cpp">
@@ -107,6 +113,18 @@
     </ClCompile>
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormMoveableState.cpp">
       <Filter>Source Files\Nodes\Physical\Specified\Worm</Filter>
+    </ClCompile>
+    <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Weapon.cpp">
+      <Filter>Source Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Bazooka.cpp">
+      <Filter>Source Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Nodes\Physical\NodePhysicalSprite.cpp">
+      <Filter>Source Files\Nodes\Physical</Filter>
+    </ClCompile>
+    <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Bullet.cpp">
+      <Filter>Source Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +190,18 @@
     </ClInclude>
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormMoveableState.h">
       <Filter>Header Files\Nodes\Physical\Specified\Worm</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Weapon.h">
+      <Filter>Header Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Bazooka.h">
+      <Filter>Header Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Physical\NodePhysicalSprite.h">
+      <Filter>Header Files\Nodes\Physical</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Bullet.h">
+      <Filter>Header Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 #include "SFML/System/Vector2.hpp"
 
 const float NodePhysical::B2_SCALAR = 30.f;
+std::queue<b2Body*> NodePhysical::b2_removal_queue;
 
 NodePhysical::NodePhysical(b2World& world, Physical_Types physical_type, sf::Vector2f position ):
 	physical_type(physical_type),
@@ -23,6 +24,11 @@ NodePhysical::NodePhysical(b2World& world, Physical_Types physical_type, sf::Vec
 		break;
 	}
 	Body = world.CreateBody(&BodyDef);
+}
+
+NodePhysical::~NodePhysical()
+{
+	b2_removal_queue.push(Body);
 }
 
 float NodePhysical::angleToRadians(const float& angle)

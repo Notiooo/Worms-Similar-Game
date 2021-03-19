@@ -6,6 +6,7 @@
 #include <array>
 #include <random>
 #include "Nodes/Physical/CollideTypes.h"
+#include "Nodes/Physical/Specified/Worm/Weapons/Bullet.h"
 
 World::World(sf::RenderWindow& window) :
 world_window(window),
@@ -38,6 +39,10 @@ void World::update(sf::Time deltaTime)
 {
 	// Update the Game World
 	root_scene.update(deltaTime);
+
+	// Remove bodies if there are any
+	// in the queue to remove
+	removeB2Bodies();
 
 	// Update the physical world
 	b2_World.Step(1 / 60.f, 8, 3);
@@ -93,7 +98,20 @@ void World::loadResources()
 	world_textures.storeResource(Textures_ID::Rope, "Resources/Textures/World/rope.png");
 	world_textures.getResourceReference(Textures_ID::Rope).setRepeated(true);
 
+	world_textures.storeResource(Textures_ID::Bazooka, "Resources/Textures/Weapons/bazooka.png");
+	world_textures.storeResource(Textures_ID::Bazooka_Bullet, "Resources/Textures/Weapons/bazooka_bullet.png");
+
+
 	world_fonts.storeResource(Fonts_ID::Arial_Narrow, "Resources/Fonts/arial_narrow.ttf");
+}
+
+void World::removeB2Bodies()
+{
+	while (!NodePhysical::b2_removal_queue.empty())
+	{
+		b2_World.DestroyBody(NodePhysical::b2_removal_queue.front());
+		NodePhysical::b2_removal_queue.pop();
+	}
 }
 
 void World::createWorld()
@@ -192,6 +210,14 @@ void WorldListener::BeginContact(b2Contact* contact)
 				// If it is my worm then it should dynamic_cast
 				if (Worm* worm = dynamic_cast<Worm*>(node->object))
 					++(worm->footCollisions);
+				break;
+			}
+			
+			case CollideTypes::Bullet:
+			{
+				if (Bullet* bullet = dynamic_cast<Bullet*>(node->object))
+					bullet->collision();
+				break;
 			}
 		}
 	}

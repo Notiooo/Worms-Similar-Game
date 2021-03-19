@@ -45,6 +45,9 @@ private:
 	// Loads textures & sounds & fonts
 	void loadResources();
 
+	// Remove physical b2Box bodies
+	void removeB2Bodies();
+
 	// Insert object onto the scene
 	void createWorld();
 

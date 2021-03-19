@@ -151,7 +151,11 @@
     <ClCompile Include="Nodes\NodeSprite.cpp" />
     <ClCompile Include="Nodes\NodeText.cpp" />
     <ClCompile Include="Nodes\Physical\NodePhysical.cpp" />
+    <ClCompile Include="Nodes\Physical\NodePhysicalSprite.cpp" />
     <ClCompile Include="Nodes\Physical\NodeRectangularPhysical.cpp" />
+    <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Bazooka.cpp" />
+    <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Bullet.cpp" />
+    <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Weapon.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\Worm.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormHideState.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormMoveableState.cpp" />
@@ -172,7 +176,11 @@
     <ClInclude Include="Nodes\NodeText.h" />
     <ClInclude Include="Nodes\Physical\CollideTypes.h" />
     <ClInclude Include="Nodes\Physical\NodePhysical.h" />
+    <ClInclude Include="Nodes\Physical\NodePhysicalSprite.h" />
     <ClInclude Include="Nodes\Physical\NodeRectangularPhysical.h" />
+    <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Bazooka.h" />
+    <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Bullet.h" />
+    <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Weapon.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\Worm.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormHideState.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormMoveableState.h" />

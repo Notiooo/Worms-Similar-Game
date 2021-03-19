@@ -15,6 +15,10 @@ enum class Textures_ID
 
 	// TitleState
 	TitleState_Background,
+
+	// Weapons
+	Bazooka,
+	Bazooka_Bullet,
 };
 
 using TextureManager = ResourceManager<sf::Texture, Textures_ID>;

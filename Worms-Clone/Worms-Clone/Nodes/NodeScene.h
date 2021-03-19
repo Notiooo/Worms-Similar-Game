@@ -23,6 +23,7 @@ class NodeScene : public sf::Drawable, public sf::Transformable, private sf::Non
 		using Node = std::unique_ptr<NodeScene>;
 
 		NodeScene();
+		virtual ~NodeScene() = default;
 
 		// Steals ownership, and puts it into the vector of pinned_Nods
 		void pinNode(Node);
@@ -57,8 +58,6 @@ class NodeScene : public sf::Drawable, public sf::Transformable, private sf::Non
 		// ====== Handling events ====== //
 		void handleEvents(const sf::Event& event);
 		virtual void handleThisEvents(const sf::Event& event);
-
-		virtual ~NodeScene() = default;
 
 	protected:
 	// Returns the root node

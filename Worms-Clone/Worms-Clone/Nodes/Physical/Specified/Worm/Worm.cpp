@@ -1,7 +1,6 @@
 #include "Worm.h"
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/RenderStates.hpp"
-#include <iostream>
 
 // States
 #include "../../../../States/States.h"
@@ -9,6 +8,9 @@
 #include "WormPlayState.h"
 #include "WormWaitState.h"
 #include "../../CollideTypes.h"
+
+// Test purposes
+#include "Weapons/Bazooka.h"
 
 Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vector2f position):
 	NodePhysical(world, Physical_Types::Dynamic_Type, position),
@@ -88,6 +90,11 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vec
 	wormStack.saveState<WormWaitState>(State_ID::WormWaitState, *this);
 
 	activateWaitState();
+
+
+	// Test purposes
+	inventory.push_back(std::move(std::make_pair(99, std::make_unique<Bazooka>(world, textures))));
+	selected_weapon = &inventory.front();
 	
 }
 
@@ -104,7 +111,7 @@ void Worm::drawThis(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(ropeSprite, states);
 	target.draw(wormSprite, states);
 	target.draw(wormName, states);
-
+	
 	wormStack.draw();
 	wormStack.draw(target, states);
 }

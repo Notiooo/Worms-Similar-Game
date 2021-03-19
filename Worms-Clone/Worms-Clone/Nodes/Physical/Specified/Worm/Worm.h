@@ -6,6 +6,7 @@
 #include "../../../../Resources/Resources.h"
 #include "../../../../States/StateStack.h"
 #include "SFML/Graphics/Text.hpp"
+#include "Weapons/Weapon.h"
 
 // Listener that controls collision of the worms legs
 // with the outside world. Next it increments/decrements
@@ -65,7 +66,10 @@ private:
 	// Statestack that controls flow of the states of the worm
 	StateStack wormStack;
 
-	// Weapons
+	// === Weapons === //
+	using slot = std::pair<unsigned, std::unique_ptr<Weapon>>;
+	std::vector<slot> inventory;
+	slot* selected_weapon;
 };
 
 #endif
