@@ -22,6 +22,7 @@ debugDraw(window)
 	debugDraw.SetFlags(b2Draw::e_shapeBit);
 	#endif
 
+
 	loadResources();
 	createWorld();
 
@@ -37,12 +38,12 @@ debugDraw(window)
 
 void World::update(sf::Time deltaTime)
 {
+
 	// Update the Game World
 	root_scene.update(deltaTime);
 
-	// Remove bodies if there are any
-	// in the queue to remove
-	removeB2Bodies();
+	// Check if there is anything to remove
+	root_scene.removeDestroyed();
 
 	// Update the physical world
 	b2_World.Step(1 / 60.f, 8, 3);
@@ -87,6 +88,17 @@ void World::processEvents(const sf::Event& event)
 		root_scene.pinNode(std::move(box));
 	}
 
+	#ifdef _DEBUG
+	// Turn off & Turn on drawing the hitboxes
+	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
+	{
+		if (debugDraw.GetFlags())
+			debugDraw.ClearFlags(b2Draw::e_shapeBit);
+		else
+			debugDraw.SetFlags(b2Draw::e_shapeBit);
+	}
+	#endif // DEBUG
+
 	// Pass the handling to the scene hierarchy
 	root_scene.handleEvents(event);
 }
@@ -105,14 +117,6 @@ void World::loadResources()
 	world_fonts.storeResource(Fonts_ID::Arial_Narrow, "Resources/Fonts/arial_narrow.ttf");
 }
 
-void World::removeB2Bodies()
-{
-	while (!NodePhysical::b2_removal_queue.empty())
-	{
-		b2_World.DestroyBody(NodePhysical::b2_removal_queue.front());
-		NodePhysical::b2_removal_queue.pop();
-	}
-}
 
 void World::createWorld()
 {
@@ -216,7 +220,7 @@ void WorldListener::BeginContact(b2Contact* contact)
 			case CollideTypes::Bullet:
 			{
 				if (Bullet* bullet = dynamic_cast<Bullet*>(node->object))
-					bullet->collision();
+					bullet->setDestroyed();
 				break;
 			}
 		}

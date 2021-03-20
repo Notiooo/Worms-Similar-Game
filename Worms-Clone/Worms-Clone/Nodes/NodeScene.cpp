@@ -1,5 +1,7 @@
 #include "NodeScene.h"
 #include <cassert>
+#include <functional>
+#include <algorithm>
 
 NodeScene::NodeScene() :
 	pinned_Nodes(),
@@ -39,6 +41,14 @@ NodeScene::Node NodeScene::unpinNode(const NodeScene& node_scene)
 	return stolen_node;
 }
 
+/*
+void NodeScene::unpinItself()
+{
+	_parent->unpinNode(*this);
+	pinned_Nodes.clear();
+}
+*/
+
 sf::Vector2f NodeScene::getAbsolutePosition() const
 {
 	// To do this we have to add all transforms till the top of the hierarchy.
@@ -62,6 +72,11 @@ const NodeScene* NodeScene::getRootNode() const
 	if (_parent)
 		return _parent->getRootNode();
 	return this;
+}
+
+bool NodeScene::isDestroyed()
+{
+	return false;
 }
 
 void NodeScene::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -101,6 +116,15 @@ void NodeScene::update(sf::Time deltaTime)
 void NodeScene::updateThis(sf::Time deltaTime)
 {
 	// Nothing here
+}
+
+void NodeScene::removeDestroyed()
+{
+	auto removal_mark = std::remove_if(pinned_Nodes.begin(), pinned_Nodes.end(), std::mem_fn(&NodeScene::isDestroyed));
+	pinned_Nodes.erase(removal_mark, pinned_Nodes.end());
+
+	for (auto& node : pinned_Nodes)
+		node->removeDestroyed();
 }
 
 void NodeScene::handleEvents(const sf::Event& event)

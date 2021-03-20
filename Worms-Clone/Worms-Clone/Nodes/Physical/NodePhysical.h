@@ -12,10 +12,6 @@ public:
 	// It is used to scale meters to pixels
 	static const float B2_SCALAR;
 
-	// It is used to delay removal of physical object
-	// as they can not be removed in Box2D physical step
-	static std::queue<b2Body*> b2_removal_queue;
-
 	enum class Physical_Types
 	{
 		Kinematic_Type, // can move but it will not be affected by other bodies

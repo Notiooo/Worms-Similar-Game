@@ -4,6 +4,7 @@
 #include "SFML/Graphics/RenderStates.hpp"
 #include "../../../CollideTypes.h"
 #include <memory>
+#include "Hitbox.h"
 
 
 Bullet::Bullet(b2World& world, sf::Vector2f position, sf::Texture& texture):
@@ -25,10 +26,21 @@ void Bullet::updateThis(sf::Time deltaTime)
 
 void Bullet::collision()
 {
-	this->getRootNode()->unpinNode(*this);
+	//std::unique_ptr<Hitbox> hitbox = std::make_unique<Hitbox>(*World, b2Vec_to_sfVector<sf::Vector2f>(Body->GetPosition()), 60, 10);
+	//this->getRootNode()->pinNode(std::move(hitbox));
 }
 
-Bullet::~Bullet()
+void Bullet::setDestroyed()
 {
-	delete reinterpret_cast<Collision*>(Body->GetFixtureList()[0].GetUserData().pointer);
+	collided = true;
+	//collision();
+}
+
+bool Bullet::isDestroyed()
+{
+	if (collided)
+	{
+		collision();
+		return true;
+	}
 }

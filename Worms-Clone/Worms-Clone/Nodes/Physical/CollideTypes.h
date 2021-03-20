@@ -2,14 +2,17 @@
 #define COLLIDETYPES_H
 #include <iostream>
 
-// Not used yet, might be deprecated
-// in next commits
+// I changed my mind, it wont be deprecated
 
 enum class CollideTypes
 {
+	// Worm related
 	WormFoot,
 	WormBody,
+
+	// Weapons
 	Bullet,
+	Hitbox,
 };
 
 struct Collision

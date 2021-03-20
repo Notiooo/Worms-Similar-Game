@@ -98,13 +98,6 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vec
 	
 }
 
-Worm::~Worm()
-{
-	for (b2Fixture* fix = Body->GetFixtureList(); fix; fix = fix->GetNext())
-	{
-		delete reinterpret_cast<Collision*>(fix->GetUserData().pointer);
-	}
-}
 
 void Worm::drawThis(sf::RenderTarget& target, sf::RenderStates states) const
 {

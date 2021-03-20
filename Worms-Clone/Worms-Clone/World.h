@@ -48,6 +48,12 @@ private:
 	// Remove physical b2Box bodies
 	void removeB2Bodies();
 
+	// Add physical b2Box bodies
+	void addingB2Bodies();
+
+	// Add Fixtures to b2Box bodies
+	void addingB2Fixtures();
+
 	// Insert object onto the scene
 	void createWorld();
 

@@ -55,6 +55,8 @@ class NodeScene : public sf::Drawable, public sf::Transformable, private sf::Non
 		// Works analogues to the drawThis(), updates all things related to itself
 		virtual void updateThis(sf::Time deltaTime);
 
+		virtual void removeDestroyed();
+
 		// ====== Handling events ====== //
 		void handleEvents(const sf::Event& event);
 		virtual void handleThisEvents(const sf::Event& event);
@@ -63,6 +65,9 @@ class NodeScene : public sf::Drawable, public sf::Transformable, private sf::Non
 	// Returns the root node
 	NodeScene* getRootNode();
 	const NodeScene* getRootNode() const;
+	
+	// Tells if object should be destroyed
+	virtual bool isDestroyed();
 
 	private:
 

@@ -17,7 +17,6 @@ public:
 	virtual void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
 	virtual void updateThis(sf::Time deltaTime) override;
 
-	void collision();
 	void rotateWeapon(float angle);
 
 

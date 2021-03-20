@@ -11,9 +11,16 @@
 struct Bullet : public NodePhysicalSprite
 {
 	Bullet(b2World& world, sf::Vector2f position, sf::Texture& texture);
+
 	virtual void updateThis(sf::Time deltaTime) override;
 	virtual void collision();
-	~Bullet();
+	void setDestroyed();
+	bool isDestroyed() override;
+
+
+private:
+	bool collided = false;
+
 };
 
 #endif // !BAZOOKA_H

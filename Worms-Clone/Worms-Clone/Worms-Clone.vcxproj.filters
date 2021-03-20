@@ -126,6 +126,9 @@
     <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Bullet.cpp">
       <Filter>Source Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Hitbox.cpp">
+      <Filter>Source Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -201,6 +204,9 @@
       <Filter>Header Files\Nodes\Physical</Filter>
     </ClInclude>
     <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Bullet.h">
+      <Filter>Header Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Hitbox.h">
       <Filter>Header Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
