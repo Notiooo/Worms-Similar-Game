@@ -1,5 +1,6 @@
 #include "World.h"
 #include "SFML/Graphics/RectangleShape.hpp"
+#include "SFML/Graphics/RenderTarget.hpp"
 #include "Nodes/Physical/NodeRectangularPhysical.h"
 #include "Nodes/Physical/Specified/Worm/Worm.h"
 #include <memory>
@@ -7,6 +8,8 @@
 #include <random>
 #include "Nodes/Physical/CollideTypes.h"
 #include "Nodes/Physical/Specified/Worm/Weapons/Bullet.h"
+#include "Nodes/Physical/Specified/Worm/Weapons/Hitbox.h"
+
 
 World::World(sf::RenderWindow& window) :
 world_window(window),
@@ -38,7 +41,6 @@ debugDraw(window)
 
 void World::update(sf::Time deltaTime)
 {
-
 	// Update the Game World
 	root_scene.update(deltaTime);
 
@@ -49,7 +51,10 @@ void World::update(sf::Time deltaTime)
 	b2_World.Step(1 / 60.f, 8, 3);
 
 	checkTurnTime();
+
+	moveScreenWithMouse();
 }
+
 
 void World::Box2DdrawDebug()
 {
@@ -84,8 +89,40 @@ void World::processEvents(const sf::Event& event)
 	// The spawning and pinning to the root scene
 	if (event.type == sf::Event::MouseButtonPressed)
 	{
-		std::unique_ptr<NodeRectangularPhysical> box = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(20, 20), sf::Vector2f(sf::Mouse::getPosition(world_window)), colors[u(e)], NodeRectangularPhysical::Physical_Types::Dynamic_Type);
+		std::unique_ptr<NodeRectangularPhysical> box = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(20, 20), sf::Vector2f(world_window.mapPixelToCoords(sf::Mouse::getPosition(world_window))), colors[u(e)], NodeRectangularPhysical::Physical_Types::Dynamic_Type);
 		root_scene.pinNode(std::move(box));
+	}
+
+	// Zoom in & zoom out the view
+	if (event.type == sf::Event::MouseWheelScrolled)
+	{
+		// Saves coordinates of the mouse on the screen
+		const sf::Vector2f oldCoordinates{ world_window.mapPixelToCoords({event.mouseWheelScroll.x, event.mouseWheelScroll.y}) };
+
+		// Zoom in & out, and also scales the timer size
+		if (event.mouseWheelScroll.delta > 0)
+		{
+			roundTimeText.setScale(roundTimeText.getScale() / 1.1f);
+			world_view.zoom(1.f / 1.1f);
+		}
+		else
+		{
+			roundTimeText.setScale(roundTimeText.getScale() * 1.1f);
+			world_view.zoom(1.1f);
+		}
+
+		// Sets the new view to the window
+		world_window.setView(world_view);
+
+		// Reads the "new" position of the mouse (it changed since the zoom is different)
+		const sf::Vector2f newCoordinates{ world_window.mapPixelToCoords({event.mouseWheelScroll.x, event.mouseWheelScroll.y}) };
+		
+		// It moves the view, so it will "zoom into" the cursor, and not into the center of the screen
+		world_view.move({ oldCoordinates - newCoordinates });
+		world_window.setView(world_view);
+
+		// Fixes the posiiton of the timer
+		roundTimeText.setPosition(world_window.mapPixelToCoords(sf::Vector2i( world_window.getSize().x / 2, roundTimeText.getCharacterSize())));
 	}
 
 	#ifdef _DEBUG
@@ -187,7 +224,21 @@ void World::checkTurnTime()
 		roundTimeText.setString(std::to_string(static_cast<int>((timePerHide - timeElapsed).asSeconds())));
 	else
 		roundTimeText.setString(std::to_string(static_cast<int>((timePerTurn - timeElapsed).asSeconds())));
+}
 
+void World::moveScreenWithMouse()
+{
+	static sf::Vector2i oldMouseCoordinates = sf::Mouse::getPosition();
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
+	{
+		sf::Vector2i newMouseCoordinates = sf::Mouse::getPosition();
+		world_view.move(world_window.mapPixelToCoords(oldMouseCoordinates) - world_window.mapPixelToCoords(newMouseCoordinates));
+		world_window.setView(world_view);
+
+		// Fixes the posiiton of the timer
+		roundTimeText.setPosition(world_window.mapPixelToCoords(sf::Vector2i(world_window.getSize().x / 2, roundTimeText.getCharacterSize())));
+	}
+	oldMouseCoordinates = sf::Mouse::getPosition();
 }
 
 void WorldListener::BeginContact(b2Contact* contact)
@@ -223,6 +274,24 @@ void WorldListener::BeginContact(b2Contact* contact)
 					bullet->setDestroyed();
 				break;
 			}
+
+			case CollideTypes::Hitbox:
+			{
+				if (node1 == nullptr || node2 == nullptr)
+					break;
+				
+				Collision* worm_collision = (node1->type == CollideTypes::WormBody) ? node1 : node2;
+				Hitbox* hitbox = dynamic_cast<Hitbox*>(node->object);
+				if (Worm* worm = dynamic_cast<Worm*>(worm_collision->object))
+				{
+					worm->activateHitState();
+
+					std::cout << worm << std::endl;
+					worm->applyForce((NodePhysical::b2Vec_to_sfVector<sf::Vector2f>(b2Vec2(hitbox->area_of_range, hitbox->area_of_range)) - (hitbox->getAbsolutePosition() - worm->getAbsolutePosition())) * 300.f);
+				}
+
+				break;
+			}
 		}
 	}
 }
@@ -251,6 +320,7 @@ void WorldListener::EndContact(b2Contact* contact)
 				// If it is my worm then it should dynamic_cast
 				if (Worm* worm = dynamic_cast<Worm*>(node->object))
 					--(worm->footCollisions);
+				break;
 			}
 		}
 	}

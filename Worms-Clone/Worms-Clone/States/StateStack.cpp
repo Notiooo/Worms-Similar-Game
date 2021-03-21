@@ -34,6 +34,7 @@ void StateStack::applyChanges()
 
 void StateStack::update(sf::Time deltaTime)
 {
+    applyChanges();
     // Iterate from the highest state to the lowest state, and stop iterating if
     // any state returns 
     for (auto beg = stack.rbegin(), end = stack.rend(); beg != end; ++beg)
@@ -45,12 +46,12 @@ void StateStack::update(sf::Time deltaTime)
         // Like pause for example
         if (!(*beg)->update(deltaTime))
         {
-            applyChanges();
+            //applyChanges();
             return;
         }
     }
 
-    applyChanges();
+    //applyChanges();
 }
 
 void StateStack::draw() const
@@ -69,6 +70,8 @@ void StateStack::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void StateStack::handleEvent(const sf::Event& event)
 {
+    applyChanges();
+
     // Iterate from the highest state to the lowest state, and stop iterating if
     // any state returns 
     for (auto beg = stack.rbegin(), end = stack.rend(); beg != end; ++beg)
@@ -80,12 +83,12 @@ void StateStack::handleEvent(const sf::Event& event)
         // Like pause for example
         if (!(*beg)->handleEvent(event))
         {
-            applyChanges();
+            //applyChanges();
             return;
         }
     }
 
-    applyChanges();
+    //applyChanges();
 }
 
 

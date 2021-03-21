@@ -7,6 +7,7 @@
 #include "WormHideState.h"
 #include "WormPlayState.h"
 #include "WormWaitState.h"
+#include "WormHitState.h"
 #include "../../CollideTypes.h"
 
 // Test purposes
@@ -88,6 +89,7 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vec
 	wormStack.saveState<WormHideState>(State_ID::WormHideState, *this);
 	wormStack.saveState<WormPlayState>(State_ID::WormPlayState, *this);
 	wormStack.saveState<WormWaitState>(State_ID::WormWaitState, *this);
+	wormStack.saveState<WormHitState>(State_ID::WormHitState, *this);
 
 	activateWaitState();
 
@@ -147,6 +149,14 @@ void Worm::activatePlayState()
 	current_state = State_ID::WormPlayState;
 	wormStack.clear();
 	wormStack.push(State_ID::WormPlayState);
+
+}
+
+void Worm::activateHitState()
+{
+	current_state = State_ID::WormHitState;
+	wormStack.clear();
+	wormStack.push(State_ID::WormHitState);
 
 }
 

@@ -35,6 +35,17 @@ NodePhysical::~NodePhysical()
 	World->DestroyBody(Body);
 }
 
+void NodePhysical::updateThis(sf::Time deltaTime)
+{
+	updatePhysics();
+}
+
+void NodePhysical::updatePhysics()
+{
+	this->setPosition(B2_SCALAR * Body->GetPosition().x, B2_SCALAR * Body->GetPosition().y);
+	this->setRotation(Body->GetAngle() * 180 / b2_pi);
+}
+
 float NodePhysical::angleToRadians(const float& angle)
 {
 	return angle * (b2_pi / 180.0);

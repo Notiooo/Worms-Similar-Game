@@ -3,7 +3,7 @@
 
 
 Hitbox::Hitbox(b2World& world, sf::Vector2f position, float area_of_range, float force):
-	NodePhysical(world, NodePhysical::Physical_Types::Static_Type, position),
+	NodePhysical(world, NodePhysical::Physical_Types::Kinematic_Type, position),
 	area_of_range(area_of_range),
 	force(force)
 {
@@ -16,9 +16,22 @@ Hitbox::Hitbox(b2World& world, sf::Vector2f position, float area_of_range, float
 	fixtureDef.isSensor = true;
 	fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(new Collision(CollideTypes::Hitbox, *this));
 	Body->CreateFixture(&fixtureDef);
+	updatePhysics();
 }
 
 bool Hitbox::isDestroyed()
 {
-	return true;
+	return destroyed;
+}
+
+void Hitbox::setDestroyed()
+{
+	destroyed = true;
+}
+
+void Hitbox::updateThis(sf::Time deltaTime)
+{
+	// Destroy in next iteration
+	updatePhysics();
+	setDestroyed();
 }

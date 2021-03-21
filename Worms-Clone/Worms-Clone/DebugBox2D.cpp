@@ -1,5 +1,6 @@
 #include "DebugBox2D.h"
 #include "SFML/Graphics/ConvexShape.hpp"
+#include "SFML/Graphics/CircleShape.hpp"
 
 DebugBox2D::DebugBox2D(sf::RenderWindow& window): window(&window)
 {
@@ -58,12 +59,34 @@ void DebugBox2D::DrawSolidPolygon(const b2Vec2* vertices, int32 vertices_number,
 
 void DebugBox2D::DrawCircle(const b2Vec2& center, float radius, const b2Color& color)
 {
-	// Do it later
+	sf::CircleShape circle(radius * SCALE);
+	circle.setOrigin(radius * SCALE, radius * SCALE);
+	circle.setPosition(b2VecConvert(center));
+	circle.setFillColor(sf::Color::Transparent);
+	circle.setOutlineThickness(-1.f);
+	circle.setOutlineColor(b2ColorConvert(color));
+
+	window->draw(circle);
 }
 
 void DebugBox2D::DrawSolidCircle(const b2Vec2& center, float radius, const b2Vec2& axis, const b2Color& color)
 {
-	// Do it later
+	sf::CircleShape circle(radius * SCALE);
+	circle.setOrigin(radius * SCALE, radius * SCALE);
+	circle.setPosition(b2VecConvert(center));
+	circle.setFillColor(b2ColorConvert(color, 60));
+	circle.setOutlineThickness(1.f);
+	circle.setOutlineColor(b2ColorConvert(color));
+
+	b2Vec2 endPoint = center + radius * axis;
+	sf::Vertex line[2] =
+	{
+		sf::Vertex(b2VecConvert(center), b2ColorConvert(color)),
+		sf::Vertex(b2VecConvert(endPoint), b2ColorConvert(color)),
+	};
+
+	window->draw(circle);
+	window->draw(line, 2, sf::Lines);
 }
 
 void DebugBox2D::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)

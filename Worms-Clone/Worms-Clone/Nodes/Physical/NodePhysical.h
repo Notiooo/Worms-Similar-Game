@@ -21,6 +21,9 @@ public:
 
 	NodePhysical(b2World& world, Physical_Types physical_type, sf::Vector2f position);
 	~NodePhysical();
+
+	virtual void updateThis(sf::Time deltaTime) override;
+	void updatePhysics();
 	
 	// Converts from pixels to meters
 	template <typename Vector2>

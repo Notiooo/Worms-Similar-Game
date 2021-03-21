@@ -45,21 +45,15 @@ private:
 	// Loads textures & sounds & fonts
 	void loadResources();
 
-	// Remove physical b2Box bodies
-	void removeB2Bodies();
-
-	// Add physical b2Box bodies
-	void addingB2Bodies();
-
-	// Add Fixtures to b2Box bodies
-	void addingB2Fixtures();
-
 	// Insert object onto the scene
 	void createWorld();
 
 	// Controls time between the states (Round State, and
 	// the gap between player moves -- Hold State)
 	void checkTurnTime();
+
+	// ...
+	void moveScreenWithMouse();
 
 	// Time destined to control in-game states length
 	sf::Clock roundClock;
@@ -85,6 +79,5 @@ private:
 	// It carries all collisions inside the world
 	WorldListener world_listener;
 };
-
 
 #endif

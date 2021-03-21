@@ -5,6 +5,7 @@
 #include "../../../CollideTypes.h"
 #include <memory>
 
+
 Bazooka::Bazooka(b2World& world, TextureManager& textures):
 	Weapon(world, textures.getResourceReference(Textures_ID::Bazooka), textures.getResourceReference(Textures_ID::Bazooka_Bullet))
 {
@@ -13,7 +14,7 @@ Bazooka::Bazooka(b2World& world, TextureManager& textures):
 
 void Bazooka::shoot(NodeScene* rootNode, sf::Vector2f position, sf::Vector2f force)
 {
-	std::unique_ptr<Bullet> bullet = std::make_unique<Bullet>(physical_world, position, bulletTexture);
+	std::unique_ptr<Bullet> bullet = std::make_unique<Bullet>(physical_world, position, bulletTexture, attack_dmg, range);
 	bullet->applyForce(force);
 	rootNode->pinNode(std::move(bullet));
 }
@@ -27,12 +28,3 @@ void Bazooka::updateThis(sf::Time deltaTime)
 {
 }
 
-Bazooka::Bazooka_Bullet::Bazooka_Bullet(b2World& world, sf::Vector2f position, sf::Texture& texture):
-	Bullet(world, position, texture)
-{
-}
-
-void Bazooka::Bazooka_Bullet::collision()
-{
-	Bullet::collision();
-}

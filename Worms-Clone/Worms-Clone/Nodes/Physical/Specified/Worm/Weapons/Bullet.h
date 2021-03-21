@@ -10,16 +10,18 @@
 
 struct Bullet : public NodePhysicalSprite
 {
-	Bullet(b2World& world, sf::Vector2f position, sf::Texture& texture);
+	Bullet(b2World& world, sf::Vector2f position, sf::Texture& texture, float force, float range);
 
 	virtual void updateThis(sf::Time deltaTime) override;
 	virtual void collision();
 	void setDestroyed();
-	bool isDestroyed() override;
+	bool isDestroyed() override final;
 
 
 private:
 	bool collided = false;
+	float force;
+	float range;
 
 };
 

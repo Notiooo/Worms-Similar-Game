@@ -14,6 +14,7 @@ enum class State_ID
 	WormHideState, // Player have ... seconds to hide
 	WormPlayState, // Player can play his turn
 	WormWaitState, // Player can't move with this worm
+	WormHitState,  // State after getting hit by other player
 
 };
 

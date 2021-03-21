@@ -29,8 +29,9 @@ void NodePhysicalSprite::drawThis(sf::RenderTarget& target, sf::RenderStates sta
 void NodePhysicalSprite::updateThis(sf::Time deltaTime)
 {
 	// Synchronize the drawable Rectangle with the physical object
-	sprite.setPosition(b2Vec_to_sfVector<sf::Vector2f>(Body->GetPosition()));
-	sprite.setRotation(radiansToAngle(Body->GetAngle()));
+	updatePhysics();
+	//sprite.setPosition(b2Vec_to_sfVector<sf::Vector2f>(Body->GetPosition()));
+	//sprite.setRotation(radiansToAngle(Body->GetAngle()));
 }
 
 void NodePhysicalSprite::setRotation(float angle)

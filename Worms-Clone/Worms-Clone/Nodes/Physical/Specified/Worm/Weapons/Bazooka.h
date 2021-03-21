@@ -19,12 +19,8 @@ public:
 	virtual void updateThis(sf::Time deltaTime) override;
 
 private:
-	struct Bazooka_Bullet : public Bullet
-	{
-		Bazooka_Bullet(b2World& world, sf::Vector2f position, sf::Texture& texture);
-		//virtual void updateThis(sf::Time deltaTime) override;
-		virtual void collision();
-	};
+	float attack_dmg = 10;
+	float range = 7;
 };
 
 #endif // !BAZOOKA_H

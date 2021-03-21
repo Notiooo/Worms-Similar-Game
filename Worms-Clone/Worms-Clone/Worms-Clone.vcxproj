@@ -159,6 +159,7 @@
     <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Weapon.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\Worm.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormHideState.cpp" />
+    <ClCompile Include="Nodes\Physical\Specified\Worm\WormHitState.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormMoveableState.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormPlayState.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormWaitState.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Weapon.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\Worm.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormHideState.h" />
+    <ClInclude Include="Nodes\Physical\Specified\Worm\WormHitState.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormMoveableState.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormPlayState.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormWaitState.h" />

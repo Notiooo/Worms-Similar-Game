@@ -7,8 +7,10 @@
 #include "Hitbox.h"
 
 
-Bullet::Bullet(b2World& world, sf::Vector2f position, sf::Texture& texture):
-	NodePhysicalSprite(world, NodePhysical::Physical_Types::Dynamic_Type, position, texture)
+Bullet::Bullet(b2World& world, sf::Vector2f position, sf::Texture& texture, float force, float range):
+	NodePhysicalSprite(world, NodePhysical::Physical_Types::Dynamic_Type, position, texture),
+	force(force),
+	range(range)
 {
 	// Potentially risky, 
 	// actually the Body should be created here
@@ -26,14 +28,14 @@ void Bullet::updateThis(sf::Time deltaTime)
 
 void Bullet::collision()
 {
-	//std::unique_ptr<Hitbox> hitbox = std::make_unique<Hitbox>(*World, b2Vec_to_sfVector<sf::Vector2f>(Body->GetPosition()), 60, 10);
-	//this->getRootNode()->pinNode(std::move(hitbox));
+	std::unique_ptr<Hitbox> hitbox = std::make_unique<Hitbox>(*World, b2Vec_to_sfVector<sf::Vector2f>(Body->GetPosition()), range, force);
+	this->getRootNode()->pinNode(std::move(hitbox));
+
 }
 
 void Bullet::setDestroyed()
 {
 	collided = true;
-	//collision();
 }
 
 bool Bullet::isDestroyed()
@@ -43,4 +45,5 @@ bool Bullet::isDestroyed()
 		collision();
 		return true;
 	}
+	return false;
 }
