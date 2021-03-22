@@ -1,6 +1,8 @@
 #include "Worm.h"
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/RenderStates.hpp"
+#include "SFML/Graphics/RectangleShape.hpp"
+#include "../../NodeRectangularPhysical.h"
 
 // States
 #include "../../../../States/States.h"
@@ -13,10 +15,22 @@
 // Test purposes
 #include "Weapons/Bazooka.h"
 
-Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vector2f position):
+Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vector2f position, std::deque<Worm*>& wormQueue):
 	NodePhysical(world, Physical_Types::Dynamic_Type, position),
-	wormSprite(textures.getResourceReference(Textures_ID::AnExamplaryWorm))
+	wormSprite(textures.getResourceReference(Textures_ID::AnExamplaryWorm)),
+	wormQueue(wormQueue)
 {
+
+	wormQueue.push_back(this);
+
+	// ======= Setup the healthbar ===== //
+	healthBar.setSize({ healthBar_width, healthBar_height });
+	sf::FloatRect boundaries_of_healthBar = healthBar.getLocalBounds();
+	healthBar.setOrigin(boundaries_of_healthBar.width / 2.f, boundaries_of_healthBar.height / 2.f);
+	healthBar.setFillColor(sf::Color(0, 255, 0, 150)); // a little transparent green
+	healthBar.setOutlineThickness(2.f);
+	healthBar.setOutlineColor(sf::Color::Black);
+	healthBar.setPosition(0, -(getSpriteSize(wormSprite).y / 2.f + healthBar_height / 2.f) - 5.f);
 
 	// ======= Setup the Sprites ======= //
 
@@ -24,7 +38,7 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vec
 
 	// Makes the rope really long (I should in future pass the window y size)
 	ropeSprite.setTextureRect(sf::IntRect(sf::Vector2i(0,0), sf::Vector2i(ropeSprite.getTexture()->getSize().x, 1000)));
-	ropeSprite.setPosition(this->getPosition());
+	ropeSprite.setPosition({0, 0});
 
 	// Set origin to centered-bottom of the rope
 	sf::FloatRect boundaries_of_rope = ropeSprite.getLocalBounds();
@@ -42,7 +56,7 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vec
 	wormName.setCharacterSize(21);
 	sf::FloatRect boundaries_of_name = wormName.getLocalBounds();
 	wormName.setOrigin(boundaries_of_name.width / 2.f, boundaries_of_name.height / 2.f);
-	wormName.setPosition(this->getPosition().x, this->getPosition().y - 50);
+	wormName.setPosition(0, -(getSpriteSize(wormSprite).y / 2.f + healthBar_height + wormName.getCharacterSize()) - 15.f);
 
 
 	// ======= Setup the Physical Body ======= //
@@ -106,6 +120,7 @@ void Worm::drawThis(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(ropeSprite, states);
 	target.draw(wormSprite, states);
 	target.draw(wormName, states);
+	target.draw(healthBar, states);
 	
 	wormStack.draw();
 	wormStack.draw(target, states);
@@ -168,6 +183,31 @@ State_ID Worm::getCurrentState() const
 bool Worm::facingRight()
 {
 	return wormSprite.getScale().x > 0;
+}
+
+void Worm::setDamage(int _dmg)
+{
+	health -= _dmg;
+	if (health < 0)
+		health = 0;
+	healthBar.setSize({ healthBar_width * health/max_health, healthBar_height });
+}
+
+void Worm::removeSelfFromQueue()
+{
+	wormQueue.erase(std::find(wormQueue.begin(), wormQueue.end(), this));
+}
+
+bool Worm::isDestroyed()
+{
+	if (health <= 0)
+	{
+		std::unique_ptr<NodeRectangularPhysical> dead_body = std::make_unique<NodeRectangularPhysical>(*World, sf::Vector2f(20, 20), getPosition(), sf::Color::Green, NodePhysical::Physical_Types::Dynamic_Type);
+		getRootNode()->pinNode(std::move(dead_body));
+		removeSelfFromQueue();
+		return true;
+	}
+	return false;
 }
 
 sf::Vector2f Worm::getSpriteSize(const sf::Sprite& spr)

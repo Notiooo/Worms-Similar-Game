@@ -132,6 +132,9 @@
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormHitState.cpp">
       <Filter>Source Files\Nodes\Physical\Specified\Worm</Filter>
     </ClCompile>
+    <ClCompile Include="Nodes\Physical\NodePhysicalSpark.cpp">
+      <Filter>Source Files\Nodes\Physical</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -214,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormHitState.h">
       <Filter>Header Files\Nodes\Physical\Specified\Worm</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Physical\NodePhysicalSpark.h">
+      <Filter>Header Files\Nodes\Physical</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

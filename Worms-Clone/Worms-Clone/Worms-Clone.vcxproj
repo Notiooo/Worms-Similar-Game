@@ -151,6 +151,7 @@
     <ClCompile Include="Nodes\NodeSprite.cpp" />
     <ClCompile Include="Nodes\NodeText.cpp" />
     <ClCompile Include="Nodes\Physical\NodePhysical.cpp" />
+    <ClCompile Include="Nodes\Physical\NodePhysicalSpark.cpp" />
     <ClCompile Include="Nodes\Physical\NodePhysicalSprite.cpp" />
     <ClCompile Include="Nodes\Physical\NodeRectangularPhysical.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Bazooka.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Nodes\NodeText.h" />
     <ClInclude Include="Nodes\Physical\CollideTypes.h" />
     <ClInclude Include="Nodes\Physical\NodePhysical.h" />
+    <ClInclude Include="Nodes\Physical\NodePhysicalSpark.h" />
     <ClInclude Include="Nodes\Physical\NodePhysicalSprite.h" />
     <ClInclude Include="Nodes\Physical\NodeRectangularPhysical.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Bazooka.h" />

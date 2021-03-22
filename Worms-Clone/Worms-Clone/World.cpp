@@ -76,23 +76,6 @@ void World::draw() const
 
 void World::processEvents(const sf::Event& event)
 {
-	// == Just for fun, for remove later == //
-	// But it allows to create randomized-colored rectangles by clicking with mouse button
-	
-	// The array of possible collors
-	static std::array<sf::Color, 6> colors = { sf::Color::Red, sf::Color::Green, sf::Color::Blue, sf::Color::Cyan, sf::Color::Magenta, sf::Color::Yellow };
-	
-	// The random engine
-	static std::default_random_engine e;
-	static std::uniform_int_distribution<unsigned> u(0, colors.size() - 1);
-
-	// The spawning and pinning to the root scene
-	if (event.type == sf::Event::MouseButtonPressed)
-	{
-		std::unique_ptr<NodeRectangularPhysical> box = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(20, 20), sf::Vector2f(world_window.mapPixelToCoords(sf::Mouse::getPosition(world_window))), colors[u(e)], NodeRectangularPhysical::Physical_Types::Dynamic_Type);
-		root_scene.pinNode(std::move(box));
-	}
-
 	// Zoom in & zoom out the view
 	if (event.type == sf::Event::MouseWheelScrolled)
 	{
@@ -154,7 +137,6 @@ void World::loadResources()
 	world_fonts.storeResource(Fonts_ID::Arial_Narrow, "Resources/Fonts/arial_narrow.ttf");
 }
 
-
 void World::createWorld()
 {
 	// Just some world for testing purposes
@@ -162,16 +144,9 @@ void World::createWorld()
 	std::unique_ptr<NodeRectangularPhysical> ramp = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(640, 50), sf::Vector2f(320, 460), sf::Color::Green, NodeRectangularPhysical::Physical_Types::Static_Type);
 	std::unique_ptr<NodeRectangularPhysical> box = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(20, 20), sf::Vector2f(100, 60), sf::Color::Red, NodeRectangularPhysical::Physical_Types::Dynamic_Type);
 	std::unique_ptr<NodeRectangularPhysical> box2 = std::make_unique<NodeRectangularPhysical>(b2_World, sf::Vector2f(20, 20), sf::Vector2f(100, 0), sf::Color::Cyan, NodeRectangularPhysical::Physical_Types::Dynamic_Type);
-	std::unique_ptr<Worm> worm = std::make_unique<Worm>(b2_World, world_textures, world_fonts, sf::Vector2f(300, 40));
-	std::unique_ptr<Worm> worm1 = std::make_unique<Worm>(b2_World, world_textures, world_fonts, sf::Vector2f(380, 40));
-	std::unique_ptr<Worm> worm2 = std::make_unique<Worm>(b2_World, world_textures, world_fonts, sf::Vector2f(440, 40));
-
-
-
-	wormQueue.push(worm.get());
-	wormQueue.push(worm1.get());
-	wormQueue.push(worm2.get());
-
+	std::unique_ptr<Worm> worm = std::make_unique<Worm>(b2_World, world_textures, world_fonts, sf::Vector2f(300, 40), wormQueue);
+	std::unique_ptr<Worm> worm1 = std::make_unique<Worm>(b2_World, world_textures, world_fonts, sf::Vector2f(380, 40), wormQueue);
+	std::unique_ptr<Worm> worm2 = std::make_unique<Worm>(b2_World, world_textures, world_fonts, sf::Vector2f(440, 40), wormQueue);
 
 
 	ramp->setRotation(40);
@@ -189,41 +164,43 @@ void World::checkTurnTime()
 {	
 	// On default there is no HideState
 	static bool hideState = false;
-
-
-	sf::Time timeElapsed = roundClock.getElapsedTime();
-
-	if (!hideState && ((timeElapsed > timePerTurn) || (wormQueue.front()->getCurrentState() == State_ID::WormHideState)))
+	if (!wormQueue.empty())
 	{
-		// Redundancy
-		hideState = true;
-		if(!(wormQueue.front()->getCurrentState() == State_ID::WormHideState))
-			wormQueue.front()->activateHideState();
 
-		roundTimeText.setFillColor(sf::Color::Red);
-		roundClock.restart();
-		timeElapsed = sf::Time::Zero;
+		sf::Time timeElapsed = roundClock.getElapsedTime();
+
+		if (!hideState && ((timeElapsed > timePerTurn) || (wormQueue.front()->getCurrentState() == State_ID::WormHideState)))
+		{
+			// Redundancy
+			hideState = true;
+			if (!(wormQueue.front()->getCurrentState() == State_ID::WormHideState))
+				wormQueue.front()->activateHideState();
+
+			roundTimeText.setFillColor(sf::Color::Red);
+			roundClock.restart();
+			timeElapsed = sf::Time::Zero;
+		}
+
+		if (hideState && (timeElapsed > timePerHide))
+		{
+			Worm* worm = std::move(wormQueue.front());
+			worm->activateWaitState();
+			wormQueue.pop_front();
+			wormQueue.push_back(std::move(worm));
+			wormQueue.front()->activatePlayState();
+
+			// Redundancy
+			hideState = false;
+			roundTimeText.setFillColor(sf::Color::White);
+			roundClock.restart();
+		}
+
+		// Wrong way to do this!!! Too many setString (need to optimize it later)
+		if (hideState)
+			roundTimeText.setString(std::to_string(static_cast<int>((timePerHide - timeElapsed).asSeconds())));
+		else
+			roundTimeText.setString(std::to_string(static_cast<int>((timePerTurn - timeElapsed).asSeconds())));
 	}
-
-	if (hideState && (timeElapsed > timePerHide))
-	{
-		Worm* worm = std::move(wormQueue.front());
-		worm->activateWaitState();
-		wormQueue.pop();
-		wormQueue.push(std::move(worm));
-		wormQueue.front()->activatePlayState();
-
-		// Redundancy
-		hideState = false;
-		roundTimeText.setFillColor(sf::Color::White);
-		roundClock.restart();
-	}
-
-	// Wrong way to do this!!! Too many setString (need to optimize it later)
-	if(hideState)
-		roundTimeText.setString(std::to_string(static_cast<int>((timePerHide - timeElapsed).asSeconds())));
-	else
-		roundTimeText.setString(std::to_string(static_cast<int>((timePerTurn - timeElapsed).asSeconds())));
 }
 
 void World::moveScreenWithMouse()
@@ -286,8 +263,19 @@ void WorldListener::BeginContact(b2Contact* contact)
 				{
 					worm->activateHitState();
 
-					std::cout << worm << std::endl;
-					worm->applyForce((NodePhysical::b2Vec_to_sfVector<sf::Vector2f>(b2Vec2(hitbox->area_of_range, hitbox->area_of_range)) - (hitbox->getAbsolutePosition() - worm->getAbsolutePosition())) * 300.f);
+					// First I calculate distance from the explosion
+					sf::Vector2f distance_from_explosion = (hitbox->getAbsolutePosition() - worm->getAbsolutePosition());
+					
+					// Then I had to take under consideration that object closer (with smaller distance) should be pushed further
+					float range_of_hitbox = hitbox->area_of_range / 2.f / NodePhysical::B2_SCALAR;
+
+					sf::Vector2f force_vector;
+					force_vector.x = (distance_from_explosion.x) ? (range_of_hitbox - distance_from_explosion.x) : -(range_of_hitbox + distance_from_explosion.x);
+					force_vector.y = (distance_from_explosion.y) ? (range_of_hitbox - distance_from_explosion.y) : -(range_of_hitbox + distance_from_explosion.y);
+
+					// The force has to be negative to push AWAY from the explosion
+					worm->applyForce(force_vector * 300.f);
+					worm->setDamage(hitbox->max_dmg * (std::sqrt(force_vector.x * force_vector.x + force_vector.y * force_vector.y)) / range_of_hitbox);
 				}
 
 				break;

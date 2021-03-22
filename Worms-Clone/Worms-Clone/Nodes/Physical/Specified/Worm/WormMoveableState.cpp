@@ -3,7 +3,7 @@
 WormMoveableState::WormMoveableState(StateStack& stack, Worm& worm) :
 	State(stack),
 	worm(worm),
-	direction(worm.facingRight() ? 1 : -1)
+	direction(worm.Worm::facingRight() ? -1 : 1)
 {
 }
 

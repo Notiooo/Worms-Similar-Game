@@ -7,6 +7,7 @@
 #include "../../../../States/StateStack.h"
 #include "SFML/Graphics/Text.hpp"
 #include "Weapons/Weapon.h"
+#include "SFML/Graphics/RectangleShape.hpp"
 
 // Listener that controls collision of the worms legs
 // with the outside world. Next it increments/decrements
@@ -25,7 +26,7 @@ public:
 	friend class WormHitState;
 	friend class WormMoveableState;
 
-	Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vector2f position);
+	Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vector2f position, std::deque<Worm*>& wormQueue);
 
 	// Function to control flow of the worm
 	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -40,6 +41,12 @@ public:
 
 	bool facingRight();
 
+	void setDamage(int);
+
+	void removeSelfFromQueue();
+
+	virtual bool isDestroyed() override;
+
 
 
 	// Useful additional functions
@@ -50,6 +57,7 @@ private:
 	sf::Sprite ropeSprite;
 	sf::Text wormName;
 	State_ID current_state;
+	std::deque<Worm*>& wormQueue;
 
 	// Worm properties
 	float jumpStrength = 300.f;
@@ -71,6 +79,13 @@ private:
 	using slot = std::pair<unsigned, std::unique_ptr<Weapon>>;
 	std::vector<slot> inventory;
 	slot* selected_weapon;
+
+	// === Health === //
+	int health = 100;
+	int max_health = 100;
+	sf::RectangleShape healthBar;
+	float healthBar_width = 60.f;
+	float healthBar_height = 10.f;
 };
 
 #endif

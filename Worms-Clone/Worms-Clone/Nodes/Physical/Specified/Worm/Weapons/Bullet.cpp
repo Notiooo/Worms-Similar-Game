@@ -5,6 +5,7 @@
 #include "../../../CollideTypes.h"
 #include <memory>
 #include "Hitbox.h"
+#include "../../../NodePhysicalSpark.h"
 
 
 Bullet::Bullet(b2World& world, sf::Vector2f position, sf::Texture& texture, float force, float range):
@@ -28,14 +29,36 @@ void Bullet::updateThis(sf::Time deltaTime)
 
 void Bullet::collision()
 {
+	// This line will calculate the position of explosion to be more accurate.
+	//sf::Vector2f explosion_point = collision_point + sf::Vector2f(sprite.getLocalBounds().width * collision_vector.x, sprite.getLocalBounds().height * collision_vector.y);
+
 	std::unique_ptr<Hitbox> hitbox = std::make_unique<Hitbox>(*World, b2Vec_to_sfVector<sf::Vector2f>(Body->GetPosition()), range, force);
 	this->getRootNode()->pinNode(std::move(hitbox));
+	
+	std::unique_ptr<NodePhysicalSpark> spark = std::make_unique<NodePhysicalSpark>(*World, b2Vec_to_sfVector<sf::Vector2f>(Body->GetPosition()));
+	this->getRootNode()->pinNode(std::move(spark));
 
 }
 
 void Bullet::setDestroyed()
 {
 	collided = true;
+
+	// Those savings will help me to predict next positon of the bullet so I can in my game
+	// create a situation that bullet actually explodes inside the ground, not right above them
+	// It allows me to create a better vector of object being pushed
+
+	// Vector of direction to which the bullet is going
+	/*
+		collision_vector = b2Vec_to_sfVector<sf::Vector2f>(Body->GetLinearVelocity());
+
+		// I change it to unit vector
+		collision_vector = collision_vector / std::sqrt(collision_vector.x * collision_vector.y);
+
+		// Point of collision
+		collision_point = b2Vec_to_sfVector<sf::Vector2f>(Body->GetPosition());
+	*/
+
 }
 
 bool Bullet::isDestroyed()

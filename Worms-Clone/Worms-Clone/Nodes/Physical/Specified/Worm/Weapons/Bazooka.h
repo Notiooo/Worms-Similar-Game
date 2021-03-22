@@ -19,8 +19,8 @@ public:
 	virtual void updateThis(sf::Time deltaTime) override;
 
 private:
-	float attack_dmg = 10;
-	float range = 7;
+	float attack_dmg = 40.f;
+	float range = 350.f;
 };
 
 #endif // !BAZOOKA_H

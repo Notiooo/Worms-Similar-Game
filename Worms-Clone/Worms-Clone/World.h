@@ -74,7 +74,7 @@ private:
 	NodeScene root_scene;
 	
 	// Order in which particular worms can play
-	std::queue<Worm*> wormQueue;
+	std::deque<Worm*> wormQueue;
 
 	// It carries all collisions inside the world
 	WorldListener world_listener;

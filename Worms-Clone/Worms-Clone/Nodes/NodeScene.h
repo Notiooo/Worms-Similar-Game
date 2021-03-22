@@ -68,6 +68,7 @@ class NodeScene : public sf::Drawable, public sf::Transformable, private sf::Non
 	
 	// Tells if object should be destroyed
 	virtual bool isDestroyed();
+	virtual void setDestroyed();
 
 	private:
 
@@ -82,6 +83,7 @@ class NodeScene : public sf::Drawable, public sf::Transformable, private sf::Non
 		// them in the root node
 		std::list<Node> pinned_Nodes;
 		NodeScene* _parent;
+		bool destroyed = false;
 
 };
 

@@ -14,7 +14,7 @@ struct Bullet : public NodePhysicalSprite
 
 	virtual void updateThis(sf::Time deltaTime) override;
 	virtual void collision();
-	void setDestroyed();
+	virtual void setDestroyed();
 	bool isDestroyed() override final;
 
 
@@ -22,6 +22,9 @@ private:
 	bool collided = false;
 	float force;
 	float range;
+
+	sf::Vector2f collision_point;
+	sf::Vector2f collision_vector;
 
 };
 

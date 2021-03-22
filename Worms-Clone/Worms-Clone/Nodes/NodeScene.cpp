@@ -76,7 +76,12 @@ const NodeScene* NodeScene::getRootNode() const
 
 bool NodeScene::isDestroyed()
 {
-	return false;
+	return destroyed;
+}
+
+void NodeScene::setDestroyed()
+{
+	destroyed = true;
 }
 
 void NodeScene::draw(sf::RenderTarget& target, sf::RenderStates states) const
