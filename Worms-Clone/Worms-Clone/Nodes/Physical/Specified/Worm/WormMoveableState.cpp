@@ -23,7 +23,7 @@ void WormMoveableState::handleMovement(const sf::Event& event)
 	{
 		if (worm.footCollisions && (
 			event.key.code == worm.leftButton ||
-			event.key.code == worm.rightButtton))
+			event.key.code == worm.rightButton))
 			worm.Body->SetLinearVelocity({ 0.f, 0.f });
 	}
 	break;
@@ -33,7 +33,7 @@ void WormMoveableState::handleMovement(const sf::Event& event)
 	case (sf::Event::KeyPressed):
 	{
 		// Rotate the Sprite in according direction
-		if (event.key.code == worm.leftButton || event.key.code == worm.rightButtton)
+		if (event.key.code == worm.leftButton || event.key.code == worm.rightButton)
 		{
 			// 1 if looks right, -1 if looks left
 			direction = (event.key.code == worm.leftButton) ? -1 : 1;
@@ -69,7 +69,7 @@ void WormMoveableState::updateMovement(sf::Time deltatime)
 		if (sf::Keyboard::isKeyPressed(worm.leftButton))
 			worm.Body->SetLinearVelocity({ -worm.movingSpeed, worm.Body->GetLinearVelocity().y });
 
-		if (sf::Keyboard::isKeyPressed(worm.rightButtton))
+		if (sf::Keyboard::isKeyPressed(worm.rightButton))
 			worm.Body->SetLinearVelocity({ worm.movingSpeed, worm.Body->GetLinearVelocity().y });
 	}
 }

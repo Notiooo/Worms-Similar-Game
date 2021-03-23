@@ -14,7 +14,7 @@ Bazooka::Bazooka(b2World& world, TextureManager& textures):
 
 void Bazooka::shoot(NodeScene* rootNode, sf::Vector2f position, sf::Vector2f force)
 {
-	std::unique_ptr<Bullet> bullet = std::make_unique<Bullet>(physical_world, position, bulletTexture, attack_dmg, range);
+	std::unique_ptr<Bullet> bullet = std::make_unique<Bullet>(physicalWorld, position, bulletTexture, attackDmg, range);
 	bullet->applyForce(force);
 	rootNode->pinNode(std::move(bullet));
 }

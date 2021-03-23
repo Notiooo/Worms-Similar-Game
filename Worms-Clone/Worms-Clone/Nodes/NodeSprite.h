@@ -17,9 +17,9 @@ public:
 
 private:
 	// Typically draw graphical object onto the screen using dynamic-linking
-	virtual void drawThis(sf::RenderTarget&, sf::RenderStates) const override;
+	void drawThis(sf::RenderTarget&, sf::RenderStates) const override;
 
-	sf::Sprite node_sprite;
+	sf::Sprite nodeSprite;
 };
 
 #endif

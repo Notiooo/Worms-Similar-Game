@@ -13,7 +13,7 @@ GameState::GameState(StateStack& stack, sf::RenderWindow& window):
 
 bool GameState::handleEvent(const sf::Event& event)
 {
-	gameWorld.process_events(event);
+	gameWorld.processEvents(event);
 
 	// Set this state to transparent -- in other words
 	// allow States below in stack to be rendered.

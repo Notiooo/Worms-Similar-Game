@@ -4,8 +4,8 @@
 
 Hitbox::Hitbox(b2World& world, sf::Vector2f position, float area_of_range, float max_dmg):
 	NodePhysical(world, NodePhysical::Physical_Types::Kinematic_Type, position),
-	area_of_range(area_of_range),
-	max_dmg(max_dmg)
+	areaOfRange(area_of_range),
+	maxDmg(max_dmg)
 {
 
 	b2CircleShape circleShape;
@@ -24,5 +24,5 @@ void Hitbox::updateThis(sf::Time deltaTime)
 {
 	// Destroy in next iteration
 	updatePhysics();
-	set_destroyed();
+	setDestroyed();
 }

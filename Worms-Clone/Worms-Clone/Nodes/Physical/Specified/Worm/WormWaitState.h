@@ -17,7 +17,7 @@ private:
 	Worm& worm;
 	
 	// It says if player can be moved or not
-	b2Vec2 saved_position;
+	b2Vec2 savedPosition;
 };
 
 #endif

@@ -45,7 +45,7 @@ public:
 
 	void removeSelfFromQueue();
 
-	virtual bool is_destroyed() override;
+	virtual bool isDestroyed() override;
 
 
 
@@ -56,7 +56,7 @@ private:
 	sf::Sprite wormSprite;
 	sf::Sprite ropeSprite;
 	sf::Text wormName;
-	State_ID current_state;
+	State_ID currentState;
 	std::deque<Worm*>& wormQueue;
 
 	// Worm properties
@@ -70,7 +70,7 @@ private:
 	// Controls
 	sf::Keyboard::Key jumpButton = sf::Keyboard::Space;
 	sf::Keyboard::Key leftButton = sf::Keyboard::A;
-	sf::Keyboard::Key rightButtton = sf::Keyboard::D;
+	sf::Keyboard::Key rightButton = sf::Keyboard::D;
 
 	// Statestack that controls flow of the states of the worm
 	StateStack wormStack;
@@ -78,14 +78,14 @@ private:
 	// === Weapons === //
 	using slot = std::pair<unsigned, std::unique_ptr<Weapon>>;
 	std::vector<slot> inventory;
-	slot* selected_weapon;
+	slot* selectedWeapon;
 
 	// === Health === //
 	int health = 100;
-	int max_health = 100;
+	int maxHealth = 100;
 	sf::RectangleShape healthBar;
-	float healthBar_width = 60.f;
-	float healthBar_height = 10.f;
+	float healthBarWidth = 60.f;
+	float healthBarHeight = 10.f;
 };
 
 #endif

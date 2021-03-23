@@ -9,7 +9,7 @@ WormWaitState::WormWaitState(StateStack& stack, Worm& worm) :
 		worm.wormName.setString("WaitState");
 	#endif // DEBUG
 	worm.Body->SetLinearVelocity(b2Vec2(0.f, 0.f));
-	saved_position = worm.Body->GetPosition();
+	savedPosition = worm.Body->GetPosition();
 }
 
 void WormWaitState::draw() const
@@ -24,14 +24,14 @@ bool WormWaitState::update(sf::Time)
 {
 	// If it is not grounded then save it position
 	if (!worm.footCollisions)
-		saved_position = worm.Body->GetPosition();
+		savedPosition = worm.Body->GetPosition();
 
 
 	// So if worm is grounded it stays in this position
 	// and can't be moved
 	if (worm.footCollisions)
 	{
-		worm.Body->SetTransform(saved_position, 0);
+		worm.Body->SetTransform(savedPosition, 0);
 		worm.Body->SetLinearVelocity(b2Vec2(0.f, 0.f));
 	}
 

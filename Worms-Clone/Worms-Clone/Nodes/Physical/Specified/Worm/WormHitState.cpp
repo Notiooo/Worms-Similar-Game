@@ -9,7 +9,7 @@ WormHitState::WormHitState(StateStack& stack, Worm& worm) :
 		worm.wormName.setString("HitState");
 	#endif // DEBUG
 	//worm.Body->SetLinearVelocity(b2Vec2(0.f, 15.f));
-	saved_position = worm.Body->GetPosition();
+	savedPosition = worm.Body->GetPosition();
 }
 
 void WormHitState::draw() const
@@ -25,13 +25,13 @@ bool WormHitState::update(sf::Time)
 	float velocity = worm.Body->GetLinearVelocity().Length();
 
 	// If it is not grounded then save it position
-	if (!worm.footCollisions || velocity > velocity_to_stop)
-		saved_position = worm.Body->GetPosition();
+	if (!worm.footCollisions || velocity > velocityToStop)
+		savedPosition = worm.Body->GetPosition();
 
 
 	// So if worm is grounded it stays in this position
 	// and can't be moved
-	if (worm.footCollisions && velocity < velocity_to_stop)
+	if (worm.footCollisions && velocity < velocityToStop)
 		worm.activateWaitState();
 
 	return false;

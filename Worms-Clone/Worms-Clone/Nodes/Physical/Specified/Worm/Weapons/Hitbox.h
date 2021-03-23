@@ -15,10 +15,10 @@ public:
 
 private:
 	// How big area it affects
-	float area_of_range;
+	float areaOfRange;
 
 	// How much damage it takes
-	float max_dmg;
+	float maxDmg;
 
 };
 

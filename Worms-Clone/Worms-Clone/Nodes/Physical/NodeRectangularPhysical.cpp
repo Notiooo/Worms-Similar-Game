@@ -15,7 +15,7 @@ NodeRectangularPhysical::NodeRectangularPhysical(b2World& world, sf::Vector2f si
 
 	// Defines its shape
 	b2PolygonShape Shape;
-	Shape.SetAsBox(sfVector_to_b2Vec(size/2.f).x, sfVector_to_b2Vec(size / 2.f).y);
+	Shape.SetAsBox(sfVectorToB2Vec(size/2.f).x, sfVectorToB2Vec(size / 2.f).y);
 	b2FixtureDef FixtureDef;
 	FixtureDef.density = 1.f;
 	FixtureDef.friction = 0.7f;
@@ -33,7 +33,7 @@ void NodeRectangularPhysical::drawThis(sf::RenderTarget& target, sf::RenderState
 void NodeRectangularPhysical::updateThis(sf::Time deltaTime)
 {
 	// Synchronize the drawable Rectangle with the physical object
-	rectangle.setPosition(b2Vec_to_sfVector<sf::Vector2f>(Body->GetPosition()));
+	rectangle.setPosition(b2VecToSfVector<sf::Vector2f>(Body->GetPosition()));
 	rectangle.setRotation(radiansToAngle(Body->GetAngle()));
 }
 

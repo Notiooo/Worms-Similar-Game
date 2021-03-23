@@ -30,17 +30,17 @@ void Bullet::updateThis(sf::Time deltaTime)
 void Bullet::collision()
 {
 	// This line will calculate the position of explosion to be more accurate.
-	//sf::Vector2f explosion_point = collision_point + sf::Vector2f(sprite.getLocalBounds().width * collision_vector.x, sprite.getLocalBounds().height * collision_vector.y);
+	//sf::Vector2f explosion_point = collisionPoint + sf::Vector2f(sprite.getLocalBounds().width * collisionVector.x, sprite.getLocalBounds().height * collisionVector.y);
 
-	std::unique_ptr<Hitbox> hitbox = std::make_unique<Hitbox>(*World, b2Vec_to_sfVector<sf::Vector2f>(Body->GetPosition()), range, force);
+	std::unique_ptr<Hitbox> hitbox = std::make_unique<Hitbox>(*World, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()), range, force);
 	this->getRootNode()->pinNode(std::move(hitbox));
 	
-	std::unique_ptr<NodePhysicalSpark> spark = std::make_unique<NodePhysicalSpark>(*World, b2Vec_to_sfVector<sf::Vector2f>(Body->GetPosition()));
+	std::unique_ptr<NodePhysicalSpark> spark = std::make_unique<NodePhysicalSpark>(*World, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()));
 	this->getRootNode()->pinNode(std::move(spark));
 
 }
 
-void Bullet::set_destroyed()
+void Bullet::setDestroyed()
 {
 	collided = true;
 
@@ -50,18 +50,18 @@ void Bullet::set_destroyed()
 
 	// Vector of direction to which the bullet is going
 	/*
-		collision_vector = b2Vec_to_sfVector<sf::Vector2f>(Body->GetLinearVelocity());
+		collisionVector = b2VecToSfVector<sf::Vector2f>(Body->GetLinearVelocity());
 
 		// I change it to unit vector
-		collision_vector = collision_vector / std::sqrt(collision_vector.x * collision_vector.y);
+		collisionVector = collisionVector / std::sqrt(collisionVector.x * collisionVector.y);
 
 		// Point of collision
-		collision_point = b2Vec_to_sfVector<sf::Vector2f>(Body->GetPosition());
+		collisionPoint = b2VecToSfVector<sf::Vector2f>(Body->GetPosition());
 	*/
 
 }
 
-bool Bullet::is_destroyed()
+bool Bullet::isDestroyed()
 {
 	if (collided)
 	{

@@ -15,11 +15,11 @@ class WormPlayState : public WormMoveableState
 public:
 	WormPlayState(StateStack&, Worm&);
 
-	virtual void draw() const override;
-	virtual void draw(sf::RenderTarget&, sf::RenderStates) const override;
+	void draw() const override;
+	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
-	virtual bool update(sf::Time) override;
-	virtual bool handleEvent(const sf::Event& event) override;
+	bool update(sf::Time) override;
+	bool handleEvent(const sf::Event& event) override;
 
 	// === Useful functions == //
 	void shoot();
@@ -31,31 +31,31 @@ private:
 private:
 	// Pointing the direction of shooting
 	sf::Vector2f pointer;
-	float pointer_length = 100.f;
-	float pointer_speed = 0.05f;
-	float pointer_angle = b2_pi / 2.f;
+	float pointerLength = 100.f;
+	float pointerSpeed = 0.05f;
+	float pointerAngle = b2_pi / 2.f;
 
 	// Point the direction of shooting
-	sf::CircleShape triangular_pointer;
+	sf::CircleShape triangularPointer;
 
 	// === Shooting Bar === //
 
 	// Button to used to shoot
-	sf::Keyboard::Key shooting_key = sf::Keyboard::Enter;
-	sf::Keyboard::Key point_higher = sf::Keyboard::Left;
-	sf::Keyboard::Key point_lower = sf::Keyboard::Right;
+	sf::Keyboard::Key shootingKey = sf::Keyboard::Enter;
+	sf::Keyboard::Key pointHigherKey = sf::Keyboard::Left;
+	sf::Keyboard::Key pointLowerKey = sf::Keyboard::Right;
 
 	// How far we can shoot
-	float max_shooting_force = 35000.f;
+	float maxShootingForce = 35000.f;
 
 	// It measures current shooting force load
-	float current_shooting_force = 0.f;
+	float currentShootingForce = 0.f;
 
 	// It states how fast the bar is loading per second
-	float shooting_loading_speed = (max_shooting_force * 1/2); // half bar per second
+	float shootingLoadingSpeed = (maxShootingForce * 1/2); // half bar per second
 
 	// How long is the bear
-	float shootingBar_size = 100.f;
+	float shootingBarSize = 100.f;
 
 	// Graphical element of the shooting bar
 	sf::RectangleShape shootingBar;

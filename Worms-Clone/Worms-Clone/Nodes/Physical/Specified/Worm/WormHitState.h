@@ -16,8 +16,8 @@ public:
 private:
 	Worm& worm;
 
-	b2Vec2 saved_position;
-	float velocity_to_stop = 1;
+	b2Vec2 savedPosition;
+	float velocityToStop = 1;
 	
 };
 

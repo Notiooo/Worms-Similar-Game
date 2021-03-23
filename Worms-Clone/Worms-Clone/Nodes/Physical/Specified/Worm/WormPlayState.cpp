@@ -4,15 +4,15 @@
 
 WormPlayState::WormPlayState(StateStack& stack, Worm& worm) :
 	WormMoveableState(stack, worm),
-	triangular_pointer(10.f, 3),
-	shootingBar({ shootingBar_size, 10.f})
+	triangularPointer(10.f, 3),
+	shootingBar({ shootingBarSize, 10.f})
 {
 	#ifdef _DEBUG
 		worm.wormName.setString("PlayState");
 	#endif // DEBUG
 
-	pointer = { std::sin(pointer_angle), std::cos(pointer_angle) };
-	triangular_pointer.setFillColor(sf::Color::Red);
+	pointer = { std::sin(pointerAngle), std::cos(pointerAngle) };
+	triangularPointer.setFillColor(sf::Color::Red);
 
 	shootingBar.setOrigin(shootingBar.getLocalBounds().width / 2.f, shootingBar.getLocalBounds().height / 2.f);
 	shootingBar.setFillColor(sf::Color::Black);
@@ -28,16 +28,16 @@ void WormPlayState::draw() const
 
 void WormPlayState::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(triangular_pointer, states);
+	target.draw(triangularPointer, states);
 
 
 	// Draw the shooting bar only if player is shooting
-	if(current_shooting_force)
+	if(currentShootingForce)
 		target.draw(shootingBar, states);
 
 	states.transform *= worm.wormSprite.getTransform();
-	worm.selected_weapon->second->rotateWeapon((pointer_angle * 180 / b2_pi) - 90);
-	worm.selected_weapon->second->drawThis(target, states);
+	worm.selectedWeapon->second->rotateWeapon((pointerAngle * 180 / b2_pi) - 90);
+	worm.selectedWeapon->second->drawThis(target, states);
 }
 
 bool WormPlayState::update(sf::Time deltatime)
@@ -79,53 +79,53 @@ bool WormPlayState::handleEvent(const sf::Event& event)
 
 void WormPlayState::shoot()
 {
-	worm.selected_weapon->second->shoot(worm.getRootNode(), worm.getAbsolutePosition() + triangular_pointer.getPosition(), sf::Vector2f(direction * pointer.x * current_shooting_force, pointer.y * current_shooting_force));
+	worm.selectedWeapon->second->shoot(worm.getRootNode(), worm.getAbsolutePosition() + triangularPointer.getPosition(), sf::Vector2f(direction * pointer.x * currentShootingForce, pointer.y * currentShootingForce));
 
 	worm.activateHideState();
 }
 
 void WormPlayState::handleShooting(const sf::Event& event)
 {
-	if(event.type == sf::Event::KeyReleased && event.key.code == shooting_key)
+	if(event.type == sf::Event::KeyReleased && event.key.code == shootingKey)
 		shoot();
 }
 
 void WormPlayState::updateShooting(sf::Time deltatime)
 {
 	// Controls the pointer that shows the direction of shooting
-	if (sf::Keyboard::isKeyPressed(point_higher) || sf::Keyboard::isKeyPressed(point_lower))
+	if (sf::Keyboard::isKeyPressed(pointHigherKey) || sf::Keyboard::isKeyPressed(pointLowerKey))
 	{
 		// It has to reverse the controls depending in which direction player is looking
-		if ((sf::Keyboard::isKeyPressed(point_higher) && !worm.facingRight()) ||
-			(sf::Keyboard::isKeyPressed(point_lower) && worm.facingRight()))
+		if ((sf::Keyboard::isKeyPressed(pointHigherKey) && !worm.facingRight()) ||
+			(sf::Keyboard::isKeyPressed(pointLowerKey) && worm.facingRight()))
 		{
-			if (pointer_angle < b2_pi)
-				pointer_angle += pointer_speed;
+			if (pointerAngle < b2_pi)
+				pointerAngle += pointerSpeed;
 		}
 		else
 		{
-			if (pointer_angle > 0)
-				pointer_angle -= pointer_speed;
+			if (pointerAngle > 0)
+				pointerAngle -= pointerSpeed;
 		}
 
 		// Pointer moves in circular path
-		pointer = { std::sin(pointer_angle), std::cos(pointer_angle) };
+		pointer = { std::sin(pointerAngle), std::cos(pointerAngle) };
 	}
 
 	// Player has started shooting
-	if (sf::Keyboard::isKeyPressed(shooting_key))
+	if (sf::Keyboard::isKeyPressed(shootingKey))
 	{
-		if (current_shooting_force < max_shooting_force)
-			current_shooting_force += shooting_loading_speed * deltatime.asSeconds();
+		if (currentShootingForce < maxShootingForce)
+			currentShootingForce += shootingLoadingSpeed * deltatime.asSeconds();
 		else
 			shoot();
 	}
 
 	// The pointer showing direction of shooting has to be mirrored in case player is looking at the other side of screen
-	triangular_pointer.setPosition((worm.facingRight() ? -pointer.x : pointer.x) * pointer_length, pointer.y * pointer_length);
+	triangularPointer.setPosition((worm.facingRight() ? -pointer.x : pointer.x) * pointerLength, pointer.y * pointerLength);
 
 	// Set the proper size of the bar depending on current force
-	shootingBar.setSize({ shootingBar_size * current_shooting_force / max_shooting_force, 10.f });
+	shootingBar.setSize({ shootingBarSize * currentShootingForce / maxShootingForce, 10.f });
 }
 
 

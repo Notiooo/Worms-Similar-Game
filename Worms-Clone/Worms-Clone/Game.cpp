@@ -3,7 +3,7 @@
 #include "States/Application_States/GameState.h"
 #include "States/Application_States/TitleState.h"
 
-const sf::Time Game::time_per_frame = sf::seconds(1.f / 60.f);
+const sf::Time Game::TIME_PER_FRAME = sf::seconds(1.f / 60.f);
 
 Game::Game():
 	gameWindow(sf::VideoMode(1280, 720), "Worms Clone")
@@ -35,12 +35,12 @@ void Game::run()
 	while (gameWindow.isOpen())
 	{
 		frameTimeElapsed += clock.restart();
-		while (frameTimeElapsed > time_per_frame)
+		while (frameTimeElapsed > TIME_PER_FRAME)
 		{
 			// Update world no more than 60 frames per seconds
-			frameTimeElapsed -= time_per_frame;
+			frameTimeElapsed -= TIME_PER_FRAME;
 			processEvents();
-			update(time_per_frame);
+			update(TIME_PER_FRAME);
 		}
 		render();
 	}

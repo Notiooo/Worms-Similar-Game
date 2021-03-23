@@ -19,7 +19,7 @@
 
 class Worm;
 
-class World : private sf::NonCopyable
+class World : sf::NonCopyable
 {
 public:
 	explicit World(sf::RenderWindow& window);
@@ -33,10 +33,10 @@ public:
 	void draw() const;
 
 	// Draws all collisions (hitboxes) of physical objects to the screen
-	void Box2DdrawDebug();
+	void box2DdrawDebug();
 
 	// Process every input from the player
-	void process_events(const sf::Event&);
+	void processEvents(const sf::Event&);
 
 private:
 	// Loads textures & sounds & fonts
@@ -47,7 +47,7 @@ private:
 
 	// Controls time between the states (Round State, and
 	// the gap between player moves -- Hold State)
-	void check_turn_time();
+	void checkTurnTime();
 
 	// ...
 	void moveScreenWithMouse();
@@ -60,24 +60,24 @@ private:
 	sf::Text roundTimeText;
 
 	// Managers & Windows
-	sf::RenderWindow& world_window;
-	sf::View world_view;
-	TextureManager world_textures;
-	FontManager world_fonts;
+	sf::RenderWindow& worldWindow;
+	sf::View worldView;
+	TextureManager worldTextures;
+	FontManager worldFonts;
 
 	// Scene-related objects
 	b2World b2_World;
 	DebugBox2D debugDraw;
-	NodeScene root_scene;
+	NodeScene rootScene;
 
 	// Order in which particular worms can play
 	std::deque<Worm*> wormQueue;
 
 	// It carries all collisions inside the world
-	WorldListener world_listener;
+	WorldListener worldListener;
 
 	// Background
-	sf::Sprite background_sprite;
+	sf::Sprite backgroundSprite;
 };
 
 #endif

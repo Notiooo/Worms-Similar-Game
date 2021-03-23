@@ -8,8 +8,8 @@
 
 
 World::World(sf::RenderWindow& window) :
-	world_window(window),
-	world_view(window.getDefaultView()),
+	worldWindow(window),
+	worldView(window.getDefaultView()),
 	b2_World(b2Vec2(0.f, 9.8f)),
 	debugDraw(window)
 {
@@ -25,37 +25,37 @@ World::World(sf::RenderWindow& window) :
 	loadResources();
 	createWorld();
 
-	background_sprite.setTexture(world_textures.getResourceReference(Textures_ID::World_Background));
-	background_sprite.setTextureRect(sf::IntRect(0, 0, world_view.getSize().x, world_view.getSize().y));
+	backgroundSprite.setTexture(worldTextures.getResourceReference(Textures_ID::World_Background));
+	backgroundSprite.setTextureRect(sf::IntRect(0, 0, worldView.getSize().x, worldView.getSize().y));
 
 
 	// Set up the round timer
-	roundTimeText.setFont(world_fonts.getResourceReference(Fonts_ID::Arial_Narrow));
+	roundTimeText.setFont(worldFonts.getResourceReference(Fonts_ID::Arial_Narrow));
 	roundTimeText.setOutlineThickness(1.f);
-	roundTimeText.setPosition(world_view.getSize().x / 2, roundTimeText.getCharacterSize());
+	roundTimeText.setPosition(worldView.getSize().x / 2, roundTimeText.getCharacterSize());
 
 	wormQueue.front()->activatePlayState();
-	b2_World.SetContactListener(&world_listener);
+	b2_World.SetContactListener(&worldListener);
 }
 
 void World::update(sf::Time deltaTime)
 {
 	// Update the Game World
-	root_scene.update(deltaTime);
+	rootScene.update(deltaTime);
 
 	// Check if there is anything to remove
-	root_scene.removeDestroyed();
+	rootScene.removeDestroyed();
 
 	// Update the physical world
 	b2_World.Step(1 / 60.f, 8, 3);
 
-	check_turn_time();
+	checkTurnTime();
 
 	moveScreenWithMouse();
 }
 
 
-void World::Box2DdrawDebug()
+void World::box2DdrawDebug()
 {
 	// Draw the debug part of physical objects
 	b2_World.DebugDraw();
@@ -64,60 +64,60 @@ void World::Box2DdrawDebug()
 void World::draw() const
 {
 	// Draw Background
-	world_window.draw(background_sprite);
+	worldWindow.draw(backgroundSprite);
 
 	// Draw World
-	world_window.draw(root_scene);
+	worldWindow.draw(rootScene);
 
 	// Draw timer
-	world_window.draw(roundTimeText);
+	worldWindow.draw(roundTimeText);
 
 	// Some hack as Box2D drawDebug is non-const
-	const_cast<World*>(this)->Box2DdrawDebug();
+	const_cast<World*>(this)->box2DdrawDebug();
 }
 
-void World::process_events(const sf::Event& event)
+void World::processEvents(const sf::Event& event)
 {
 	// Zoom in & zoom out the view
 	if (event.type == sf::Event::MouseWheelScrolled)
 	{
 		// Saves coordinates of the mouse on the screen
 		const sf::Vector2f oldCoordinates{
-			world_window.mapPixelToCoords({event.mouseWheelScroll.x, event.mouseWheelScroll.y})
+			worldWindow.mapPixelToCoords({event.mouseWheelScroll.x, event.mouseWheelScroll.y})
 		};
 
 		// Zoom in & out, and also scales the timer size
 		if (event.mouseWheelScroll.delta > 0)
 		{
 			roundTimeText.setScale(roundTimeText.getScale() / 1.1f);
-			world_view.zoom(1.f / 1.1f);
+			worldView.zoom(1.f / 1.1f);
 		}
 		else
 		{
 			roundTimeText.setScale(roundTimeText.getScale() * 1.1f);
-			world_view.zoom(1.1f);
+			worldView.zoom(1.1f);
 		}
 
 		// Sets the new view to the window
-		world_window.setView(world_view);
+		worldWindow.setView(worldView);
 
 		// Reads the "new" position of the mouse (it changed since the zoom is different)
 		const sf::Vector2f newCoordinates{
-			world_window.mapPixelToCoords({event.mouseWheelScroll.x, event.mouseWheelScroll.y})
+			worldWindow.mapPixelToCoords({event.mouseWheelScroll.x, event.mouseWheelScroll.y})
 		};
 
 		// It moves the view, so it will "zoom into" the cursor, and not into the center of the screen
-		world_view.move({oldCoordinates - newCoordinates});
-		world_window.setView(world_view);
+		worldView.move({oldCoordinates - newCoordinates});
+		worldWindow.setView(worldView);
 
 		// Fixes the posiiton of the timer
 		roundTimeText.setPosition(
-			world_window.mapPixelToCoords(sf::Vector2i(world_window.getSize().x / 2,
+			worldWindow.mapPixelToCoords(sf::Vector2i(worldWindow.getSize().x / 2,
 			                                           roundTimeText.getCharacterSize())));
 
 		// Fixes the background
-		background_sprite.setTextureRect(sf::IntRect(0, 0, world_view.getSize().x, world_view.getSize().y));
-		background_sprite.setPosition(world_window.mapPixelToCoords({0, 0}));
+		backgroundSprite.setTextureRect(sf::IntRect(0, 0, worldView.getSize().x, worldView.getSize().y));
+		backgroundSprite.setPosition(worldWindow.mapPixelToCoords({0, 0}));
 	}
 
 #ifdef _DEBUG
@@ -132,24 +132,24 @@ void World::process_events(const sf::Event& event)
 #endif // DEBUG
 
 	// Pass the handling to the scene hierarchy
-	root_scene.handleEvents(event);
+	rootScene.handleEvents(event);
 }
 
 void World::loadResources()
 {
-	world_textures.storeResource(Textures_ID::World_Background, "Resources/Textures/World/background_texture.png");
-	world_textures.getResourceReference(Textures_ID::World_Background).setRepeated(true);
+	worldTextures.storeResource(Textures_ID::World_Background, "Resources/Textures/World/background_texture.png");
+	worldTextures.getResourceReference(Textures_ID::World_Background).setRepeated(true);
 
 	// will load some later
-	world_textures.storeResource(Textures_ID::AnExamplaryWorm, "Resources/Textures/An_example_worm.png");
-	world_textures.storeResource(Textures_ID::Rope, "Resources/Textures/World/rope.png");
-	world_textures.getResourceReference(Textures_ID::Rope).setRepeated(true);
+	worldTextures.storeResource(Textures_ID::AnExamplaryWorm, "Resources/Textures/An_example_worm.png");
+	worldTextures.storeResource(Textures_ID::Rope, "Resources/Textures/World/rope.png");
+	worldTextures.getResourceReference(Textures_ID::Rope).setRepeated(true);
 
-	world_textures.storeResource(Textures_ID::Bazooka, "Resources/Textures/Weapons/bazooka.png");
-	world_textures.storeResource(Textures_ID::Bazooka_Bullet, "Resources/Textures/Weapons/bazooka_bullet.png");
+	worldTextures.storeResource(Textures_ID::Bazooka, "Resources/Textures/Weapons/bazooka.png");
+	worldTextures.storeResource(Textures_ID::Bazooka_Bullet, "Resources/Textures/Weapons/bazooka_bullet.png");
 
 
-	world_fonts.storeResource(Fonts_ID::Arial_Narrow, "Resources/Fonts/arial_narrow.ttf");
+	worldFonts.storeResource(Fonts_ID::Arial_Narrow, "Resources/Fonts/arial_narrow.ttf");
 }
 
 void World::createWorld()
@@ -167,26 +167,26 @@ void World::createWorld()
 	std::unique_ptr<NodeRectangularPhysical> box2 = std::make_unique<NodeRectangularPhysical>(
 		b2_World, sf::Vector2f(20, 20), sf::Vector2f(100, 0), sf::Color::Cyan,
 		NodeRectangularPhysical::Physical_Types::Dynamic_Type);
-	std::unique_ptr<Worm> worm = std::make_unique<Worm>(b2_World, world_textures, world_fonts, sf::Vector2f(300, 40),
+	std::unique_ptr<Worm> worm = std::make_unique<Worm>(b2_World, worldTextures, worldFonts, sf::Vector2f(300, 40),
 	                                                    wormQueue);
-	std::unique_ptr<Worm> worm1 = std::make_unique<Worm>(b2_World, world_textures, world_fonts, sf::Vector2f(380, 40),
+	std::unique_ptr<Worm> worm1 = std::make_unique<Worm>(b2_World, worldTextures, worldFonts, sf::Vector2f(380, 40),
 	                                                     wormQueue);
-	std::unique_ptr<Worm> worm2 = std::make_unique<Worm>(b2_World, world_textures, world_fonts, sf::Vector2f(440, 40),
+	std::unique_ptr<Worm> worm2 = std::make_unique<Worm>(b2_World, worldTextures, worldFonts, sf::Vector2f(440, 40),
 	                                                     wormQueue);
 
 
 	ramp->setRotation(40);
-	root_scene.pinNode(std::move(ground));
-	root_scene.pinNode(std::move(ramp));
+	rootScene.pinNode(std::move(ground));
+	rootScene.pinNode(std::move(ramp));
 
-	root_scene.pinNode(std::move(worm));
-	root_scene.pinNode(std::move(worm1));
-	root_scene.pinNode(std::move(worm2));
-	root_scene.pinNode(std::move(box));
-	root_scene.pinNode(std::move(box2));
+	rootScene.pinNode(std::move(worm));
+	rootScene.pinNode(std::move(worm1));
+	rootScene.pinNode(std::move(worm2));
+	rootScene.pinNode(std::move(box));
+	rootScene.pinNode(std::move(box2));
 }
 
-void World::check_turn_time()
+void World::checkTurnTime()
 {
 	// On default there is no HideState
 	static bool hideState = false;
@@ -235,17 +235,17 @@ void World::moveScreenWithMouse()
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
 	{
 		sf::Vector2i newMouseCoordinates = sf::Mouse::getPosition();
-		world_view.move(
-			world_window.mapPixelToCoords(oldMouseCoordinates) - world_window.mapPixelToCoords(newMouseCoordinates));
-		world_window.setView(world_view);
+		worldView.move(
+			worldWindow.mapPixelToCoords(oldMouseCoordinates) - worldWindow.mapPixelToCoords(newMouseCoordinates));
+		worldWindow.setView(worldView);
 
 		// Fixes the posiiton of the timer
 		roundTimeText.setPosition(
-			world_window.mapPixelToCoords(sf::Vector2i(world_window.getSize().x / 2,
+			worldWindow.mapPixelToCoords(sf::Vector2i(worldWindow.getSize().x / 2,
 			                                           roundTimeText.getCharacterSize())));
 
 		// Fixes the background
-		background_sprite.setPosition(world_window.mapPixelToCoords({0, 0}));
+		backgroundSprite.setPosition(worldWindow.mapPixelToCoords({0, 0}));
 	}
 	oldMouseCoordinates = sf::Mouse::getPosition();
 }

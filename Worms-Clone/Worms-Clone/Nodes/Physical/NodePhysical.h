@@ -22,16 +22,16 @@ public:
 	NodePhysical(b2World& world, Physical_Types physical_type, sf::Vector2f position);
 	~NodePhysical();
 
-	virtual void updateThis(sf::Time deltaTime) override;
+	void updateThis(sf::Time deltaTime) override;
 	void updatePhysics();
 	
 	// Converts from pixels to meters
 	template <typename Vector2>
-	static b2Vec2 sfVector_to_b2Vec(const Vector2& vec);
+	static b2Vec2 sfVectorToB2Vec(const Vector2& vec);
 
 	// Converts from meters to pixels
 	template <typename Vector2>
-	static Vector2 b2Vec_to_sfVector(const b2Vec2& vec);
+	static Vector2 b2VecToSfVector(const b2Vec2& vec);
 
 	// Converts from angle to radians -- useful for conversion
 	// between Box2D and the SFML
@@ -44,7 +44,7 @@ public:
 	void applyForce(sf::Vector2f vector);
 
 protected:
-	const Physical_Types physical_type;
+	const Physical_Types physicalType;
 	b2Body* Body;
 	b2World* World;
 
@@ -52,13 +52,13 @@ protected:
 
 
 template<typename Vector2>
-inline b2Vec2 NodePhysical::sfVector_to_b2Vec(const Vector2& vec)
+inline b2Vec2 NodePhysical::sfVectorToB2Vec(const Vector2& vec)
 {
 	return b2Vec2(vec.x / B2_SCALAR, vec.y / B2_SCALAR);
 }
 
 template<typename Vector2>
-inline Vector2 NodePhysical::b2Vec_to_sfVector(const b2Vec2& vec)
+inline Vector2 NodePhysical::b2VecToSfVector(const b2Vec2& vec)
 {
 	return Vector2(vec.x * B2_SCALAR, vec.y * B2_SCALAR);
 }

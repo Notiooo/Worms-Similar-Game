@@ -3,7 +3,7 @@
 Weapon::Weapon(b2World& world, sf::Texture& weapon, sf::Texture& bullet):
 	weaponSprite(weapon),
 	bulletTexture(bullet),
-	physical_world(world)
+	physicalWorld(world)
 {
 	
 }

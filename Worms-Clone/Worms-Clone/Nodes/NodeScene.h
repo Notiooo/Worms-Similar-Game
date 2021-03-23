@@ -27,7 +27,7 @@ public:
 	// Steals ownership, and puts it into the vector of pinned_Nods
 	void pinNode(Node);
 
-	// Removes this NodeScene from pinned_nodes_ and returns it
+	// Removes this NodeScene from pinnedNodes and returns it
 	Node unpinNode(const NodeScene&);
 
 	// Returns absolute position in the game plane
@@ -48,7 +48,7 @@ public:
 
 	// ====== Updating Scenes ====== //
 
-	// In comparison to draw() this function is not derived. It is used to update all pinned_nodes_
+	// In comparison to draw() this function is not derived. It is used to update all pinnedNodes
 	void update(sf::Time deltaTime);
 
 	// Works analogues to the drawThis(), updates all things related to itself
@@ -65,24 +65,24 @@ protected:
 	NodeScene* getRootNode();
 	const NodeScene* getRootNode() const;
 
-	// Tells if object should be destroyed_
-	virtual bool is_destroyed();
-	virtual void set_destroyed();
+	// Tells if object should be destroyed
+	virtual bool isDestroyed();
+	virtual void setDestroyed();
 
 private:
 
 	// It was vector before, but I had to change it to the list,
-	// as some object inside range-for loop of this pinned_nodes_
-	// started pin its nodes to this global pinned_nodes_
-	// and that was risky that pinned_nodes_ may reallocate durning
+	// as some object inside range-for loop of this pinnedNodes
+	// started pin its nodes to this global pinnedNodes
+	// and that was risky that pinnedNodes may reallocate durning
 	// its iteration of the range-for loop
 
 	// What objects started to pin some object to the root_node?
 	// Actually missles, I wanted them to be global, thus I put
 	// them in the root node
-	std::list<Node> pinned_nodes_;
-	NodeScene* parent_;
-	bool destroyed_ = false;
+	std::list<Node> pinnedNodes;
+	NodeScene* parent;
+	bool destroyed = false;
 };
 
 #endif

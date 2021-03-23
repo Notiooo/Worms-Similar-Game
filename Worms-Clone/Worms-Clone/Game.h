@@ -17,7 +17,7 @@ private:
 
 	void loadResources();
 
-	static const sf::Time time_per_frame;
+	static const sf::Time TIME_PER_FRAME;
 	sf::RenderWindow gameWindow;
 
 	// All in-game managers

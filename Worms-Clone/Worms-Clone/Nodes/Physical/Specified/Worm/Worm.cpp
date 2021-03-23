@@ -24,13 +24,13 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vec
 	wormQueue.push_back(this);
 
 	// ======= Setup the healthbar ===== //
-	healthBar.setSize({ healthBar_width, healthBar_height });
+	healthBar.setSize({ healthBarWidth, healthBarHeight });
 	sf::FloatRect boundaries_of_healthBar = healthBar.getLocalBounds();
 	healthBar.setOrigin(boundaries_of_healthBar.width / 2.f, boundaries_of_healthBar.height / 2.f);
 	healthBar.setFillColor(sf::Color(0, 255, 0, 150)); // a little transparent green
 	healthBar.setOutlineThickness(2.f);
 	healthBar.setOutlineColor(sf::Color::Black);
-	healthBar.setPosition(0, -(getSpriteSize(wormSprite).y / 2.f + healthBar_height / 2.f) - 5.f);
+	healthBar.setPosition(0, -(getSpriteSize(wormSprite).y / 2.f + healthBarHeight / 2.f) - 5.f);
 
 	// ======= Setup the Sprites ======= //
 
@@ -56,7 +56,7 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vec
 	wormName.setCharacterSize(21);
 	const sf::FloatRect boundaries_of_name = wormName.getLocalBounds();
 	wormName.setOrigin(boundaries_of_name.width / 2.f, boundaries_of_name.height / 2.f);
-	wormName.setPosition(0, -(getSpriteSize(wormSprite).y / 2.f + healthBar_height + wormName.getCharacterSize()) - 15.f);
+	wormName.setPosition(0, -(getSpriteSize(wormSprite).y / 2.f + healthBarHeight + wormName.getCharacterSize()) - 15.f);
 
 
 	// ======= Setup the Physical Body ======= //
@@ -110,7 +110,7 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vec
 
 	// Test purposes
 	inventory.push_back(std::move(std::make_pair(99, std::make_unique<Bazooka>(world, textures))));
-	selected_weapon = &inventory.front();
+	selectedWeapon = &inventory.front();
 	
 }
 
@@ -147,21 +147,21 @@ void Worm::handleThisEvents(const sf::Event& event)
 
 void Worm::activateHideState()
 {
-	current_state = State_ID::WormHideState;
+	currentState = State_ID::WormHideState;
 	wormStack.clear();
 	wormStack.push(State_ID::WormHideState);
 }
 
 void Worm::activateWaitState()
 {
-	current_state = State_ID::WormWaitState;
+	currentState = State_ID::WormWaitState;
 	wormStack.clear();
 	wormStack.push(State_ID::WormWaitState);
 }
 
 void Worm::activatePlayState()
 {
-	current_state = State_ID::WormPlayState;
+	currentState = State_ID::WormPlayState;
 	wormStack.clear();
 	wormStack.push(State_ID::WormPlayState);
 
@@ -169,7 +169,7 @@ void Worm::activatePlayState()
 
 void Worm::activateHitState()
 {
-	current_state = State_ID::WormHitState;
+	currentState = State_ID::WormHitState;
 	wormStack.clear();
 	wormStack.push(State_ID::WormHitState);
 
@@ -177,7 +177,7 @@ void Worm::activateHitState()
 
 State_ID Worm::getCurrentState() const
 {
-	return current_state;
+	return currentState;
 }
 
 bool Worm::facingRight()
@@ -190,7 +190,7 @@ void Worm::setDamage(int _dmg)
 	health -= _dmg;
 	if (health < 0)
 		health = 0;
-	healthBar.setSize({ healthBar_width * health/max_health, healthBar_height });
+	healthBar.setSize({ healthBarWidth * health/maxHealth, healthBarHeight });
 }
 
 void Worm::removeSelfFromQueue()
@@ -198,7 +198,7 @@ void Worm::removeSelfFromQueue()
 	wormQueue.erase(std::find(wormQueue.begin(), wormQueue.end(), this));
 }
 
-bool Worm::is_destroyed()
+bool Worm::isDestroyed()
 {
 	if (health <= 0)
 	{

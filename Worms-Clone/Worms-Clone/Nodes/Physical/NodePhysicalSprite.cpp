@@ -30,7 +30,7 @@ void NodePhysicalSprite::updateThis(sf::Time deltaTime)
 {
 	// Synchronize the drawable Rectangle with the physical object
 	updatePhysics();
-	//sprite.setPosition(b2Vec_to_sfVector<sf::Vector2f>(Body->GetPosition()));
+	//sprite.setPosition(b2VecToSfVector<sf::Vector2f>(Body->GetPosition()));
 	//sprite.setRotation(radiansToAngle(Body->GetAngle()));
 }
 

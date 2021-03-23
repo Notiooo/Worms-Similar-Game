@@ -13,13 +13,13 @@ class Bazooka : public Weapon
 public:
 	Bazooka(b2World& world, TextureManager& textures);
 
-	virtual void shoot(NodeScene* rootNode, sf::Vector2f position, sf::Vector2f force);
+	void shoot(NodeScene* rootNode, sf::Vector2f position, sf::Vector2f force) override;
 
-	virtual void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
-	virtual void updateThis(sf::Time deltaTime) override;
+	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
+	void updateThis(sf::Time deltaTime) override;
 
 private:
-	float attack_dmg = 100.f;
+	float attackDmg = 100.f;
 	float range = 350.f;
 };
 

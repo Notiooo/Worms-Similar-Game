@@ -36,7 +36,7 @@ void WorldListener::BeginContact(b2Contact* contact)
 		case CollideTypes::Bullet:
 		{
 			if (Bullet* bullet = dynamic_cast<Bullet*>(node->object))
-				bullet->set_destroyed();
+				bullet->setDestroyed();
 			break;
 		}
 
@@ -55,7 +55,7 @@ void WorldListener::BeginContact(b2Contact* contact)
 				const sf::Vector2f distance_from_explosion = (hitbox->getAbsolutePosition() - worm->getAbsolutePosition());
 
 				// Then I had to take under consideration that object closer (with smaller distance) should be pushed further
-				const float range_of_hitbox = hitbox->area_of_range / 2.f / NodePhysical::B2_SCALAR;
+				const float range_of_hitbox = hitbox->areaOfRange / 2.f / NodePhysical::B2_SCALAR;
 
 				sf::Vector2f force_vector;
 				force_vector.x = (distance_from_explosion.x) ? (range_of_hitbox - distance_from_explosion.x) : -(range_of_hitbox + distance_from_explosion.x);
@@ -64,7 +64,7 @@ void WorldListener::BeginContact(b2Contact* contact)
 				float distance = std::sqrt(distance_from_explosion.x * distance_from_explosion.x + distance_from_explosion.y * distance_from_explosion.y);
 				// The force has to be negative to push AWAY from the explosion
 				worm->applyForce(force_vector * 300.f);
-				worm->setDamage(hitbox->max_dmg * (hitbox->area_of_range - distance) / hitbox->area_of_range);
+				worm->setDamage(hitbox->maxDmg * (hitbox->areaOfRange - distance) / hitbox->areaOfRange);
 			}
 
 			break;

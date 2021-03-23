@@ -23,7 +23,7 @@ public:
 protected:
 	sf::Sprite weaponSprite;
 	sf::Texture& bulletTexture;
-	b2World& physical_world;
+	b2World& physicalWorld;
 };
 
 #endif // !WEAPON_H
