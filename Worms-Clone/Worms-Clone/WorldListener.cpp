@@ -49,7 +49,7 @@ void WorldListener::BeginContact(b2Contact* contact)
 			Hitbox* hitbox = dynamic_cast<Hitbox*>(node->object);
 			if (Worm* worm = dynamic_cast<Worm*>(worm_collision->object))
 			{
-				worm->activateHitState();
+				worm->activateState(State_ID::WormHitState);
 
 				// First I calculate distance from the explosion
 				const sf::Vector2f distance_from_explosion = (hitbox->getAbsolutePosition() - worm->getAbsolutePosition());

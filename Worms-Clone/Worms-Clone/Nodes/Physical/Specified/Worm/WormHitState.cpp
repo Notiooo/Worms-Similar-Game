@@ -32,7 +32,7 @@ bool WormHitState::update(sf::Time)
 	// So if worm is grounded it stays in this position
 	// and can't be moved
 	if (worm.footCollisions && velocity < velocityToStop)
-		worm.activateWaitState();
+		worm.activateState(State_ID::WormWaitState);
 
 	return false;
 }

@@ -34,7 +34,7 @@ World::World(sf::RenderWindow& window) :
 	roundTimeText.setOutlineThickness(1.f);
 	roundTimeText.setPosition(worldView.getSize().x / 2, roundTimeText.getCharacterSize());
 
-	wormQueue.front()->activatePlayState();
+	wormQueue.front()->activateState(State_ID::WormPlayState);
 	b2_World.SetContactListener(&worldListener);
 }
 
@@ -146,7 +146,14 @@ void World::loadResources()
 	worldTextures.getResourceReference(Textures_ID::Rope).setRepeated(true);
 
 	worldTextures.storeResource(Textures_ID::Bazooka, "Resources/Textures/Weapons/bazooka.png");
+	worldTextures.storeResource(Textures_ID::Bazooka_Thumbnail, "Resources/Textures/Weapons/bazooka_thumbnail.png");
 	worldTextures.storeResource(Textures_ID::Bazooka_Bullet, "Resources/Textures/Weapons/bazooka_bullet.png");
+	worldTextures.storeResource(Textures_ID::Inventory, "Resources/Textures/Weapons/Inventory/background.png");
+
+	worldTextures.storeResource(Textures_ID::Cannon, "Resources/Textures/Weapons/cannon.png");
+	worldTextures.storeResource(Textures_ID::Cannon_Thumbnail, "Resources/Textures/Weapons/cannon_thumbnail.png");
+	worldTextures.storeResource(Textures_ID::Cannon_Bullet, "Resources/Textures/Weapons/cannon_bullet.png");
+
 
 
 	worldFonts.storeResource(Fonts_ID::Arial_Narrow, "Resources/Fonts/arial_narrow.ttf");
@@ -158,20 +165,24 @@ void World::createWorld()
 	std::unique_ptr<NodeRectangularPhysical> ground = std::make_unique<NodeRectangularPhysical>(
 		b2_World, sf::Vector2f(640, 50), sf::Vector2f(320, 460), sf::Color::Blue,
 		NodeRectangularPhysical::Physical_Types::Static_Type);
+	
 	std::unique_ptr<NodeRectangularPhysical> ramp = std::make_unique<NodeRectangularPhysical>(
 		b2_World, sf::Vector2f(640, 50), sf::Vector2f(320, 460), sf::Color::Green,
 		NodeRectangularPhysical::Physical_Types::Static_Type);
+	
 	std::unique_ptr<NodeRectangularPhysical> box = std::make_unique<NodeRectangularPhysical>(
 		b2_World, sf::Vector2f(20, 20), sf::Vector2f(100, 60), sf::Color::Red,
 		NodeRectangularPhysical::Physical_Types::Dynamic_Type);
+	
 	std::unique_ptr<NodeRectangularPhysical> box2 = std::make_unique<NodeRectangularPhysical>(
 		b2_World, sf::Vector2f(20, 20), sf::Vector2f(100, 0), sf::Color::Cyan,
 		NodeRectangularPhysical::Physical_Types::Dynamic_Type);
-	std::unique_ptr<Worm> worm = std::make_unique<Worm>(b2_World, worldTextures, worldFonts, sf::Vector2f(300, 40),
+	
+	std::unique_ptr<Worm> worm = std::make_unique<Worm>(b2_World, worldTextures, worldFonts, worldWindow, sf::Vector2f(300, 40),
 	                                                    wormQueue);
-	std::unique_ptr<Worm> worm1 = std::make_unique<Worm>(b2_World, worldTextures, worldFonts, sf::Vector2f(380, 40),
+	std::unique_ptr<Worm> worm1 = std::make_unique<Worm>(b2_World, worldTextures, worldFonts, worldWindow, sf::Vector2f(380, 40),
 	                                                     wormQueue);
-	std::unique_ptr<Worm> worm2 = std::make_unique<Worm>(b2_World, worldTextures, worldFonts, sf::Vector2f(440, 40),
+	std::unique_ptr<Worm> worm2 = std::make_unique<Worm>(b2_World, worldTextures, worldFonts, worldWindow, sf::Vector2f(440, 40),
 	                                                     wormQueue);
 
 
@@ -200,7 +211,7 @@ void World::checkTurnTime()
 			// Redundancy
 			hideState = true;
 			if (!(wormQueue.front()->getCurrentState() == State_ID::WormHideState))
-				wormQueue.front()->activateHideState();
+				wormQueue.front()->activateState(State_ID::WormHideState);
 
 			roundTimeText.setFillColor(sf::Color::Red);
 			roundClock.restart();
@@ -210,10 +221,10 @@ void World::checkTurnTime()
 		if (hideState && (timeElapsed > timePerHide))
 		{
 			Worm* worm = std::move(wormQueue.front());
-			worm->activateWaitState();
+			worm->activateState(State_ID::WormWaitState);
 			wormQueue.pop_front();
 			wormQueue.push_back(std::move(worm));
-			wormQueue.front()->activatePlayState();
+			wormQueue.front()->activateState(State_ID::WormPlayState);
 
 			// Redundancy
 			hideState = false;

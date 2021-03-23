@@ -13,9 +13,11 @@
 #include "../../CollideTypes.h"
 
 // Test purposes
+#include "WormInventoryState.h"
 #include "Weapons/Bazooka.h"
+#include "Weapons/Cannon.h"
 
-Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vector2f position, std::deque<Worm*>& wormQueue):
+Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position, std::deque<Worm*>& wormQueue):
 	NodePhysical(world, Physical_Types::Dynamic_Type, position),
 	wormSprite(textures.getResourceReference(Textures_ID::AnExamplaryWorm)),
 	wormQueue(wormQueue)
@@ -104,12 +106,14 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vec
 	wormStack.saveState<WormPlayState>(State_ID::WormPlayState, *this);
 	wormStack.saveState<WormWaitState>(State_ID::WormWaitState, *this);
 	wormStack.saveState<WormHitState>(State_ID::WormHitState, *this);
+	wormStack.saveState<WormInventoryState>(State_ID::WormInventoryState, *this, textures, window);
 
-	activateWaitState();
+	activateState(State_ID::WormWaitState);
 
 
 	// Test purposes
 	inventory.push_back(std::move(std::make_pair(99, std::make_unique<Bazooka>(world, textures))));
+	inventory.push_back(std::move(std::make_pair(99, std::make_unique<Cannon>(world, textures))));
 	selectedWeapon = &inventory.front();
 	
 }
@@ -145,34 +149,12 @@ void Worm::handleThisEvents(const sf::Event& event)
 	wormStack.handleEvent(event);
 }
 
-void Worm::activateHideState()
+
+void Worm::activateState(State_ID state)
 {
-	currentState = State_ID::WormHideState;
+	currentState = state;
 	wormStack.clear();
-	wormStack.push(State_ID::WormHideState);
-}
-
-void Worm::activateWaitState()
-{
-	currentState = State_ID::WormWaitState;
-	wormStack.clear();
-	wormStack.push(State_ID::WormWaitState);
-}
-
-void Worm::activatePlayState()
-{
-	currentState = State_ID::WormPlayState;
-	wormStack.clear();
-	wormStack.push(State_ID::WormPlayState);
-
-}
-
-void Worm::activateHitState()
-{
-	currentState = State_ID::WormHitState;
-	wormStack.clear();
-	wormStack.push(State_ID::WormHitState);
-
+	wormStack.push(state);
 }
 
 State_ID Worm::getCurrentState() const

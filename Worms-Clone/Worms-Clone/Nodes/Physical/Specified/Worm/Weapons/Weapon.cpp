@@ -1,7 +1,8 @@
 #include "Weapon.h"
 
-Weapon::Weapon(b2World& world, sf::Texture& weapon, sf::Texture& bullet):
+Weapon::Weapon(b2World& world, sf::Texture& weapon, sf::Texture& thumbnail, sf::Texture& bullet):
 	weaponSprite(weapon),
+	thumbnailSprite(thumbnail, sf::IntRect(0, 0, 60, 60)),
 	bulletTexture(bullet),
 	physicalWorld(world)
 {
@@ -24,4 +25,9 @@ void Weapon::rotateWeapon(float angle)
 {
 	weaponSprite.setOrigin(weaponSprite.getLocalBounds().width / 2.f, weaponSprite.getLocalBounds().height / 2.f);
 	weaponSprite.setRotation(angle);
+}
+
+sf::Sprite& Weapon::getThumnbailSprite()
+{
+	return thumbnailSprite;
 }

@@ -20,6 +20,14 @@ enum class Textures_ID
 	// Weapons
 	Bazooka,
 	Bazooka_Bullet,
+
+	// Inventory
+	Inventory,
+	Bazooka_Thumbnail,
+	Cannon,
+	Cannon_Thumbnail,
+	Cannon_Bullet,
+
 };
 
 using TextureManager = ResourceManager<sf::Texture, Textures_ID>;

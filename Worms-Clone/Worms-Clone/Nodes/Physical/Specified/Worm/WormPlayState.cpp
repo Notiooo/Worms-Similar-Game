@@ -61,7 +61,11 @@ bool WormPlayState::handleEvent(const sf::Event& event)
 		// then it velocity should be instantly reduced to zero
 		case (sf::Event::KeyReleased):
 		{
-
+				if(event.key.code == sf::Keyboard::Key::E)
+				{
+					if(worm.footCollisions)
+						worm.activateState(State_ID::WormInventoryState);
+				}
 		}
 		break;
 
@@ -81,7 +85,7 @@ void WormPlayState::shoot()
 {
 	worm.selectedWeapon->second->shoot(worm.getRootNode(), worm.getAbsolutePosition() + triangularPointer.getPosition(), sf::Vector2f(direction * pointer.x * currentShootingForce, pointer.y * currentShootingForce));
 
-	worm.activateHideState();
+	worm.activateState(State_ID::WormHideState);
 }
 
 void WormPlayState::handleShooting(const sf::Event& event)

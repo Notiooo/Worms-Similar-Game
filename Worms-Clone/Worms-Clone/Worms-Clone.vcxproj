@@ -156,11 +156,13 @@
     <ClCompile Include="Nodes\Physical\NodeRectangularPhysical.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Bazooka.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Bullet.cpp" />
+    <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Cannon.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Hitbox.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Weapon.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\Worm.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormHideState.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormHitState.cpp" />
+    <ClCompile Include="Nodes\Physical\Specified\Worm\WormInventoryState.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormMoveableState.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormPlayState.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormWaitState.cpp" />
@@ -185,11 +187,13 @@
     <ClInclude Include="Nodes\Physical\NodeRectangularPhysical.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Bazooka.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Bullet.h" />
+    <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Cannon.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Hitbox.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Weapon.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\Worm.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormHideState.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormHitState.h" />
+    <ClInclude Include="Nodes\Physical\Specified\Worm\WormInventoryState.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormMoveableState.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormPlayState.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormWaitState.h" />

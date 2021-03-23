@@ -58,6 +58,12 @@
     <Filter Include="Source Files\Nodes\Physical\Specified\Worm\Weapons">
       <UniqueIdentifier>{50184757-3906-40e6-85b4-ce4a10f02048}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Nodes\Physical\Specified\Worm\Inventory">
+      <UniqueIdentifier>{2f2ec47a-f7a3-48ff-ab1e-888f541d383e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Nodes\Physical\Specified\Worm\Inventory">
+      <UniqueIdentifier>{5b8fd1e2-ac34-4cf1-9498-13e2d5c91c6f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Worms-Clone.cpp">
@@ -137,6 +143,12 @@
     </ClCompile>
     <ClCompile Include="WorldListener.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Nodes\Physical\Specified\Worm\WormInventoryState.cpp">
+      <Filter>Source Files\Nodes\Physical\Specified\Worm</Filter>
+    </ClCompile>
+    <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Cannon.cpp">
+      <Filter>Source Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +238,12 @@
     </ClInclude>
     <ClInclude Include="WorldListener.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Physical\Specified\Worm\WormInventoryState.h">
+      <Filter>Header Files\Nodes\Physical\Specified\Worm</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Cannon.h">
+      <Filter>Header Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -14,6 +14,10 @@
 // It derives from sf::Transformable which gives all members related with position, rotation and scale
 // It derives from sf::NonCopyable as NodeScene like this should not be copied (it may give many problems in current state).
 // This make copy constructor/assignment to be deleted
+
+/**
+ * \brief Scene on which objects and other pinned scenes will be drawn.
+ */
 class NodeScene : public sf::Drawable, public sf::Transformable, private sf::NonCopyable
 {
 public:
@@ -25,7 +29,7 @@ public:
 	virtual ~NodeScene() = default;
 
 	// Steals ownership, and puts it into the vector of pinned_Nods
-	void pinNode(Node);
+	void pinNode(Node node);
 
 	// Removes this NodeScene from pinnedNodes and returns it
 	Node unpinNode(const NodeScene&);
@@ -40,6 +44,7 @@ public:
 	// RenderStates is optional, and provides informations about rendering process (transform, shader, blend mode)
 	// Thanks to this if we pass this object to sf::RenderWindow::draw(), then it will implicitly call this function
 	// to draw it!
+
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override final;
 
 	// This function cares only about drawing itself

@@ -1,6 +1,8 @@
 #ifndef WORM_H
 #define WORM_H
 
+#include <SFML/Graphics/RenderWindow.hpp>
+
 #include "../../NodePhysical.h"
 #include "SFML/Graphics/Sprite.hpp"
 #include "../../../../Resources/Resources.h"
@@ -25,18 +27,18 @@ public:
 	friend class WormWaitState;
 	friend class WormHitState;
 	friend class WormMoveableState;
+	friend class WormInventoryState;
 
-	Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vector2f position, std::deque<Worm*>& wormQueue);
+	Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position, std::deque<Worm*>& wormQueue);
 
 	// Function to control flow of the worm
 	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void updateThis(sf::Time deltaTime) override;
 	void handleThisEvents(const sf::Event& event) override;
 
-	void activateHideState();
-	void activateWaitState();
-	void activatePlayState();
-	void activateHitState();
+	void activateState(State_ID);
+
+	
 	State_ID getCurrentState() const;
 
 	bool facingRight();
