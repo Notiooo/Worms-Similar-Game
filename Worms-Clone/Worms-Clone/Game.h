@@ -1,11 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "SFML/Graphics.hpp"
-#include "SFML/System.hpp"
-#include "SFML/Window.hpp"
-#include "box2d/box2d.h"
-
 #include "World.h"
 #include "States/StateStack.h"
 
@@ -31,15 +26,12 @@ private:
 	// actually some textures between states probably should be deleted 
 	// and not be stored in memory for all the time of execution
 	//TextureManager textures;
-	
+
 	FontManager fonts;
-	
+
 	// Main stack 
 	StateStack appStack;
 };
 
 
-
-
-
-#endif 
+#endif

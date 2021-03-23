@@ -10,6 +10,7 @@
 
 enum class Textures_ID
 {
+	World_Background,
 	AnExamplaryWorm,
 	Rope,
 

@@ -169,6 +169,7 @@
     <ClCompile Include="States\State.cpp" />
     <ClCompile Include="States\StateStack.cpp" />
     <ClCompile Include="World.cpp" />
+    <ClCompile Include="WorldListener.cpp" />
     <ClCompile Include="Worms-Clone.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +201,7 @@
     <ClInclude Include="States\States.h" />
     <ClInclude Include="States\StateStack.h" />
     <ClInclude Include="World.h" />
+    <ClInclude Include="WorldListener.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

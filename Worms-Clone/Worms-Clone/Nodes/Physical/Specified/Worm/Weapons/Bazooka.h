@@ -19,7 +19,7 @@ public:
 	virtual void updateThis(sf::Time deltaTime) override;
 
 private:
-	float attack_dmg = 40.f;
+	float attack_dmg = 100.f;
 	float range = 350.f;
 };
 

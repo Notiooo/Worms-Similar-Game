@@ -24,5 +24,5 @@ void Hitbox::updateThis(sf::Time deltaTime)
 {
 	// Destroy in next iteration
 	updatePhysics();
-	setDestroyed();
+	set_destroyed();
 }

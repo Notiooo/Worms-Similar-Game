@@ -41,11 +41,11 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vec
 	ropeSprite.setPosition({0, 0});
 
 	// Set origin to centered-bottom of the rope
-	sf::FloatRect boundaries_of_rope = ropeSprite.getLocalBounds();
+	const sf::FloatRect boundaries_of_rope = ropeSprite.getLocalBounds();
 	ropeSprite.setOrigin(boundaries_of_rope.width / 2.f, boundaries_of_rope.height);
 
 	// Set origin of the Sprite to the center
-	sf::FloatRect boundaries_of_worm = wormSprite.getLocalBounds();
+	const sf::FloatRect boundaries_of_worm = wormSprite.getLocalBounds();
 	wormSprite.setOrigin(boundaries_of_worm.width / 2.f, boundaries_of_worm.height / 2.f);
 
 
@@ -54,7 +54,7 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Vec
 	// Set Font for the worm name
 	wormName.setFont(fonts.getResourceReference(Fonts_ID::Arial_Narrow));
 	wormName.setCharacterSize(21);
-	sf::FloatRect boundaries_of_name = wormName.getLocalBounds();
+	const sf::FloatRect boundaries_of_name = wormName.getLocalBounds();
 	wormName.setOrigin(boundaries_of_name.width / 2.f, boundaries_of_name.height / 2.f);
 	wormName.setPosition(0, -(getSpriteSize(wormSprite).y / 2.f + healthBar_height + wormName.getCharacterSize()) - 15.f);
 
@@ -198,7 +198,7 @@ void Worm::removeSelfFromQueue()
 	wormQueue.erase(std::find(wormQueue.begin(), wormQueue.end(), this));
 }
 
-bool Worm::isDestroyed()
+bool Worm::is_destroyed()
 {
 	if (health <= 0)
 	{

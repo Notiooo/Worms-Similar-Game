@@ -13,7 +13,7 @@ NodePhysicalSpark::NodePhysicalSpark(b2World& world, sf::Vector2f position):
 		// Color doesnt matter yet
 		pair.first.setFillColor(sf::Color::White);
 
-		pair.first.setSize({ 10.f, 10.f });
+		pair.first.setSize({10.f, 10.f});
 	}
 
 	int number_of_particles = particles.size();
@@ -25,7 +25,7 @@ NodePhysicalSpark::NodePhysicalSpark(b2World& world, sf::Vector2f position):
 		b2BodyDef bd;
 		bd.type = b2_dynamicBody;
 		bd.fixedRotation = true;
-		bd.position = sfVector_to_b2Vec(position); 
+		bd.position = sfVector_to_b2Vec(position);
 		bd.linearVelocity = (7 + g(e)) * rayDir;
 		particles[i].second = World->CreateBody(&bd);
 
@@ -56,7 +56,7 @@ void NodePhysicalSpark::drawThis(sf::RenderTarget& target, sf::RenderStates stat
 void NodePhysicalSpark::updateThis(sf::Time deltaTime)
 {
 	if (clock.getElapsedTime() > time_to_delete)
-		setDestroyed();
+		set_destroyed();
 
 
 	for (auto& pair : particles)
@@ -64,6 +64,8 @@ void NodePhysicalSpark::updateThis(sf::Time deltaTime)
 		pair.first.setPosition(b2Vec_to_sfVector<sf::Vector2f>(pair.second->GetPosition()));
 
 		// Fading effect
-		pair.first.setFillColor(sf::Color(255, 255, 255, 255 - 255 * (clock.getElapsedTime().asSeconds() / time_to_delete.asSeconds())));
+		pair.first.setFillColor(sf::Color(255, 255, 255,
+		                                  255 - 255 * (clock.getElapsedTime().asSeconds() / time_to_delete.asSeconds()
+		                                  )));
 	}
 }

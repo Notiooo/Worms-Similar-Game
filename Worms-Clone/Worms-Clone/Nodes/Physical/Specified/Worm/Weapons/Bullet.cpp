@@ -40,7 +40,7 @@ void Bullet::collision()
 
 }
 
-void Bullet::setDestroyed()
+void Bullet::set_destroyed()
 {
 	collided = true;
 
@@ -61,7 +61,7 @@ void Bullet::setDestroyed()
 
 }
 
-bool Bullet::isDestroyed()
+bool Bullet::is_destroyed()
 {
 	if (collided)
 	{

@@ -45,7 +45,7 @@ public:
 
 	void removeSelfFromQueue();
 
-	virtual bool isDestroyed() override;
+	virtual bool is_destroyed() override;
 
 
 

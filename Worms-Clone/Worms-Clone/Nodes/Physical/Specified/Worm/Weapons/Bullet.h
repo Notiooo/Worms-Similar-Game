@@ -14,8 +14,8 @@ struct Bullet : public NodePhysicalSprite
 
 	virtual void updateThis(sf::Time deltaTime) override;
 	virtual void collision();
-	virtual void setDestroyed();
-	bool isDestroyed() override final;
+	virtual void set_destroyed();
+	bool is_destroyed() override final;
 
 
 private:
