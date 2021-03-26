@@ -4,7 +4,7 @@
 NodeText::NodeText(const FontManager& fonts, unsigned int size=12, bool outline=true):
 	nodeText()
 {
-	nodeText.setFont(fonts.getResourceReference(Fonts_ID::Arial_Narrow));
+	nodeText.setFont(fonts.getResourceReference(Fonts_ID::ArialNarrow));
 	nodeText.setCharacterSize(size);
 	nodeText.setFillColor(sf::Color::White);
 	if (outline)

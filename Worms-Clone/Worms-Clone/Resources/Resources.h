@@ -8,37 +8,51 @@
 
 // ====== Textures ======= //
 
+/**
+ * \brief Texture IDs under which individual textures can be saved and read.
+ */
 enum class Textures_ID
 {
-	World_Background,
-	AnExamplaryWorm,
+	// === ?? === //
+	WorldBackground,
+	AnExemplaryWorm,
 	Rope,
 
-	// TitleState
-	TitleState_Background,
+	// === TitleState === /
+	TitleStateBackground,
 
-	// Weapons
+	// === Weapons === //
 	Bazooka,
-	Bazooka_Bullet,
+	BazookaBullet,
+	BazookaThumbnail,
 
-	// Inventory
-	Inventory,
-	Bazooka_Thumbnail,
 	Cannon,
-	Cannon_Thumbnail,
-	Cannon_Bullet,
+	CannonBullet,
+	CannonThumbnail,
+
+	// === Inventory ===/
+	Inventory,
 
 };
 
+/**
+ * \brief Object storing textures of the game
+ */
 using TextureManager = ResourceManager<sf::Texture, Textures_ID>;
 
 // ====== Fonts ======= //
 
+/**
+ * \brief Fonts IDs under which individual font can be saved and read.
+ */
 enum class Fonts_ID
 {
-	Arial_Narrow,
+	ArialNarrow,
 };
 
+/**
+ * \brief Object storing fonts of the game
+ */
 using FontManager = ResourceManager<sf::Font, Fonts_ID>;
 
 #endif

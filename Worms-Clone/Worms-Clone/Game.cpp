@@ -78,5 +78,5 @@ void Game::render()
 
 void Game::loadResources()
 {
-	fonts.storeResource(Fonts_ID::Arial_Narrow, "Resources/Fonts/arial_narrow.ttf");
+	fonts.storeResource(Fonts_ID::ArialNarrow, "Resources/Fonts/arial_narrow.ttf");
 }

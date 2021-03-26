@@ -10,7 +10,7 @@ TitleState::TitleState(StateStack& stack, sf::RenderWindow& window, const FontMa
 	background_sprite.setTexture(background_texture);
 	
 	// Loads the font
-	information.setFont(fonts.getResourceReference(Fonts_ID::Arial_Narrow));
+	information.setFont(fonts.getResourceReference(Fonts_ID::ArialNarrow));
 
 	// Get dimensions of the screen and scales background to the size of the window
 	sf::Vector2f screen_dimensions = window.getView().getSize();

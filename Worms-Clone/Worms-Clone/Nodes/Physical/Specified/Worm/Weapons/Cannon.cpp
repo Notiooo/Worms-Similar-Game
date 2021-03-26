@@ -6,7 +6,7 @@
 
 
 Cannon::Cannon(b2World& world, TextureManager& textures):
-	Weapon(world, textures.getResourceReference(Textures_ID::Cannon), textures.getResourceReference(Textures_ID::Cannon_Thumbnail), textures.getResourceReference(Textures_ID::Cannon_Bullet))
+	Weapon(world, textures.getResourceReference(Textures_ID::Cannon), textures.getResourceReference(Textures_ID::CannonThumbnail), textures.getResourceReference(Textures_ID::CannonBullet))
 {
 	weaponSprite.setPosition(getPosition().x, getPosition().y + 40);
 }

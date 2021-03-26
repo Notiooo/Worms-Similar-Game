@@ -1,14 +1,17 @@
 #ifndef STATES_H
 #define STATES_H
 
+/**
+ * \brief Identifiers of individual states that can be used.
+ */
 enum class State_ID
 {
-	// Application flow states
+	// === Application flow states === //
 	TitleState,
 	GameState,
 
 
-	// == Inside-game objects flow states == //
+	// === Inside-game objects flow states === //
 	
 	// Worm
 	WormHideState, // Player have ... seconds to hide

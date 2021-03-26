@@ -157,12 +157,6 @@ public:
 	bool empty() const;
 
 private:
-
-	// Waiting change in the queue
-	// For example:
-	// operation = Perform::Push
-	// State_ID State_ID::wormState
-
 	
 	/**
 	 * \brief The queue that holds the operations to be performed on the stack.

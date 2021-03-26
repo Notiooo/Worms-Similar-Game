@@ -5,11 +5,7 @@
 #include <memory>
 
 // Types that it may hold
-#include "SFML/Graphics/Texture.hpp"
-#include "SFML/Audio/Sound.hpp"
 #include "SFML/Audio/SoundBuffer.hpp"
-#include "SFML/Graphics/Font.hpp"
-#include "SFML/Graphics/Shader.hpp"
 
 // it may not hold sf::Music as it is different starting with openFromFile()
 // most because this type is rather streamed than stored
@@ -18,24 +14,61 @@ template <typename Resource, typename Identifier>
 class ResourceManager
 {
 public:
-	// Returns reference to Resource inside ResourceMap corresponding to given Identifier
+
+	/**
+	 * \brief Checks an individual identifier and returns the resource assigned to it
+	 * \param id Identifier identifying a previously saved resource
+	 * \return the resource stored for the given identifier.
+	 *
+	 * Returns reference to Resource inside ResourceMap corresponding to given Identifier
+	 */
 	Resource& getResourceReference(Identifier id);
+
+	
+    /**
+     * \brief Checks an individual identifier and returns the resource assigned to it
+     * \param id Identifier identifying a previously saved resource
+     * \return the resource stored for the given identifier.
+     *
+     * Returns reference to Resource inside ResourceMap corresponding to given Identifier
+     */
 	const Resource& getResourceReference(Identifier id) const;
 
-	// Stores the given texture resource inside the mTextureMap
+	/**
+	 * \brief Assigns a given identifier to a specific resource retrieved from the specified file
+	 * \param id Identifier to which the resource is to be assigned
+	 * \param path_to_file File path specifying the resource
+	 *
+	 * Stores the given texture resource inside the ResourceMap
+	 */
 	void storeResource(Identifier id, const std::string& path_to_file);
 
-    // Specialized version of this function to carry one of the methods that sf::Shader
-    // define -- which is loadFromFile() containing additional Fragment Shader File Path
-    // or sf::Shader::Type. It also adds some other features which needs to be described
-    // when using loadFromFile().
+	/**
+     * \brief Assigns a given identifier to a specific resource retrieved from the specified file
+     * \tparam Additional_Parameter Type of additional parameter (for example sf::Shared::Type)
+     * \param id Identifier to which the resource is to be assigned
+     * \param path_to_file File path specifying the resource
+     * \param parameter Additional argument (fragment shader file path, or sf::IntRect)
+     *
+     * Stores the given texture resource inside the ResourceMap
+     *
+     * Specialized version of this function to carry one of the methods that sf::Shader
+     * define -- which is loadFromFile() containing additional Fragment Shader File Path
+     * or sf::Shader::Type. It also adds some other features which needs to be described
+     * when using loadFromFile().
+     */
     template <typename Additional_Parameter>
     void storeResource(Identifier id, const std::string& path_to_file, const Additional_Parameter& parameter);
 
 
 private:
-	// As sf::Texture are heavy object I use this map to store them just
-	// once, and then reference them across the game.
+
+	/**
+	 * \brief Map of identifier to given resource.
+	 *
+	 * Some object are really heavy, so it is better to store them just once
+	 * and to not load it multiple times.
+	 */
 	std::map<Identifier, std::unique_ptr<Resource>> ResourceMap;
 };
 

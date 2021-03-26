@@ -25,12 +25,12 @@ World::World(sf::RenderWindow& window) :
 	loadResources();
 	createWorld();
 
-	backgroundSprite.setTexture(worldTextures.getResourceReference(Textures_ID::World_Background));
+	backgroundSprite.setTexture(worldTextures.getResourceReference(Textures_ID::WorldBackground));
 	backgroundSprite.setTextureRect(sf::IntRect(0, 0, worldView.getSize().x, worldView.getSize().y));
 
 
 	// Set up the round timer
-	roundTimeText.setFont(worldFonts.getResourceReference(Fonts_ID::Arial_Narrow));
+	roundTimeText.setFont(worldFonts.getResourceReference(Fonts_ID::ArialNarrow));
 	roundTimeText.setOutlineThickness(1.f);
 	roundTimeText.setPosition(worldView.getSize().x / 2, roundTimeText.getCharacterSize());
 
@@ -137,26 +137,26 @@ void World::processEvents(const sf::Event& event)
 
 void World::loadResources()
 {
-	worldTextures.storeResource(Textures_ID::World_Background, "Resources/Textures/World/background_texture.png");
-	worldTextures.getResourceReference(Textures_ID::World_Background).setRepeated(true);
+	worldTextures.storeResource(Textures_ID::WorldBackground, "Resources/Textures/World/background_texture.png");
+	worldTextures.getResourceReference(Textures_ID::WorldBackground).setRepeated(true);
 
 	// will load some later
-	worldTextures.storeResource(Textures_ID::AnExamplaryWorm, "Resources/Textures/An_example_worm.png");
+	worldTextures.storeResource(Textures_ID::AnExemplaryWorm, "Resources/Textures/An_example_worm.png");
 	worldTextures.storeResource(Textures_ID::Rope, "Resources/Textures/World/rope.png");
 	worldTextures.getResourceReference(Textures_ID::Rope).setRepeated(true);
 
 	worldTextures.storeResource(Textures_ID::Bazooka, "Resources/Textures/Weapons/bazooka.png");
-	worldTextures.storeResource(Textures_ID::Bazooka_Thumbnail, "Resources/Textures/Weapons/bazooka_thumbnail.png");
-	worldTextures.storeResource(Textures_ID::Bazooka_Bullet, "Resources/Textures/Weapons/bazooka_bullet.png");
+	worldTextures.storeResource(Textures_ID::BazookaThumbnail, "Resources/Textures/Weapons/bazooka_thumbnail.png");
+	worldTextures.storeResource(Textures_ID::BazookaBullet, "Resources/Textures/Weapons/bazooka_bullet.png");
 	worldTextures.storeResource(Textures_ID::Inventory, "Resources/Textures/Weapons/Inventory/background.png");
 
 	worldTextures.storeResource(Textures_ID::Cannon, "Resources/Textures/Weapons/cannon.png");
-	worldTextures.storeResource(Textures_ID::Cannon_Thumbnail, "Resources/Textures/Weapons/cannon_thumbnail.png");
-	worldTextures.storeResource(Textures_ID::Cannon_Bullet, "Resources/Textures/Weapons/cannon_bullet.png");
+	worldTextures.storeResource(Textures_ID::CannonThumbnail, "Resources/Textures/Weapons/cannon_thumbnail.png");
+	worldTextures.storeResource(Textures_ID::CannonBullet, "Resources/Textures/Weapons/cannon_bullet.png");
 
 
 
-	worldFonts.storeResource(Fonts_ID::Arial_Narrow, "Resources/Fonts/arial_narrow.ttf");
+	worldFonts.storeResource(Fonts_ID::ArialNarrow, "Resources/Fonts/arial_narrow.ttf");
 }
 
 void World::createWorld()

@@ -19,7 +19,7 @@
 
 Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position, std::deque<Worm*>& wormQueue):
 	NodePhysical(world, Physical_Types::Dynamic_Type, position),
-	wormSprite(textures.getResourceReference(Textures_ID::AnExamplaryWorm)),
+	wormSprite(textures.getResourceReference(Textures_ID::AnExemplaryWorm)),
 	wormQueue(wormQueue)
 {
 
@@ -54,7 +54,7 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Ren
 	// ======= Setup the Worm Name ======= //
 
 	// Set Font for the worm name
-	wormName.setFont(fonts.getResourceReference(Fonts_ID::Arial_Narrow));
+	wormName.setFont(fonts.getResourceReference(Fonts_ID::ArialNarrow));
 	wormName.setCharacterSize(21);
 	const sf::FloatRect boundaries_of_name = wormName.getLocalBounds();
 	wormName.setOrigin(boundaries_of_name.width / 2.f, boundaries_of_name.height / 2.f);

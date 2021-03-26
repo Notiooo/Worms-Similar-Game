@@ -7,7 +7,7 @@
 
 
 Bazooka::Bazooka(b2World& world, TextureManager& textures):
-	Weapon(world, textures.getResourceReference(Textures_ID::Bazooka), textures.getResourceReference(Textures_ID::Bazooka_Thumbnail), textures.getResourceReference(Textures_ID::Bazooka_Bullet))
+	Weapon(world, textures.getResourceReference(Textures_ID::Bazooka), textures.getResourceReference(Textures_ID::BazookaThumbnail), textures.getResourceReference(Textures_ID::BazookaBullet))
 {
 	weaponSprite.setPosition(getPosition().x, getPosition().y + 40);
 }
