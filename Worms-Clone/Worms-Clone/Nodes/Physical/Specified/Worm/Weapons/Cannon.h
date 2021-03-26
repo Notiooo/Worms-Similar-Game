@@ -20,7 +20,7 @@ public:
 
 private:
 	float attackDmg = 150.f;
-	float range = 50.f;
+	float range = 100.f;
 };
 
 #endif // !BAZOOKA_H

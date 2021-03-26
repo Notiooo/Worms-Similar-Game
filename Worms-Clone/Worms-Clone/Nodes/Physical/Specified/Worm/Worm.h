@@ -11,14 +11,14 @@
 #include "Weapons/Weapon.h"
 #include "SFML/Graphics/RectangleShape.hpp"
 
-// Listener that controls collision of the worms legs
-// with the outside world. Next it increments/decrements
-// footCollissions according to how many encounters
 
-// An object the player control
+/**
+ * \brief Worm object that can be controlled by the player
+ */
 class Worm : public NodePhysical
 {
 public:
+	// It may handle collisions of the worm
 	friend class WorldListener;
 
 	// States of this worm
@@ -29,65 +29,116 @@ public:
 	friend class WormMoveableState;
 	friend class WormInventoryState;
 
+	/**
+	 * \brief Creates a worm 
+	 * \param world The physical world in which the physical simulation of the worm is located
+	 * \param textures Texture Holder where the worm texture is located
+	 * \param fonts Font Holder where the font used to display worm name is located
+	 * \param window Window into which the worm's inventory should be drawn
+	 * \param position Position in which the worm should appear
+	 * \param wormQueue Queue of movements in which the worm is placed
+	 */
 	Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position, std::deque<Worm*>& wormQueue);
 
-	// Function to control flow of the worm
+	/**
+	 * \brief Draws the worm to the given target
+	 * \param target where it should be drawn to
+	 * \param states provides information about rendering process (transform, shader, blend mode)
+	 */
 	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	/**
+	 * \brief Updates the logic of the worm
+	 * \param deltaTime the time that has passed since the game was last updated
+	 */
 	void updateThis(sf::Time deltaTime) override;
+
+	/**
+	 * \brief It takes input (event) from the user and interprets it
+	 * \param event user input
+	 */
 	void handleThisEvents(const sf::Event& event) override;
 
-	void activateState(State_ID);
+	/**
+	 * \brief Sets the state the worm is in
+	 * \param state Identifier of the state the worm should be in
+	 */
+	void activateState(State_ID state);
 
 	
+	/**
+	 * \brief A function that checks what state the worm is currently in
+	 * \return Identifier of the state the worm is in
+	 */
 	State_ID getCurrentState() const;
 
+	/**
+	 * \brief Checks if the worm's face is facing the right side of the screen
+	 * \return True if the worm's 'sprite' is facing right, false otherwise
+	 */
 	bool facingRight();
 
-	void setDamage(int);
+	
+	/**
+	 * \brief Takes away a certain amount of the worm's life points
+	 * \param dmg Number of health points to take away from the worm
+	 */
+	void setDamage(int dmg);
 
+	/**
+	 * \brief Removes the worm from the turn-based queue
+	 */
 	void removeSelfFromQueue();
 
-	virtual bool isDestroyed() override;
+	/**
+	 * \brief Checks whether the worm is to be deleted
+	 * \return True if the object should be deleted, false if not
+	 */
+	bool isDestroyed() override;
 
-
-
-	// Useful additional functions
-	sf::Vector2f getSpriteSize(const sf::Sprite&);
+	/**
+	 * \brief Calculates the size of the worm sprite
+	 * \return Size of the worm sprite
+	 */
+	sf::Vector2f getWormSize() const;
 
 private:
+	// === Graphical variables === //
 	sf::Sprite wormSprite;
 	sf::Sprite ropeSprite;
 	sf::Text wormName;
-	State_ID currentState;
-	std::deque<Worm*>& wormQueue;
+	
+	sf::RectangleShape healthBar;
+	float healthBarWidth = 60.f;
+	float healthBarHeight = 10.f;
+	
 
-	// Worm properties
-	float jumpStrength = 300.f;
-	float movingSpeed = 2.f;
+	// === Game flow variables === //
 
-	// How many collisions occur in
-	// the hitbox of its "legs"
-	int footCollisions = 0;
+	StateStack wormStack; // controls flow of the states of the worm
+	State_ID currentState; // holds identifier of the current state
+	std::deque<Worm*>& wormQueue; // A turn-based sequence of movements inside which the worm is placed
+	int footCollisions = 0; // How many collisions occur in the hitbox of its "legs"
 
-	// Controls
+	// === Controls === //
 	sf::Keyboard::Key jumpButton = sf::Keyboard::Space;
 	sf::Keyboard::Key leftButton = sf::Keyboard::A;
 	sf::Keyboard::Key rightButton = sf::Keyboard::D;
 
-	// Statestack that controls flow of the states of the worm
-	StateStack wormStack;
+	// === Worm properties === //
 
-	// === Weapons === //
+	// Stats
+	float jumpStrength = 300.f;
+	float movingSpeed = 2.f;
+
+	// Weapons
 	using slot = std::pair<unsigned, std::unique_ptr<Weapon>>;
 	std::vector<slot> inventory;
 	slot* selectedWeapon;
 
-	// === Health === //
+	// Health
 	int health = 100;
 	int maxHealth = 100;
-	sf::RectangleShape healthBar;
-	float healthBarWidth = 60.f;
-	float healthBarHeight = 10.f;
 };
 
 #endif

@@ -15,6 +15,8 @@ public:
 	// to display only this part of the Texture
 	NodeSprite(const sf::Texture&, const sf::IntRect&);
 
+	sf::Vector2f getSpriteSize() const;
+
 private:
 	// Typically draw graphical object onto the screen using dynamic-linking
 	void drawThis(sf::RenderTarget&, sf::RenderStates) const override;

@@ -32,7 +32,7 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Ren
 	healthBar.setFillColor(sf::Color(0, 255, 0, 150)); // a little transparent green
 	healthBar.setOutlineThickness(2.f);
 	healthBar.setOutlineColor(sf::Color::Black);
-	healthBar.setPosition(0, -(getSpriteSize(wormSprite).y / 2.f + healthBarHeight / 2.f) - 5.f);
+	healthBar.setPosition(0, -(getWormSize().y / 2.f + healthBarHeight / 2.f) - 5.f);
 
 	// ======= Setup the Sprites ======= //
 
@@ -58,15 +58,15 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Ren
 	wormName.setCharacterSize(21);
 	const sf::FloatRect boundaries_of_name = wormName.getLocalBounds();
 	wormName.setOrigin(boundaries_of_name.width / 2.f, boundaries_of_name.height / 2.f);
-	wormName.setPosition(0, -(getSpriteSize(wormSprite).y / 2.f + healthBarHeight + wormName.getCharacterSize()) - 15.f);
+	wormName.setPosition(0, -(getWormSize().y / 2.f + healthBarHeight + wormName.getCharacterSize()) - 15.f);
 
 
 	// ======= Setup the Physical Body ======= //
 
 	// Defines its shape
 	b2PolygonShape Shape;
-	Shape.SetAsBox((getSpriteSize(wormSprite).x / 2.f) / B2_SCALAR, 
-				   (getSpriteSize(wormSprite).y / 2.f) / B2_SCALAR);
+	Shape.SetAsBox((getWormSize().x / 2.f) / B2_SCALAR, 
+				   (getWormSize().y / 2.f) / B2_SCALAR);
 
 	// Set physical properties of the Worm object
 	b2FixtureDef FixtureDef;
@@ -84,8 +84,8 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Ren
 	// It will register all collisions to we can
 	// know when the worm can jump, and when it is
 	// in the air.
-	Shape.SetAsBox((getSpriteSize(wormSprite).x /2.5f) / B2_SCALAR, (10 / 2.f) / B2_SCALAR, 
-					b2Vec2(0, (getSpriteSize(wormSprite).y / 2.f) / B2_SCALAR), 0);
+	Shape.SetAsBox((getWormSize().x /2.5f) / B2_SCALAR, (10 / 2.f) / B2_SCALAR, 
+					b2Vec2(0, (getWormSize().y / 2.f) / B2_SCALAR), 0);
 	FixtureDef.isSensor = true;
 
 	// It stores our object inside the userData pointer.
@@ -192,8 +192,8 @@ bool Worm::isDestroyed()
 	return false;
 }
 
-sf::Vector2f Worm::getSpriteSize(const sf::Sprite& spr)
+sf::Vector2f Worm::getWormSize() const
 {
-	return sf::Vector2f({spr.getTexture()->getSize().x * spr.getScale().x, 
-						 spr.getTexture()->getSize().y * spr.getScale().y});
+	return {wormSprite.getTexture()->getSize().x * wormSprite.getScale().x,
+		    wormSprite.getTexture()->getSize().y * wormSprite.getScale().y};
 }
