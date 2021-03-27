@@ -41,6 +41,10 @@ public:
 	 */
 	Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position, std::deque<Worm*>& wormQueue);
 
+	//Worm(World::Essentials, sf::Vector2f position, std::deque<Worm*>& wormQueue);
+
+
+	
 	/**
 	 * \brief Draws the worm to the given target
 	 * \param target where it should be drawn to
@@ -107,6 +111,7 @@ private:
 	// === Graphical variables === //
 	sf::Sprite wormSprite;
 	sf::Sprite ropeSprite;
+	sf::Texture& deadWorm;
 	sf::Text wormName;
 	
 	sf::RectangleShape healthBar;

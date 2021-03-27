@@ -11,7 +11,8 @@ World::World(sf::RenderWindow& window) :
 	worldWindow(window),
 	worldView(window.getDefaultView()),
 	b2_World(b2Vec2(0.f, 9.8f)),
-	debugDraw(window)
+	debugDraw(window),
+	essentials({&b2_World, &worldWindow, &worldTextures, &worldFonts})
 {
 	// Tells the physical world what to draw
 	b2_World.SetDebugDraw(&debugDraw);
@@ -139,9 +140,12 @@ void World::loadResources()
 {
 	worldTextures.storeResource(Textures_ID::WorldBackground, "Resources/Textures/World/background_texture.png");
 	worldTextures.getResourceReference(Textures_ID::WorldBackground).setRepeated(true);
+	worldTextures.storeResource(Textures_ID::Paper, "Resources/Textures/World/paper_texture.png");
+	worldTextures.getResourceReference(Textures_ID::Paper).setRepeated(true);
 
 	// will load some later
 	worldTextures.storeResource(Textures_ID::AnExemplaryWorm, "Resources/Textures/An_example_worm.png");
+	worldTextures.storeResource(Textures_ID::DeadWorm, "Resources/Textures/Dead_Worm.png");
 	worldTextures.storeResource(Textures_ID::Rope, "Resources/Textures/World/rope.png");
 	worldTextures.getResourceReference(Textures_ID::Rope).setRepeated(true);
 
@@ -162,21 +166,11 @@ void World::loadResources()
 void World::createWorld()
 {
 	// Just some world for testing purposes
-	std::unique_ptr<NodeRectangularPhysical> ground = std::make_unique<NodeRectangularPhysical>(
-		b2_World, sf::Vector2f(640, 50), sf::Vector2f(320, 460), sf::Color::Blue,
-		NodeRectangularPhysical::Physical_Types::Static_Type);
+	std::unique_ptr<NodePhysicalSprite> ground = std::make_unique<NodePhysicalSprite>(
+		b2_World, NodePhysicalBody::Physical_Types::Static_Type, worldTextures.getResourceReference(Textures_ID::Paper), sf::Vector2f(0, 640), sf::Vector2f{ 1000, 200 });
 	
-	std::unique_ptr<NodeRectangularPhysical> ramp = std::make_unique<NodeRectangularPhysical>(
-		b2_World, sf::Vector2f(640, 50), sf::Vector2f(320, 460), sf::Color::Green,
-		NodeRectangularPhysical::Physical_Types::Static_Type);
-	
-	std::unique_ptr<NodeRectangularPhysical> box = std::make_unique<NodeRectangularPhysical>(
-		b2_World, sf::Vector2f(20, 20), sf::Vector2f(100, 60), sf::Color::Red,
-		NodeRectangularPhysical::Physical_Types::Dynamic_Type);
-	
-	std::unique_ptr<NodeRectangularPhysical> box2 = std::make_unique<NodeRectangularPhysical>(
-		b2_World, sf::Vector2f(20, 20), sf::Vector2f(100, 0), sf::Color::Cyan,
-		NodeRectangularPhysical::Physical_Types::Dynamic_Type);
+	std::unique_ptr<NodePhysicalSprite> ramp = std::make_unique<NodePhysicalSprite>(
+		b2_World, NodePhysicalBody::Physical_Types::Static_Type, worldTextures.getResourceReference(Textures_ID::Paper), sf::Vector2f(20, 20), sf::Vector2f{1000, 20});
 	
 	std::unique_ptr<Worm> worm = std::make_unique<Worm>(b2_World, worldTextures, worldFonts, worldWindow, sf::Vector2f(300, 40),
 	                                                    wormQueue);
@@ -187,14 +181,12 @@ void World::createWorld()
 
 
 	ramp->setRotation(40);
-	rootScene.pinNode(std::move(ground));
 	rootScene.pinNode(std::move(ramp));
+	rootScene.pinNode(std::move(ground));
 
 	rootScene.pinNode(std::move(worm));
 	rootScene.pinNode(std::move(worm1));
 	rootScene.pinNode(std::move(worm2));
-	rootScene.pinNode(std::move(box));
-	rootScene.pinNode(std::move(box2));
 }
 
 void World::checkTurnTime()

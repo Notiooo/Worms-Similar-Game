@@ -102,17 +102,17 @@ private:
 	sf::Sprite backgroundSprite; //!< Game background
 
 
-	///**
-	// * \brief The most commonly used variables that are passed to game objects
-	// */
-	//struct Essentials
-	//{
-	//	b2World* worldPhysical;
-	//	sf::RenderWindow* worldWindow;
-	//	TextureManager* worldTextures;
-	//	FontManager* worldFonts;
-	//};
-	//Essentials essentials;
+	/**
+	 * \brief The most commonly used variables that are passed to game objects
+	 */
+	struct Essentials
+	{
+		b2World* worldPhysical;
+		sf::RenderWindow* worldWindow;
+		TextureManager* worldTextures;
+		FontManager* worldFonts;
+	};
+	Essentials essentials;
 };
 
 #endif

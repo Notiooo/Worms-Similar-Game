@@ -9,7 +9,7 @@
 
 
 Bullet::Bullet(b2World& world, sf::Vector2f position, sf::Texture& texture, float force, float range):
-	NodePhysicalSprite(world, Physical_Types::Dynamic_Type, position, texture),
+	NodePhysicalSprite(world, Physical_Types::Dynamic_Type, texture, position),
 	force(force),
 	range(range)
 {

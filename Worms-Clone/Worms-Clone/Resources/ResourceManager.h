@@ -34,6 +34,8 @@ public:
      */
 	const Resource& getResourceReference(Identifier id) const;
 
+    Resource getResourceCopy(Identifier id) const;
+
 	/**
 	 * \brief Assigns a given identifier to a specific resource retrieved from the specified file
 	 * \param id Identifier to which the resource is to be assigned
@@ -89,6 +91,25 @@ Resource& ResourceManager<Resource, Identifier>::getResourceReference(Identifier
 
 template <typename Resource, typename Identifier>
 const Resource& ResourceManager<Resource, Identifier>::getResourceReference(Identifier id) const
+{
+    // Tries to find a given Identifier, but throws an runtime_error
+    // if there is no such one in a map. Ignoring it may lead to
+    // errors as programmer probably does not know that it is valid
+    auto found_texture = ResourceMap.find(id);
+
+    //if (found_texture == ResourceMap.cend())
+    //    throw std::runtime_error("Resource with given ID does not exist: " + std::to_string(static_cast<int>(id)));
+
+    assert(found_texture != ResourceMap.cend()); // Resource with given ID does not exist
+    // I found this way better as probably end-user should not see such an errors that are
+    // meant for the programmer. This error as it is assert occurs only in _DEBUG, and
+    // for Release version of the program is optimized as it ignores this line.
+
+    return *found_texture->second;
+}
+
+template <typename Resource, typename Identifier>
+Resource ResourceManager<Resource, Identifier>::getResourceCopy(Identifier id) const
 {
     // Tries to find a given Identifier, but throws an runtime_error
     // if there is no such one in a map. Ignoring it may lead to

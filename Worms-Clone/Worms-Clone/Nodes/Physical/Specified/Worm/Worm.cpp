@@ -20,6 +20,7 @@
 Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position, std::deque<Worm*>& wormQueue):
 	NodePhysicalBody(world, Physical_Types::Dynamic_Type, position),
 	wormSprite(textures.getResourceReference(Textures_ID::AnExemplaryWorm)),
+	deadWorm(textures.getResourceReference(Textures_ID::DeadWorm)),
 	wormQueue(wormQueue)
 {
 
@@ -93,7 +94,6 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Ren
 	// as all object provided to the userData.pointer
 	// should be the NodeScene.
 	FixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(new Collision(CollideTypes::WormFoot, *this));
-	//FixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(static_cast<Collision*>(wormFootCollision));
 
 	// I create the fixture and attach it to the body
 	Body->CreateFixture(&FixtureDef);
@@ -106,7 +106,7 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Ren
 	wormStack.saveState<WormPlayState>(State_ID::WormPlayState, *this);
 	wormStack.saveState<WormWaitState>(State_ID::WormWaitState, *this);
 	wormStack.saveState<WormHitState>(State_ID::WormHitState, *this);
-	wormStack.saveState<WormInventoryState>(State_ID::WormInventoryState, *this, textures, window);
+	wormStack.saveState<WormInventoryState>(State_ID::WormInventoryState, *this, textures, fonts, window);
 
 	activateState(State_ID::WormWaitState);
 
@@ -184,7 +184,7 @@ bool Worm::isDestroyed()
 {
 	if (health <= 0)
 	{
-		std::unique_ptr<NodeRectangularPhysical> dead_body = std::make_unique<NodeRectangularPhysical>(*World, sf::Vector2f(20, 20), getPosition(), sf::Color::Green, NodePhysicalBody::Physical_Types::Dynamic_Type);
+		std::unique_ptr<NodePhysicalSprite> dead_body = std::make_unique<NodePhysicalSprite>(*World, Physical_Types::Dynamic_Type, deadWorm, getPosition());
 		getRootNode()->pinNode(std::move(dead_body));
 		removeSelfFromQueue();
 		return true;

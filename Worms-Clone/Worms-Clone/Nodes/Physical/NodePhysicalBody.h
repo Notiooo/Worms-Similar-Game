@@ -2,7 +2,6 @@
 #define NODEPHYSICALBODY_H
 
 #include "NodePhysicalBase.h"
-#include "box2d/box2d.h"
 
 class NodePhysicalBody : public NodePhysicalBase
 {

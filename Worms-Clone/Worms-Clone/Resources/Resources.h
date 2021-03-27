@@ -15,7 +15,9 @@ enum class Textures_ID
 {
 	// === ?? === //
 	WorldBackground,
+	Paper,
 	AnExemplaryWorm,
+	DeadWorm,
 	Rope,
 
 	// === TitleState === /
@@ -32,7 +34,6 @@ enum class Textures_ID
 
 	// === Inventory ===/
 	Inventory,
-
 };
 
 /**
