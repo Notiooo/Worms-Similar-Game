@@ -9,7 +9,7 @@
 
 
 Bullet::Bullet(b2World& world, sf::Vector2f position, sf::Texture& texture, float force, float range):
-	NodePhysicalSprite(world, NodePhysical::Physical_Types::Dynamic_Type, position, texture),
+	NodePhysicalSprite(world, Physical_Types::Dynamic_Type, position, texture),
 	force(force),
 	range(range)
 {
@@ -35,38 +35,23 @@ void Bullet::collision()
 	std::unique_ptr<Hitbox> hitbox = std::make_unique<Hitbox>(*World, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()), range, force);
 	this->getRootNode()->pinNode(std::move(hitbox));
 	
-	std::unique_ptr<NodePhysicalSpark> spark = std::make_unique<NodePhysicalSpark>(*World, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()));
+	std::unique_ptr<NodePhysicalSpark> spark = std::make_unique<NodePhysicalSpark>(*World, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()), sparkColor);
 	this->getRootNode()->pinNode(std::move(spark));
 
 }
 
-void Bullet::setDestroyed()
-{
-	collided = true;
-
-	// Those savings will help me to predict next positon of the bullet so I can in my game
-	// create a situation that bullet actually explodes inside the ground, not right above them
-	// It allows me to create a better vector of object being pushed
-
-	// Vector of direction to which the bullet is going
-	/*
-		collisionVector = b2VecToSfVector<sf::Vector2f>(Body->GetLinearVelocity());
-
-		// I change it to unit vector
-		collisionVector = collisionVector / std::sqrt(collisionVector.x * collisionVector.y);
-
-		// Point of collision
-		collisionPoint = b2VecToSfVector<sf::Vector2f>(Body->GetPosition());
-	*/
-
-}
 
 bool Bullet::isDestroyed()
 {
-	if (collided)
+	if (NodeScene::isDestroyed())
 	{
 		collision();
 		return true;
 	}
 	return false;
+}
+
+void Bullet::setSparkColor(const sf::Color& color)
+{
+	sparkColor = color;
 }

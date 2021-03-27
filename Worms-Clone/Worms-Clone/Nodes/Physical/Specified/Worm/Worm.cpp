@@ -18,7 +18,7 @@
 #include "Weapons/Cannon.h"
 
 Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position, std::deque<Worm*>& wormQueue):
-	NodePhysical(world, Physical_Types::Dynamic_Type, position),
+	NodePhysicalBody(world, Physical_Types::Dynamic_Type, position),
 	wormSprite(textures.getResourceReference(Textures_ID::AnExemplaryWorm)),
 	wormQueue(wormQueue)
 {
@@ -184,7 +184,7 @@ bool Worm::isDestroyed()
 {
 	if (health <= 0)
 	{
-		std::unique_ptr<NodeRectangularPhysical> dead_body = std::make_unique<NodeRectangularPhysical>(*World, sf::Vector2f(20, 20), getPosition(), sf::Color::Green, NodePhysical::Physical_Types::Dynamic_Type);
+		std::unique_ptr<NodeRectangularPhysical> dead_body = std::make_unique<NodeRectangularPhysical>(*World, sf::Vector2f(20, 20), getPosition(), sf::Color::Green, NodePhysicalBody::Physical_Types::Dynamic_Type);
 		getRootNode()->pinNode(std::move(dead_body));
 		removeSelfFromQueue();
 		return true;

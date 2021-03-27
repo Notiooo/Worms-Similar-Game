@@ -1,9 +1,12 @@
 #include "NodePhysicalSprite.h"
+
+#include <SFML/Graphics/Texture.hpp>
+
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/RenderStates.hpp"
 
 NodePhysicalSprite::NodePhysicalSprite(b2World& world, Physical_Types physical_type, sf::Vector2f position, sf::Texture& texture):
-	NodePhysical(world, physical_type, position),
+	NodePhysicalBody(world, physical_type, position),
 	sprite(texture)
 {
 	// set origin to the center
@@ -32,10 +35,4 @@ void NodePhysicalSprite::updateThis(sf::Time deltaTime)
 	updatePhysics();
 	//sprite.setPosition(b2VecToSfVector<sf::Vector2f>(Body->GetPosition()));
 	//sprite.setRotation(radiansToAngle(Body->GetAngle()));
-}
-
-void NodePhysicalSprite::setRotation(float angle)
-{
-	// Do not change position, just change the angle
-	Body->SetTransform(Body->GetPosition(), angleToRadians(angle));
 }

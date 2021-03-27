@@ -55,7 +55,7 @@ void WorldListener::BeginContact(b2Contact* contact)
 				const sf::Vector2f distance_from_explosion = (hitbox->getAbsolutePosition() - worm->getAbsolutePosition());
 
 				// Then I had to take under consideration that object closer (with smaller distance) should be pushed further
-				const float range_of_hitbox = hitbox->areaOfRange / 2.f / NodePhysical::B2_SCALAR;
+				const float range_of_hitbox = hitbox->areaOfRange / 2.f / NodePhysicalBody::B2_SCALAR;
 
 				sf::Vector2f force_vector;
 				force_vector.x = (distance_from_explosion.x) ? (range_of_hitbox - distance_from_explosion.x) : -(range_of_hitbox + distance_from_explosion.x);

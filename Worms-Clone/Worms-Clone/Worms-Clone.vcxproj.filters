@@ -93,9 +93,6 @@
     <ClCompile Include="DebugBox2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Nodes\Physical\NodePhysical.cpp">
-      <Filter>Source Files\Nodes\Physical</Filter>
-    </ClCompile>
     <ClCompile Include="States\Application_States\GameState.cpp">
       <Filter>Source Files\States\Application_States</Filter>
     </ClCompile>
@@ -150,6 +147,12 @@
     <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Cannon.cpp">
       <Filter>Source Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="Nodes\Physical\NodePhysicalBody.cpp">
+      <Filter>Source Files\Nodes\Physical</Filter>
+    </ClCompile>
+    <ClCompile Include="Nodes\Physical\NodePhysicalBase.cpp">
+      <Filter>Source Files\Nodes\Physical</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -184,9 +187,6 @@
     </ClInclude>
     <ClInclude Include="DebugBox2D.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Nodes\Physical\NodePhysical.h">
-      <Filter>Header Files\Nodes\Physical</Filter>
     </ClInclude>
     <ClInclude Include="Nodes\Physical\CollideTypes.h">
       <Filter>Header Files\Nodes\Physical</Filter>
@@ -244,6 +244,12 @@
     </ClInclude>
     <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Cannon.h">
       <Filter>Header Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Physical\NodePhysicalBase.h">
+      <Filter>Header Files\Nodes\Physical</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Physical\NodePhysicalBody.h">
+      <Filter>Header Files\Nodes\Physical</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

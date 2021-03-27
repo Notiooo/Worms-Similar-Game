@@ -150,7 +150,8 @@
     <ClCompile Include="Nodes\NodeScene.cpp" />
     <ClCompile Include="Nodes\NodeSprite.cpp" />
     <ClCompile Include="Nodes\NodeText.cpp" />
-    <ClCompile Include="Nodes\Physical\NodePhysical.cpp" />
+    <ClCompile Include="Nodes\Physical\NodePhysicalBody.cpp" />
+    <ClCompile Include="Nodes\Physical\NodePhysicalBase.cpp" />
     <ClCompile Include="Nodes\Physical\NodePhysicalSpark.cpp" />
     <ClCompile Include="Nodes\Physical\NodePhysicalSprite.cpp" />
     <ClCompile Include="Nodes\Physical\NodeRectangularPhysical.cpp" />
@@ -181,7 +182,8 @@
     <ClInclude Include="Nodes\NodeSprite.h" />
     <ClInclude Include="Nodes\NodeText.h" />
     <ClInclude Include="Nodes\Physical\CollideTypes.h" />
-    <ClInclude Include="Nodes\Physical\NodePhysical.h" />
+    <ClInclude Include="Nodes\Physical\NodePhysicalBody.h" />
+    <ClInclude Include="Nodes\Physical\NodePhysicalBase.h" />
     <ClInclude Include="Nodes\Physical\NodePhysicalSpark.h" />
     <ClInclude Include="Nodes\Physical\NodePhysicalSprite.h" />
     <ClInclude Include="Nodes\Physical\NodeRectangularPhysical.h" />

@@ -3,7 +3,7 @@
 
 
 Hitbox::Hitbox(b2World& world, sf::Vector2f position, float area_of_range, float max_dmg):
-	NodePhysical(world, NodePhysical::Physical_Types::Kinematic_Type, position),
+	NodePhysicalBody(world, NodePhysicalBody::Physical_Types::Kinematic_Type, position),
 	areaOfRange(area_of_range),
 	maxDmg(max_dmg)
 {

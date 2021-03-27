@@ -3,7 +3,7 @@
 #include "SFML/Graphics/RenderStates.hpp"
 
 NodeRectangularPhysical::NodeRectangularPhysical(b2World& world, sf::Vector2f size, sf::Vector2f position, sf::Color color, Physical_Types physical_type):
-	NodePhysical(world, physical_type, position),
+	NodePhysicalBody(world, physical_type, position),
 	rectangle(size)
 {
 	// set origin to the center
@@ -28,17 +28,4 @@ NodeRectangularPhysical::NodeRectangularPhysical(b2World& world, sf::Vector2f si
 void NodeRectangularPhysical::drawThis(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(rectangle, states);
-}
-
-void NodeRectangularPhysical::updateThis(sf::Time deltaTime)
-{
-	// Synchronize the drawable Rectangle with the physical object
-	rectangle.setPosition(b2VecToSfVector<sf::Vector2f>(Body->GetPosition()));
-	rectangle.setRotation(radiansToAngle(Body->GetAngle()));
-}
-
-void NodeRectangularPhysical::setRotation(float angle)
-{
-	// Do not change position, just change the angle
-	Body->SetTransform(Body->GetPosition(), angleToRadians(angle));
 }

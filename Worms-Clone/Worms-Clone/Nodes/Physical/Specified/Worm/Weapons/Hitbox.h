@@ -2,9 +2,9 @@
 #define HITBOX_H
 
 #include "box2d/box2d.h"
-#include "../../../NodePhysical.h"
+#include "../../../NodePhysicalBody.h"
 
-class Hitbox : public NodePhysical
+class Hitbox : public NodePhysicalBody
 {
 public:
 	friend class WorldListener;

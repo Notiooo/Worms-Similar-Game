@@ -10,21 +10,8 @@ Bazooka::Bazooka(b2World& world, TextureManager& textures):
 	Weapon(world, textures.getResourceReference(Textures_ID::Bazooka), textures.getResourceReference(Textures_ID::BazookaThumbnail), textures.getResourceReference(Textures_ID::BazookaBullet))
 {
 	weaponSprite.setPosition(getPosition().x, getPosition().y + 40);
-}
-
-void Bazooka::shoot(NodeScene* rootNode, sf::Vector2f position, sf::Vector2f force)
-{
-	std::unique_ptr<Bullet> bullet = std::make_unique<Bullet>(physicalWorld, position, bulletTexture, attackDmg, range);
-	bullet->applyForce(force);
-	rootNode->pinNode(std::move(bullet));
-}
-
-void Bazooka::drawThis(sf::RenderTarget& target, sf::RenderStates states) const
-{
-	target.draw(weaponSprite, states);
-}
-
-void Bazooka::updateThis(sf::Time deltaTime)
-{
+	setSparkColor(sf::Color::Blue);
+	setMaxDmg(80.f);
+	setRange(150.f);
 }
 

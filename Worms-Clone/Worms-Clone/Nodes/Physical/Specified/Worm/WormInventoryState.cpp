@@ -20,7 +20,7 @@ WormInventoryState::WormInventoryState(StateStack& stack, Worm& worm, TextureMan
 
 
 	// Initially set opacity of selected weapon to 30
-	worm.selectedWeapon->second->getThumnbailSprite().setColor(sf::Color(255, 255, 255, 30));
+	worm.selectedWeapon->second->getThumbnailSprite().setColor(sf::Color(255, 255, 255, 30));
 
 
 }
@@ -35,7 +35,7 @@ void WormInventoryState::draw(sf::RenderTarget& target, sf::RenderStates states)
 	target.draw(menuSprite);
 	for(auto& weapon : worm.inventory)
 	{
-		target.draw(weapon.second->getThumnbailSprite());
+		target.draw(weapon.second->getThumbnailSprite());
 	}
 }
 
@@ -59,7 +59,7 @@ bool WormInventoryState::update(sf::Time deltaTime)
 	float columnSpacing = 0;
 	for (auto& weapon : worm.inventory)
 	{
-		auto& thumbnail = weapon.second->getThumnbailSprite();
+		auto& thumbnail = weapon.second->getThumbnailSprite();
 
 		thumbnail.setPosition(globalBounds.left + padding + rowSpacing, globalBounds.top + padding + columnSpacing);
 		rowSpacing += spacing + thumbnail.getLocalBounds().width;
@@ -81,12 +81,12 @@ bool WormInventoryState::handleEvent(const sf::Event& event)
 		{
 			for (auto& weapon : worm.inventory)
 			{
-				auto& thumbnail = weapon.second->getThumnbailSprite();
+				auto& thumbnail = weapon.second->getThumbnailSprite();
 				if (thumbnail.getGlobalBounds().contains((position)))
 				{
 					if (&weapon != worm.selectedWeapon)
 					{
-						worm.selectedWeapon->second->getThumnbailSprite().setColor(sf::Color(255, 255, 255, 255));
+						worm.selectedWeapon->second->getThumbnailSprite().setColor(sf::Color(255, 255, 255, 255));
 						worm.selectedWeapon = &weapon;
 						thumbnail.setColor(sf::Color(255, 255, 255, 30));
 					}

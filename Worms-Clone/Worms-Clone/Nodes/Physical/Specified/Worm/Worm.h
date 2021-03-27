@@ -3,19 +3,20 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
-#include "../../NodePhysical.h"
+#include "../../NodePhysicalBody.h"
 #include "SFML/Graphics/Sprite.hpp"
 #include "../../../../Resources/Resources.h"
 #include "../../../../States/StateStack.h"
 #include "SFML/Graphics/Text.hpp"
 #include "Weapons/Weapon.h"
 #include "SFML/Graphics/RectangleShape.hpp"
+#include <deque>
 
 
 /**
  * \brief Worm object that can be controlled by the player
  */
-class Worm : public NodePhysical
+class Worm : public NodePhysicalBody
 {
 public:
 	// It may handle collisions of the worm

@@ -117,7 +117,7 @@ public:
 	 *
 	 * In comparison to draw() this function is not derived. It is used to update all pinnedNodes
 	 */
-	void update(sf::Time deltaTime);
+	virtual void update(sf::Time deltaTime);
 
 	/**
 	 * \brief Updates the logic of this node only
@@ -149,6 +149,21 @@ public:
 	 */
 	virtual void handleThisEvents(const sf::Event& event);
 
+
+	// ==== Tells if object should be destroyed ==== //
+
+	/**
+	 * \brief Checks whether the object is to be deleted
+	 * \return True if the object should be deleted, false if not
+	 */
+	virtual bool isDestroyed();
+
+
+	/**
+	 * \brief Indicates the object as ready for deletion
+	 */
+	virtual void setDestroyed();
+
 protected:
 	
 	/**
@@ -162,20 +177,6 @@ protected:
 	 * \return the root node
 	 */
 	const NodeScene* getRootNode() const;
-
-	// Tells if object should be destroyed
-	
-	/**
-	 * \brief Checks whether the object is to be deleted
-	 * \return True if the object should be deleted, false if not
-	 */
-	virtual bool isDestroyed();
-
-	
-	/**
-	 * \brief Indicates the object as ready for deletion
-	 */
-	virtual void setDestroyed();
 
 private:
 

@@ -80,26 +80,39 @@ private:
 	void moveScreenWithMouse();
 
 	// Variables used to control the turn-based game system.
-	sf::Clock roundClock; // Timer to control game time
-	sf::Time timePerTurn = sf::seconds(30); // Time allowed per turn
-	sf::Time timePerHide = sf::seconds(5); // Time allowed for escape during turn change
-	sf::Text roundTimeText; // Text that displays the current time on the screen
-	std::deque<Worm*> wormQueue; // Order in which particular worms can play
+	sf::Clock roundClock; //!< Timer to control game time
+	sf::Time timePerTurn = sf::seconds(30); //!< Time allowed per turn
+	sf::Time timePerHide = sf::seconds(5); //!< Time allowed for escape during turn change
+	sf::Text roundTimeText; //!< Text that displays the current time on the screen
+	std::deque<Worm*> wormQueue; //!< Order in which particular worms can play
 
 	// Managers & Windows
-	sf::RenderWindow& worldWindow;
+	sf::RenderWindow& worldWindow; //!< Window to which game world objects are displayed
 	sf::View worldView;
 	TextureManager worldTextures;
 	FontManager worldFonts;
 
 	// Scene-related objects
-	b2World b2_World; // Physical simulation of the game world
-	DebugBox2D debugDraw; // Object for displaying hitboxes
-	NodeScene rootScene; // Main stage of the game
-	WorldListener worldListener; // It carries all collisions inside the world
+	b2World b2_World; //!< Physical simulation of the game world
+	DebugBox2D debugDraw; //!< Object for displaying hitboxes
+	NodeScene rootScene; //!< Main stage of the game
+	WorldListener worldListener; //!< It carries all collisions inside the world
 
 	// Background
-	sf::Sprite backgroundSprite; // Game background
+	sf::Sprite backgroundSprite; //!< Game background
+
+
+	///**
+	// * \brief The most commonly used variables that are passed to game objects
+	// */
+	//struct Essentials
+	//{
+	//	b2World* worldPhysical;
+	//	sf::RenderWindow* worldWindow;
+	//	TextureManager* worldTextures;
+	//	FontManager* worldFonts;
+	//};
+	//Essentials essentials;
 };
 
 #endif

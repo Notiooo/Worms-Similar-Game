@@ -12,16 +12,19 @@ struct Bullet : public NodePhysicalSprite
 {
 	Bullet(b2World& world, sf::Vector2f position, sf::Texture& texture, float force, float range);
 
-	virtual void updateThis(sf::Time deltaTime) override;
+	void updateThis(sf::Time deltaTime) override;
 	virtual void collision();
-	virtual void setDestroyed();
 	bool isDestroyed() override final;
+
+	void setSparkColor(const sf::Color& color);
 
 
 private:
 	bool collided = false;
 	float force;
 	float range;
+
+	sf::Color sparkColor = sf::Color::White;
 
 	sf::Vector2f collisionPoint;
 	sf::Vector2f collisionVector;

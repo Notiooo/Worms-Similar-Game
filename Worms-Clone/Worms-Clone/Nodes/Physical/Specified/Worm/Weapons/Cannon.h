@@ -12,15 +12,6 @@ class Cannon : public Weapon
 {
 public:
 	Cannon(b2World& world, TextureManager& textures);
-
-	void shoot(NodeScene* rootNode, sf::Vector2f position, sf::Vector2f force) override;
-
-	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
-	void updateThis(sf::Time deltaTime) override;
-
-private:
-	float attackDmg = 150.f;
-	float range = 100.f;
 };
 
 #endif // !BAZOOKA_H

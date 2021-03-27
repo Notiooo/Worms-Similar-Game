@@ -170,8 +170,8 @@ private:
 	 */
 	struct Change
 	{
-		Perform operation;
-		State_ID stateID;
+		Perform operation; //!< Operation to be performed on the stack
+		State_ID stateID; //!< Identifier of the state that should be pushed on the stack
 	};
 
 
