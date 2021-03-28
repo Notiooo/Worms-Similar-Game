@@ -22,6 +22,10 @@ void Weapon::shoot(NodeScene* rootNode, sf::Vector2f position, sf::Vector2f forc
 	rootNode->pinNode(std::move(bullet));
 }
 
+void Weapon::activation(Worm& worm)
+{
+}
+
 void Weapon::setMaxDmg(float dmg)
 {
 	attackDmg = dmg;

@@ -1,6 +1,7 @@
 #ifndef WEAPON_H
 #define WEAPON_H
 
+#include "../Worm.h"
 #include "SFML/Window/Event.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 #include "box2d/box2d.h"
@@ -13,6 +14,8 @@ public:
 	Weapon(b2World& world, sf::Texture& weapon, sf::Texture& thumbnail, sf::Texture& bullet);
 
 	virtual void shoot(NodeScene* rootNode, sf::Vector2f position, sf::Vector2f force);
+
+	virtual void activation(Worm& worm);
 
 	// === Setters === //
 	/**
@@ -35,6 +38,19 @@ public:
 	 * \param color Colour of the particles
 	 */
 	void setSparkColor(const sf::Color& color);
+
+	/**
+	 * \brief Check if weapon should have shooting bar, or it should just activate with a button
+	 * \return True if it is activated with a button, False if it should have been loaded with shooting bar
+	 */
+	virtual bool isActivation() = 0;
+
+	
+	/**
+	 * \brief Check if usage of the weapon should end the round
+	 * \return True usage ends the round, false otherwise
+	 */
+	virtual bool isRoundEnding() = 0;
 
 	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void updateThis(sf::Time deltaTime) override;

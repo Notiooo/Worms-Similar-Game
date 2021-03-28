@@ -105,7 +105,7 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Ren
 	wormStack.saveState<WormHideState>(State_ID::WormHideState, *this);
 	wormStack.saveState<WormPlayState>(State_ID::WormPlayState, *this);
 	wormStack.saveState<WormWaitState>(State_ID::WormWaitState, *this);
-	wormStack.saveState<WormHitState>(State_ID::WormHitState, *this);
+	wormStack.saveState<WormHitState>(State_ID::WormHitState, *this, textures);
 	wormStack.saveState<WormInventoryState>(State_ID::WormInventoryState, *this, textures, fonts, window);
 
 	activateState(State_ID::WormWaitState);
@@ -113,7 +113,7 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Ren
 
 	// Test purposes
 	inventory.push_back(std::move(std::make_pair(99, std::make_unique<Bazooka>(world, textures))));
-	inventory.push_back(std::move(std::make_pair(99, std::make_unique<Cannon>(world, textures))));
+	inventory.push_back(std::move(std::make_pair(1, std::make_unique<Cannon>(world, textures))));
 	selectedWeapon = &inventory.front();
 	
 }
@@ -122,7 +122,10 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Ren
 void Worm::drawThis(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(ropeSprite, states);
-	target.draw(wormSprite, states);
+	
+	if(currentState != State_ID::WormHitState)
+		target.draw(wormSprite, states);
+	
 	target.draw(wormName, states);
 	target.draw(healthBar, states);
 	

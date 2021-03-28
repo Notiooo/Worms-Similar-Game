@@ -18,6 +18,7 @@ enum class Textures_ID
 	Paper,
 	AnExemplaryWorm,
 	DeadWorm,
+	HitWorm,
 	Rope,
 
 	// === TitleState === /

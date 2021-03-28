@@ -24,7 +24,7 @@ WormInventoryState::WormInventoryState(StateStack& stack, Worm& worm, TextureMan
 
 
 	// Prepare proper text to display amount of left bullets
-	amounts.resize(worm.inventory.size());
+	amounts.reserve(worm.inventory.size());
 	for (auto& weapon : worm.inventory)
 	{
 		sf::Text amountOfBullets;
@@ -79,7 +79,7 @@ bool WormInventoryState::update(sf::Time deltaTime)
 
 	// Display weapon thumbnails
 	
-	auto bullets_left = amounts.rbegin();
+	auto bullets_left = amounts.begin();
 	for (auto& weapon : worm.inventory)
 	{
 		auto& thumbnail = weapon.second->getThumbnailSprite();

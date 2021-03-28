@@ -13,3 +13,13 @@ Cannon::Cannon(b2World& world, TextureManager& textures):
 	setMaxDmg(300.f);
 	setRange(80.f);
 }
+
+bool Cannon::isActivation()
+{
+	return false;
+}
+
+bool Cannon::isRoundEnding()
+{
+	return true;
+}

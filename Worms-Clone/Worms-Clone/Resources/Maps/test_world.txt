@@ -1,0 +1,18 @@
+# 0 is an ID for worm
+# arguments are pos_x and pos_y
+
+0 80 20
+0 120 50
+0 220 50
+
+# 1 is an ID for Static Paper Block
+# arguments are pos_x, pos_y, width, height, rotation
+
+1 0 480 2000 200 0
+1 0 110 1000 50 40
+
+# 2 is an ID for Dynamic Paper Block
+# arguments are pos_x, pos_y, width, height, rotation
+
+2 400 -50 60 20 0
+2 470 -50 60 60 0

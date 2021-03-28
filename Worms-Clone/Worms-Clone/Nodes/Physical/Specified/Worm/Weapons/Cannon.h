@@ -12,6 +12,9 @@ class Cannon : public Weapon
 {
 public:
 	Cannon(b2World& world, TextureManager& textures);
+
+	bool isActivation() override;
+	bool isRoundEnding() override;
 };
 
 #endif // !BAZOOKA_H

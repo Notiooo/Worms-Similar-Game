@@ -1,10 +1,12 @@
 #include "World.h"
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "SFML/Graphics/RenderTarget.hpp"
-#include "Nodes/Physical/NodeRectangularPhysical.h"
 #include "Nodes/Physical/Specified/Worm/Worm.h"
 #include <memory>
 #include "Nodes/Physical/Specified/Worm/Weapons/Bullet.h"
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 
 World::World(sf::RenderWindow& window) :
@@ -17,10 +19,10 @@ World::World(sf::RenderWindow& window) :
 	// Tells the physical world what to draw
 	b2_World.SetDebugDraw(&debugDraw);
 
-	#ifdef _DEBUG
-		// set flag to draw the debug shapes
-		debugDraw.SetFlags(b2Draw::e_shapeBit);
-	#endif
+#ifdef _DEBUG
+	// set flag to draw the debug shapes
+	debugDraw.SetFlags(b2Draw::e_shapeBit);
+#endif
 
 
 	loadResources();
@@ -36,6 +38,7 @@ World::World(sf::RenderWindow& window) :
 	roundTimeText.setPosition(worldView.getSize().x / 2, roundTimeText.getCharacterSize());
 
 	wormQueue.front()->activateState(State_ID::WormPlayState);
+	
 	b2_World.SetContactListener(&worldListener);
 }
 
@@ -88,15 +91,27 @@ void World::processEvents(const sf::Event& event)
 		};
 
 		// Zoom in & out, and also scales the timer size
+		auto current_zoom = worldView.getSize().x;
+		auto maximum_zoom = worldWindow.getDefaultView().getSize().x * maxZoomFactor;
+		auto minimum_zoom = worldWindow.getDefaultView().getSize().x / maxZoomFactor;
+
+		// Zooming in
 		if (event.mouseWheelScroll.delta > 0)
 		{
-			roundTimeText.setScale(roundTimeText.getScale() / 1.1f);
-			worldView.zoom(1.f / 1.1f);
+			if (current_zoom > minimum_zoom)
+			{
+				roundTimeText.setScale(roundTimeText.getScale() / 1.1f);
+				worldView.zoom(1.f / 1.1f);
+			}
 		}
+		// Zooming out
 		else
 		{
-			roundTimeText.setScale(roundTimeText.getScale() * 1.1f);
-			worldView.zoom(1.1f);
+			if (current_zoom < maximum_zoom)
+			{
+				roundTimeText.setScale(roundTimeText.getScale() * 1.1f);
+				worldView.zoom(1.1f);
+			}
 		}
 
 		// Sets the new view to the window
@@ -114,7 +129,7 @@ void World::processEvents(const sf::Event& event)
 		// Fixes the posiiton of the timer
 		roundTimeText.setPosition(
 			worldWindow.mapPixelToCoords(sf::Vector2i(worldWindow.getSize().x / 2,
-			                                           roundTimeText.getCharacterSize())));
+			                                          roundTimeText.getCharacterSize())));
 
 		// Fixes the background
 		backgroundSprite.setTextureRect(sf::IntRect(0, 0, worldView.getSize().x, worldView.getSize().y));
@@ -145,6 +160,7 @@ void World::loadResources()
 
 	// will load some later
 	worldTextures.storeResource(Textures_ID::AnExemplaryWorm, "Resources/Textures/An_example_worm.png");
+	worldTextures.storeResource(Textures_ID::HitWorm, "Resources/Textures/Worm_Hit.png");
 	worldTextures.storeResource(Textures_ID::DeadWorm, "Resources/Textures/Dead_Worm.png");
 	worldTextures.storeResource(Textures_ID::Rope, "Resources/Textures/World/rope.png");
 	worldTextures.getResourceReference(Textures_ID::Rope).setRepeated(true);
@@ -159,34 +175,72 @@ void World::loadResources()
 	worldTextures.storeResource(Textures_ID::CannonBullet, "Resources/Textures/Weapons/cannon_bullet.png");
 
 
-
 	worldFonts.storeResource(Fonts_ID::ArialNarrow, "Resources/Fonts/arial_narrow.ttf");
 }
 
 void World::createWorld()
 {
-	// Just some world for testing purposes
-	std::unique_ptr<NodePhysicalSprite> ground = std::make_unique<NodePhysicalSprite>(
-		b2_World, NodePhysicalBody::Physical_Types::Static_Type, worldTextures.getResourceReference(Textures_ID::Paper), sf::Vector2f(0, 640), sf::Vector2f{ 1000, 200 });
-	
-	std::unique_ptr<NodePhysicalSprite> ramp = std::make_unique<NodePhysicalSprite>(
-		b2_World, NodePhysicalBody::Physical_Types::Static_Type, worldTextures.getResourceReference(Textures_ID::Paper), sf::Vector2f(20, 20), sf::Vector2f{1000, 20});
-	
-	std::unique_ptr<Worm> worm = std::make_unique<Worm>(b2_World, worldTextures, worldFonts, worldWindow, sf::Vector2f(300, 40),
-	                                                    wormQueue);
-	std::unique_ptr<Worm> worm1 = std::make_unique<Worm>(b2_World, worldTextures, worldFonts, worldWindow, sf::Vector2f(380, 40),
-	                                                     wormQueue);
-	std::unique_ptr<Worm> worm2 = std::make_unique<Worm>(b2_World, worldTextures, worldFonts, worldWindow, sf::Vector2f(440, 40),
-	                                                     wormQueue);
+	enum class WorldObjects
+	{
+		Worm,
+		StaticPaperBlock,
+		DynamicPaperBlock,
+	};
 
+	std::ifstream worldMap("Resources/Maps/main_world.txt");
+	std::string line;
+	while (std::getline(worldMap, line))
+	{
+		// This is made for comments in the world file
+		if (line[0] == '#' || line.empty())
+			continue;
 
-	ramp->setRotation(40);
-	rootScene.pinNode(std::move(ramp));
-	rootScene.pinNode(std::move(ground));
+		std::stringstream ss(line);
+		unsigned objectId;
+		ss >> objectId;
 
-	rootScene.pinNode(std::move(worm));
-	rootScene.pinNode(std::move(worm1));
-	rootScene.pinNode(std::move(worm2));
+		switch (objectId)
+		{
+		case static_cast<unsigned>(WorldObjects::Worm):
+			{
+				float positionX, positionY;
+				ss >> positionX >> positionY;
+				std::unique_ptr<Worm> worm = std::make_unique<Worm>(b2_World, worldTextures, worldFonts, worldWindow,
+				                                                    sf::Vector2f(positionX, positionY),
+				                                                    wormQueue);
+				rootScene.pinNode(std::move(worm));
+			}
+			break;
+
+		case static_cast<unsigned>(WorldObjects::StaticPaperBlock):
+			{
+				float positionX, positionY, width, height, rotation;
+				ss >> positionX >> positionY >> width >> height >> rotation;
+				std::unique_ptr<NodePhysicalSprite> staticPaperBlock = std::make_unique<NodePhysicalSprite>(
+					b2_World, NodePhysicalBody::Physical_Types::Static_Type,
+					worldTextures.getResourceReference(Textures_ID::Paper), sf::Vector2f(positionX, positionY),
+					sf::Vector2f{width, height});
+				if (rotation)
+					staticPaperBlock->setRotation(rotation);
+				rootScene.pinNode(std::move(staticPaperBlock));
+			}
+			break;
+
+		case static_cast<unsigned>(WorldObjects::DynamicPaperBlock):
+			{
+				float positionX, positionY, width, height, rotation;
+				ss >> positionX >> positionY >> width >> height >> rotation;
+				std::unique_ptr<NodePhysicalSprite> dynamicPaperBlock = std::make_unique<NodePhysicalSprite>(
+					b2_World, NodePhysicalBody::Physical_Types::Dynamic_Type,
+					worldTextures.getResourceReference(Textures_ID::Paper), sf::Vector2f(positionX, positionY),
+					sf::Vector2f{width, height});
+				if (rotation)
+					dynamicPaperBlock->setRotation(rotation);
+				rootScene.pinNode(std::move(dynamicPaperBlock));
+			}
+			break;
+		}
+	}
 }
 
 void World::checkTurnTime()
@@ -245,7 +299,7 @@ void World::moveScreenWithMouse()
 		// Fixes the posiiton of the timer
 		roundTimeText.setPosition(
 			worldWindow.mapPixelToCoords(sf::Vector2i(worldWindow.getSize().x / 2,
-			                                           roundTimeText.getCharacterSize())));
+			                                          roundTimeText.getCharacterSize())));
 
 		// Fixes the background
 		backgroundSprite.setPosition(worldWindow.mapPixelToCoords({0, 0}));

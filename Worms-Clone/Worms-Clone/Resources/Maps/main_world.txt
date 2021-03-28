@@ -1,0 +1,34 @@
+# 0 is an ID for worm
+# arguments are pos_x and pos_y
+
+# 1 is an ID for Static Paper Block
+# arguments are pos_x, pos_y, width, height, rotation
+
+# 2 is an ID for Dynamic Paper Block
+# arguments are pos_x, pos_y, width, height, rotation
+
+# Create a main ground
+1 0 800 2000 200 0
+
+# Create a platform
+1 0 580 200 40 0 
+
+# Create a worm on this platform
+0 0 100 
+
+# Create second platform with second worm
+1 600 280 200 40 0 
+0 600 100 
+
+# Create third platform with third worm
+1 300 100 200 80 0 
+0 300 -100 
+
+# Connection between first and second platform
+1 300 435 525 40 -37
+
+# Fourth platform
+1 1200 80 200 40 0 
+
+# Connection between second and fourth platform
+1 900 180 460 40 -26

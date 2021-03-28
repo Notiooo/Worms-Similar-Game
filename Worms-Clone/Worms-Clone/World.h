@@ -89,6 +89,7 @@ private:
 	// Managers & Windows
 	sf::RenderWindow& worldWindow; //!< Window to which game world objects are displayed
 	sf::View worldView;
+	float maxZoomFactor = 3.f;
 	TextureManager worldTextures;
 	FontManager worldFonts;
 

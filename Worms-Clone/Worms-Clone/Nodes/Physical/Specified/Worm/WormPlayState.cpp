@@ -31,8 +31,8 @@ void WormPlayState::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 	target.draw(triangularPointer, states);
 
 
-	// Draw the shooting bar only if player is shooting
-	if(currentShootingForce)
+	// Draw the shooting bar only if player is shooting (and if there is enough ammo)
+	if(currentShootingForce && worm.selectedWeapon->first)
 		target.draw(shootingBar, states);
 
 	states.transform *= worm.wormSprite.getTransform();
@@ -83,9 +83,20 @@ bool WormPlayState::handleEvent(const sf::Event& event)
 
 void WormPlayState::shoot()
 {
-	worm.selectedWeapon->second->shoot(worm.getRootNode(), worm.getAbsolutePosition() + triangularPointer.getPosition(), sf::Vector2f(direction * pointer.x * currentShootingForce, pointer.y * currentShootingForce));
-
-	worm.activateState(State_ID::WormHideState);
+	auto& bulletsLeft = worm.selectedWeapon->first;
+	auto& weapon = worm.selectedWeapon->second;
+	if (bulletsLeft)
+	{
+		if (!weapon->isActivation())
+			weapon->shoot(worm.getRootNode(), worm.getAbsolutePosition() + triangularPointer.getPosition(), sf::Vector2f(direction * pointer.x * currentShootingForce, pointer.y * currentShootingForce));
+		else
+			weapon->activation(*this);
+		
+		--bulletsLeft;
+		
+		if(weapon->isRoundEnding())
+			worm.activateState(State_ID::WormHideState);
+	}
 }
 
 void WormPlayState::handleShooting(const sf::Event& event)
