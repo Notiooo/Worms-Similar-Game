@@ -31,19 +31,14 @@ World::World(sf::RenderWindow& window) :
 	backgroundSprite.setTexture(worldTextures.getResourceReference(Textures_ID::WorldBackground));
 	backgroundSprite.setTextureRect(sf::IntRect(0, 0, worldView.getSize().x, worldView.getSize().y));
 
-
-	// Set up the round timer
-	roundTimeText.setFont(worldFonts.getResourceReference(Fonts_ID::ArialNarrow));
-	roundTimeText.setOutlineThickness(1.f);
-	roundTimeText.setPosition(worldView.getSize().x / 2, roundTimeText.getCharacterSize());
-
-	wormQueue.front()->activateState(State_ID::WormPlayState);
 	
 	b2_World.SetContactListener(&worldListener);
 }
 
 void World::update(sf::Time deltaTime)
 {
+	moveScreenWithMouse();
+	
 	// Update the Game World
 	rootScene.update(deltaTime);
 
@@ -53,9 +48,7 @@ void World::update(sf::Time deltaTime)
 	// Update the physical world
 	b2_World.Step(1 / 60.f, 8, 3);
 
-	checkTurnTime();
 
-	moveScreenWithMouse();
 }
 
 
@@ -72,9 +65,6 @@ void World::draw() const
 
 	// Draw World
 	worldWindow.draw(rootScene);
-
-	// Draw timer
-	worldWindow.draw(roundTimeText);
 
 	// Some hack as Box2D drawDebug is non-const
 	const_cast<World*>(this)->box2DdrawDebug();
@@ -99,19 +89,13 @@ void World::processEvents(const sf::Event& event)
 		if (event.mouseWheelScroll.delta > 0)
 		{
 			if (current_zoom > minimum_zoom)
-			{
-				roundTimeText.setScale(roundTimeText.getScale() / 1.1f);
 				worldView.zoom(1.f / 1.1f);
-			}
 		}
 		// Zooming out
 		else
 		{
 			if (current_zoom < maximum_zoom)
-			{
-				roundTimeText.setScale(roundTimeText.getScale() * 1.1f);
 				worldView.zoom(1.1f);
-			}
 		}
 
 		// Sets the new view to the window
@@ -125,11 +109,6 @@ void World::processEvents(const sf::Event& event)
 		// It moves the view, so it will "zoom into" the cursor, and not into the center of the screen
 		worldView.move({oldCoordinates - newCoordinates});
 		worldWindow.setView(worldView);
-
-		// Fixes the posiiton of the timer
-		roundTimeText.setPosition(
-			worldWindow.mapPixelToCoords(sf::Vector2i(worldWindow.getSize().x / 2,
-			                                          roundTimeText.getCharacterSize())));
 
 		// Fixes the background
 		backgroundSprite.setTextureRect(sf::IntRect(0, 0, worldView.getSize().x, worldView.getSize().y));
@@ -180,6 +159,22 @@ void World::loadResources()
 
 void World::createWorld()
 {
+	// Those layers helps to maintain order of drawing
+	for(std::size_t i = 0; i < static_cast<unsigned>(WorldLayers::Counter); ++i)
+	{
+		NodeScene::Node newLayer(new NodeScene());
+		worldLayers[i] = newLayer.get();
+		rootScene.pinNode(std::move(newLayer));
+	}
+
+	std::unique_ptr<GameplayManager> gameManager = std::make_unique<GameplayManager>(b2_World, worldTextures, worldFonts, worldWindow);
+	worldGameManager = gameManager.get();
+	//worldLayers[static_cast<unsigned>(WorldLayers::Foreground)]->pinNode(std::move(gameManager));
+	worldLayers[static_cast<unsigned>(WorldLayers::Foreground)]->pinNode(std::move(gameManager));
+
+	
+
+	// Object that the world can create
 	enum class WorldObjects
 	{
 		Worm,
@@ -187,6 +182,7 @@ void World::createWorld()
 		DynamicPaperBlock,
 	};
 
+	// Code that reads from the file particular commands and generates the world
 	std::ifstream worldMap("Resources/Maps/main_world.txt");
 	std::string line;
 	while (std::getline(worldMap, line))
@@ -205,10 +201,21 @@ void World::createWorld()
 			{
 				float positionX, positionY;
 				ss >> positionX >> positionY;
-				std::unique_ptr<Worm> worm = std::make_unique<Worm>(b2_World, worldTextures, worldFonts, worldWindow,
-				                                                    sf::Vector2f(positionX, positionY),
-				                                                    wormQueue);
-				rootScene.pinNode(std::move(worm));
+
+				// For testing purposes they are hardcoded here
+				static std::array<std::string, 8> wormNames{ "Steve", "John", "Patrick", "Caroline", "Julia", "Richard", "David", "Robert" };
+				static std::array<sf::Color, 3> wormColors{ sf::Color::Blue, sf::Color::Green, sf::Color::Yellow };
+
+				static auto wormNameIter = wormNames.cbegin();
+				if (wormNameIter == wormNames.cend())
+					wormNameIter = wormNames.cbegin();
+				
+				static auto wormColorsIter = wormColors.cbegin();
+				if (wormColorsIter == wormColors.cend())
+					wormColorsIter = wormColors.cbegin();
+
+				
+				worldGameManager->addWorm(std::string( *wormNameIter++ + " The Worm"), *wormColorsIter++, sf::Vector2f(positionX, positionY));
 			}
 			break;
 
@@ -216,13 +223,15 @@ void World::createWorld()
 			{
 				float positionX, positionY, width, height, rotation;
 				ss >> positionX >> positionY >> width >> height >> rotation;
+				
 				std::unique_ptr<NodePhysicalSprite> staticPaperBlock = std::make_unique<NodePhysicalSprite>(
 					b2_World, NodePhysicalBody::Physical_Types::Static_Type,
 					worldTextures.getResourceReference(Textures_ID::Paper), sf::Vector2f(positionX, positionY),
 					sf::Vector2f{width, height});
+				
 				if (rotation)
 					staticPaperBlock->setRotation(rotation);
-				rootScene.pinNode(std::move(staticPaperBlock));
+				worldLayers[static_cast<unsigned>(WorldLayers::Middle)]->pinNode(std::move(staticPaperBlock));
 			}
 			break;
 
@@ -230,59 +239,18 @@ void World::createWorld()
 			{
 				float positionX, positionY, width, height, rotation;
 				ss >> positionX >> positionY >> width >> height >> rotation;
+				
 				std::unique_ptr<NodePhysicalSprite> dynamicPaperBlock = std::make_unique<NodePhysicalSprite>(
 					b2_World, NodePhysicalBody::Physical_Types::Dynamic_Type,
 					worldTextures.getResourceReference(Textures_ID::Paper), sf::Vector2f(positionX, positionY),
 					sf::Vector2f{width, height});
+				
 				if (rotation)
 					dynamicPaperBlock->setRotation(rotation);
-				rootScene.pinNode(std::move(dynamicPaperBlock));
+				worldLayers[static_cast<unsigned>(WorldLayers::Middle)]->pinNode(std::move(dynamicPaperBlock));
 			}
 			break;
 		}
-	}
-}
-
-void World::checkTurnTime()
-{
-	// On default there is no HideState
-	static bool hideState = false;
-	if (!wormQueue.empty())
-	{
-		sf::Time timeElapsed = roundClock.getElapsedTime();
-
-		if (!hideState && ((timeElapsed > timePerTurn) || (wormQueue.front()->getCurrentState() ==
-			State_ID::WormHideState)))
-		{
-			// Redundancy
-			hideState = true;
-			if (!(wormQueue.front()->getCurrentState() == State_ID::WormHideState))
-				wormQueue.front()->activateState(State_ID::WormHideState);
-
-			roundTimeText.setFillColor(sf::Color::Red);
-			roundClock.restart();
-			timeElapsed = sf::Time::Zero;
-		}
-
-		if (hideState && (timeElapsed > timePerHide))
-		{
-			Worm* worm = std::move(wormQueue.front());
-			worm->activateState(State_ID::WormWaitState);
-			wormQueue.pop_front();
-			wormQueue.push_back(std::move(worm));
-			wormQueue.front()->activateState(State_ID::WormPlayState);
-
-			// Redundancy
-			hideState = false;
-			roundTimeText.setFillColor(sf::Color::White);
-			roundClock.restart();
-		}
-
-		// Wrong way to do this!!! Too many setString (need to optimize it later)
-		if (hideState)
-			roundTimeText.setString(std::to_string(static_cast<int>((timePerHide - timeElapsed).asSeconds())));
-		else
-			roundTimeText.setString(std::to_string(static_cast<int>((timePerTurn - timeElapsed).asSeconds())));
 	}
 }
 
@@ -295,11 +263,6 @@ void World::moveScreenWithMouse()
 		worldView.move(
 			worldWindow.mapPixelToCoords(oldMouseCoordinates) - worldWindow.mapPixelToCoords(newMouseCoordinates));
 		worldWindow.setView(worldView);
-
-		// Fixes the posiiton of the timer
-		roundTimeText.setPosition(
-			worldWindow.mapPixelToCoords(sf::Vector2i(worldWindow.getSize().x / 2,
-			                                          roundTimeText.getCharacterSize())));
 
 		// Fixes the background
 		backgroundSprite.setPosition(worldWindow.mapPixelToCoords({0, 0}));

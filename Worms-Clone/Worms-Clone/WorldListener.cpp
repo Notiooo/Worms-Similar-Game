@@ -5,7 +5,6 @@
 #include "Nodes/Physical/Specified/Worm/Weapons/Bullet.h"
 #include "Nodes/Physical/Specified/Worm/Weapons/Hitbox.h"
 
-
 void WorldListener::BeginContact(b2Contact* contact)
 {
 	// Takes information about the occured collision

@@ -39,11 +39,7 @@ public:
 	 * \param position Position in which the worm should appear
 	 * \param wormQueue Queue of movements in which the worm is placed
 	 */
-	Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position, std::deque<Worm*>& wormQueue);
-
-	//Worm(World::Essentials, sf::Vector2f position, std::deque<Worm*>& wormQueue);
-
-
+	Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position);
 	
 	/**
 	 * \brief Draws the worm to the given target
@@ -90,10 +86,10 @@ public:
 	 */
 	void setDamage(int dmg);
 
-	/**
-	 * \brief Removes the worm from the turn-based queue
-	 */
-	void removeSelfFromQueue();
+	void setName(const std::string& name);
+	std::string getName();
+
+	void setTeam(sf::Color teamColor);
 
 	/**
 	 * \brief Checks whether the worm is to be deleted
@@ -108,11 +104,14 @@ public:
 	sf::Vector2f getWormSize() const;
 
 private:
+	//#define SHOW_WORM_STATES
+	
 	// === Graphical variables === //
 	sf::Sprite wormSprite;
 	sf::Sprite ropeSprite;
 	sf::Texture& deadWorm;
 	sf::Text wormName;
+	sf::Color teamColor;
 	
 	sf::RectangleShape healthBar;
 	float healthBarWidth = 60.f;
@@ -123,7 +122,6 @@ private:
 
 	StateStack wormStack; // controls flow of the states of the worm
 	State_ID currentState; // holds identifier of the current state
-	std::deque<Worm*>& wormQueue; // A turn-based sequence of movements inside which the worm is placed
 	int footCollisions = 0; // How many collisions occur in the hitbox of its "legs"
 
 	// === Controls === //

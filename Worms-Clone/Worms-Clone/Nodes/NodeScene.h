@@ -53,6 +53,7 @@
 class NodeScene : public sf::Drawable, public sf::Transformable, private sf::NonCopyable
 {
 public:
+	friend class GameplayManager;
 	// It will use dynamic linking to it's
 	// derived classes
 	using Node = std::unique_ptr<NodeScene>;

@@ -6,9 +6,9 @@ WormHitState::WormHitState(StateStack& stack, Worm& worm, TextureManager& textur
 	hitWorm(textures.getResourceReference(Textures_ID::HitWorm)),
 	worm(worm)
 {
-	#ifdef _DEBUG
-		worm.wormName.setString("HitState");
-	#endif // DEBUG
+	#ifdef SHOW_WORM_STATES
+	worm.setName("HitState");
+	#endif 
 	
 	savedPosition = worm.Body->GetPosition();
 }

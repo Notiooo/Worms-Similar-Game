@@ -5,8 +5,8 @@ WormWaitState::WormWaitState(StateStack& stack, Worm& worm) :
 	State(stack),
 	worm(worm)
 {
-	#ifdef _DEBUG
-		worm.wormName.setString("WaitState");
+	#ifdef SHOW_WORM_STATES
+		worm.setName("WaitState");
 	#endif // DEBUG
 	worm.Body->SetLinearVelocity(b2Vec2(0.f, 0.f));
 	savedPosition = worm.Body->GetPosition();

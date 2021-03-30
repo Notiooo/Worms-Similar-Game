@@ -17,15 +17,15 @@
 #include "Weapons/Bazooka.h"
 #include "Weapons/Cannon.h"
 
-Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position, std::deque<Worm*>& wormQueue):
+Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position):
 	NodePhysicalBody(world, Physical_Types::Dynamic_Type, position),
 	wormSprite(textures.getResourceReference(Textures_ID::AnExemplaryWorm)),
-	deadWorm(textures.getResourceReference(Textures_ID::DeadWorm)),
-	wormQueue(wormQueue)
+	deadWorm(textures.getResourceReference(Textures_ID::DeadWorm))
 {
-
-	wormQueue.push_back(this);
-
+	wormName.setOutlineThickness(1.5f);
+	setName("Unnamed");
+	setTeam(sf::Color::White);
+	
 	// ======= Setup the healthbar ===== //
 	healthBar.setSize({ healthBarWidth, healthBarHeight });
 	sf::FloatRect boundaries_of_healthBar = healthBar.getLocalBounds();
@@ -178,9 +178,22 @@ void Worm::setDamage(int _dmg)
 	healthBar.setSize({ healthBarWidth * health/maxHealth, healthBarHeight });
 }
 
-void Worm::removeSelfFromQueue()
+void Worm::setName(const std::string& name)
 {
-	wormQueue.erase(std::find(wormQueue.begin(), wormQueue.end(), this));
+	wormName.setString(name);
+	wormName.setOrigin(wormName.getLocalBounds().width / 2.f, wormName.getLocalBounds().height / 2.f);
+}
+
+std::string Worm::getName()
+{
+	return wormName.getString();
+}
+
+void Worm::setTeam(sf::Color _teamColor)
+{
+	teamColor = _teamColor;
+	wormName.setFillColor(teamColor);
+	wormName.setOutlineColor(sf::Color(teamColor.r + 80, teamColor.g + 80, teamColor.b + 80, teamColor.a));
 }
 
 bool Worm::isDestroyed()
@@ -189,7 +202,6 @@ bool Worm::isDestroyed()
 	{
 		std::unique_ptr<NodePhysicalSprite> dead_body = std::make_unique<NodePhysicalSprite>(*World, Physical_Types::Dynamic_Type, deadWorm, getPosition());
 		getRootNode()->pinNode(std::move(dead_body));
-		removeSelfFromQueue();
 		return true;
 	}
 	return false;

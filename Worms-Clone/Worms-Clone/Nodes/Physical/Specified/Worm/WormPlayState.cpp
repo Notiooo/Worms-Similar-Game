@@ -7,17 +7,22 @@ WormPlayState::WormPlayState(StateStack& stack, Worm& worm) :
 	triangularPointer(10.f, 3),
 	shootingBar({ shootingBarSize, 10.f})
 {
-	#ifdef _DEBUG
-		worm.wormName.setString("PlayState");
+	#ifdef SHOW_WORM_STATES
+		worm.setName("PlayState");
 	#endif // DEBUG
 
+	const auto wormTeamColor = worm.teamColor;
+	
 	pointer = { std::sin(pointerAngle), std::cos(pointerAngle) };
-	triangularPointer.setFillColor(sf::Color::Red);
+	triangularPointer.setFillColor(wormTeamColor);
+	triangularPointer.setOutlineThickness(1.5f);
+	triangularPointer.setOutlineColor(sf::Color(wormTeamColor.r + 50, wormTeamColor.g + 50, wormTeamColor.b + 50, wormTeamColor.a));
 
 	shootingBar.setOrigin(shootingBar.getLocalBounds().width / 2.f, shootingBar.getLocalBounds().height / 2.f);
-	shootingBar.setFillColor(sf::Color::Black);
-	shootingBar.setOutlineThickness(1.f);
-	shootingBar.setOutlineColor(sf::Color::White);
+	shootingBar.setOutlineThickness(1.5f);
+	
+	shootingBar.setFillColor(wormTeamColor);
+	shootingBar.setOutlineColor(sf::Color(wormTeamColor.r + 50, wormTeamColor.g + 50, wormTeamColor.b + 50, wormTeamColor.a));
 
 	shootingBar.setPosition(0, -50.f);
 }
@@ -90,7 +95,7 @@ void WormPlayState::shoot()
 		if (!weapon->isActivation())
 			weapon->shoot(worm.getRootNode(), worm.getAbsolutePosition() + triangularPointer.getPosition(), sf::Vector2f(direction * pointer.x * currentShootingForce, pointer.y * currentShootingForce));
 		else
-			weapon->activation(*this);
+			weapon->activation(worm);
 		
 		--bulletsLeft;
 		

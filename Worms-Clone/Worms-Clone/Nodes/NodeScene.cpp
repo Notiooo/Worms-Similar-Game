@@ -41,14 +41,6 @@ NodeScene::Node NodeScene::unpinNode(const NodeScene& node_scene)
 	return stolen_node;
 }
 
-/*
-void NodeScene::unpinItself()
-{
-	parent->unpinNode(*this);
-	pinnedNodes.clear();
-}
-*/
-
 sf::Vector2f NodeScene::getAbsolutePosition() const
 {
 	// To do this we have to add all transforms till the top of the hierarchy.

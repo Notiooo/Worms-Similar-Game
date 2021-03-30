@@ -8,9 +8,9 @@ void WormHideState::draw() const
 WormHideState::WormHideState(StateStack& stack, Worm& worm) :
 	WormMoveableState(stack, worm)
 {
-	#ifdef _DEBUG
-	worm.wormName.setString("HideState");
-	#endif // DEBUG
+	#ifdef SHOW_WORM_STATES
+	worm.setName("HideState");
+	#endif
 }
 
 void WormHideState::draw(sf::RenderTarget&, sf::RenderStates) const

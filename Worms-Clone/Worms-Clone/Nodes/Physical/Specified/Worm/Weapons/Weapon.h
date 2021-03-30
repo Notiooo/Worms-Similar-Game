@@ -1,12 +1,12 @@
 #ifndef WEAPON_H
 #define WEAPON_H
 
-#include "../Worm.h"
-#include "SFML/Window/Event.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 #include "box2d/box2d.h"
 #include "../../../../NodeScene.h"
 #include "../../../../../Resources/Resources.h"
+
+class Worm;
 
 class Weapon : public NodeScene
 {

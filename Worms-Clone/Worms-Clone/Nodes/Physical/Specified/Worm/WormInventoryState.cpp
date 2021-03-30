@@ -11,6 +11,10 @@ WormInventoryState::WormInventoryState(StateStack& stack, Worm& worm, TextureMan
 	stopPosition(worm.getAbsolutePosition().y),
 	font(fonts.getResourceReference(Fonts_ID::ArialNarrow))
 {
+	#ifdef SHOW_WORM_STATES
+		worm.setName("InventoryState");
+	#endif
+	
 	// Set origin to center-bottom
 	menuSprite.setOrigin(menuSprite.getLocalBounds().width / 2.f, menuSprite.getLocalBounds().height);
 	menuSprite.setPosition(worm.getAbsolutePosition().x + menuSprite.getLocalBounds().width, (window.mapPixelToCoords({0, 0}).y - menuSprite.getLocalBounds().height));

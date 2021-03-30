@@ -1,6 +1,7 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+#include <array>
 #include <queue>
 #include <SFML/Graphics/Sprite.hpp>
 
@@ -15,6 +16,7 @@
 #include "SFML/Graphics/Text.hpp"
 
 #include "WorldListener.h"
+#include "Nodes/GameplayManager.h"
 
 
 class Worm;
@@ -69,22 +71,10 @@ private:
 	void createWorld();
 
 	/**
-	 * \brief It controls a turn-based game system.
-	 * Responsible for adhering to the rules of the game and its flow.
-	 */
-	void checkTurnTime();
-
-	/**
 	 * \brief Allows to move the camera inside the game with the mouse.
 	 */
 	void moveScreenWithMouse();
 
-	// Variables used to control the turn-based game system.
-	sf::Clock roundClock; //!< Timer to control game time
-	sf::Time timePerTurn = sf::seconds(30); //!< Time allowed per turn
-	sf::Time timePerHide = sf::seconds(5); //!< Time allowed for escape during turn change
-	sf::Text roundTimeText; //!< Text that displays the current time on the screen
-	std::deque<Worm*> wormQueue; //!< Order in which particular worms can play
 
 	// Managers & Windows
 	sf::RenderWindow& worldWindow; //!< Window to which game world objects are displayed
@@ -92,6 +82,7 @@ private:
 	float maxZoomFactor = 3.f;
 	TextureManager worldTextures;
 	FontManager worldFonts;
+	GameplayManager* worldGameManager;
 
 	// Scene-related objects
 	b2World b2_World; //!< Physical simulation of the game world
@@ -99,6 +90,19 @@ private:
 	NodeScene rootScene; //!< Main stage of the game
 	WorldListener worldListener; //!< It carries all collisions inside the world
 
+	/**
+	 * \brief Defines individual layers on which the image will be drawn
+	 */
+	enum class WorldLayers
+	{
+		Background,
+		Middle,
+		Foreground,
+		Counter, //!< After cast it is used to check size of the enum
+	};
+
+	std::array<NodeScene*, static_cast<unsigned>(WorldLayers::Counter)> worldLayers; //<! It helps to maintain displaying in proper order
+	
 	// Background
 	sf::Sprite backgroundSprite; //!< Game background
 

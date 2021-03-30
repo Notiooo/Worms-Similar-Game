@@ -153,6 +153,9 @@
     <ClCompile Include="Nodes\Physical\NodePhysicalBase.cpp">
       <Filter>Source Files\Nodes\Physical</Filter>
     </ClCompile>
+    <ClCompile Include="Nodes\GameplayManager.cpp">
+      <Filter>Source Files\Nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -250,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="Nodes\Physical\NodePhysicalBody.h">
       <Filter>Header Files\Nodes\Physical</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\GameplayManager.h">
+      <Filter>Header Files\Nodes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
