@@ -159,6 +159,8 @@
     <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Bazooka.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Bullet.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Cannon.cpp" />
+    <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Delayed_Bullet.cpp" />
+    <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Grenade.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Hitbox.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Weapon.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\Worm.cpp" />
@@ -192,6 +194,8 @@
     <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Bazooka.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Bullet.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Cannon.h" />
+    <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Delayed_Bullet.h" />
+    <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Grenade.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Hitbox.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Weapon.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\Worm.h" />

@@ -156,6 +156,12 @@
     <ClCompile Include="Nodes\GameplayManager.cpp">
       <Filter>Source Files\Nodes</Filter>
     </ClCompile>
+    <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Delayed_Bullet.cpp">
+      <Filter>Source Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Grenade.cpp">
+      <Filter>Source Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -256,6 +262,12 @@
     </ClInclude>
     <ClInclude Include="Nodes\GameplayManager.h">
       <Filter>Header Files\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Delayed_Bullet.h">
+      <Filter>Header Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Grenade.h">
+      <Filter>Header Files\Nodes\Physical\Specified\Worm\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

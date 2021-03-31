@@ -50,10 +50,11 @@ void GameplayManager::updateThis(sf::Time deltaTime)
 
 	checkTurnTime();
 	roundTimeText.setPosition(
-		window.mapPixelToCoords(sf::Vector2i(window.getSize().x / 2,
-		                                          roundTimeText.getCharacterSize())));
-
-	gameMessageText.setPosition(roundTimeText.getPosition() + sf::Vector2f(0, gameMessageText.getLocalBounds().height + 10));
+		window.mapPixelToCoords(sf::Vector2i(window.getSize().x / 2, roundTimeText.getLocalBounds().height)));
+	
+	gameMessageText.setPosition(
+		window.mapPixelToCoords(sf::Vector2i(window.getSize().x / 2, gameMessageText.getLocalBounds().height * 2.5)));
+	
 	if(gameMessageTime != sf::Time::Zero && gameMessageClock.getElapsedTime() > gameMessageTime)
 		setWorldMessage("");
 }
@@ -66,16 +67,18 @@ void GameplayManager::handleThisEvents(const sf::Event& event)
 	if (event.type == sf::Event::MouseWheelScrolled)
 	{
 
-		// Fixes the posiiton of the timer
+		// Fixes the position of the timer and world message
 		roundTimeText.setPosition(
 			window.mapPixelToCoords(sf::Vector2i(window.getSize().x / 2,
 			                                          roundTimeText.getCharacterSize())));
 
-		// Fixes size of the timer
-		auto current_scale = sf::Vector2f(window.getView().getSize().x / window.getDefaultView().getSize().x,
+		// Current zoom of the window
+		auto currentScale = sf::Vector2f(window.getView().getSize().x / window.getDefaultView().getSize().x,
 												window.getView().getSize().y / window.getDefaultView().getSize().y);
-		roundTimeText.setScale(current_scale);
-		gameMessageText.setScale(current_scale);
+
+		// Updates all fixed text to stay at proper scale
+		roundTimeText.setScale(currentScale);
+		gameMessageText.setScale(currentScale);
 	}
 }
 
@@ -101,24 +104,46 @@ void GameplayManager::setWorldMessage(const std::string& text, sf::Color color, 
 	gameMessageClock.restart();
 }
 
+void GameplayManager::addTime(sf::Time time)
+{
+	additionalTime = time;
+}
+
+NodeScene* GameplayManager::getRootNode()
+{
+	return this;
+}
+
+const NodeScene* GameplayManager::getRootNode() const
+{
+	return this;
+}
+
 void GameplayManager::checkTurnTime()
 {
-	// On default there is no HideState
+	// On default the game should stay with PlayState for some worm
 	static bool hideState = false;
+
+	// The game should go on if there are worms in the queue
 	if (!wormQueue.empty())
 	{
 		sf::Time timeElapsed = roundClock.getElapsedTime();
 
-		if (!hideState && ((timeElapsed > timePerTurn) || (wormQueue.front()->getCurrentState() ==
+		// The game should allow to play another worm if
+		// a) The time has passed
+		// b) The current worm shoot, and now is in the HideState
+		if (!hideState && ((timeElapsed > timePerTurn + additionalTime) || (wormQueue.front()->getCurrentState() ==
 			State_ID::WormHideState)))
 		{
-			// Redundancy
 			hideState = true;
+			additionalTime = sf::Time::Zero;
 			setWorldMessage("HIDE!", sf::Color::Red, timePerHide);
-			
-			if (!(wormQueue.front()->getCurrentState() == State_ID::WormHideState))
+
+			// If player did not shoot, then switch him to HideState
+			if (wormQueue.front()->getCurrentState() == State_ID::WormPlayState)
 				wormQueue.front()->activateState(State_ID::WormHideState);
 
+			// Red color stresses the player
 			roundTimeText.setFillColor(sf::Color::Red);
 			roundClock.restart();
 			timeElapsed = sf::Time::Zero;
@@ -126,6 +151,12 @@ void GameplayManager::checkTurnTime()
 
 		if (hideState && (timeElapsed > timePerHide))
 		{
+			hideState = false;
+			additionalTime = sf::Time::Zero;
+			
+			// If the HideState is over I need to change the current
+			// worm state to WaitState, and move it at the back of the queue.
+			// Next switch the worm at the front to the PlayState
 			std::unique_ptr<Worm> worm = std::move(wormQueue.front());
 			worm->activateState(State_ID::WormWaitState);
 			wormQueue.pop_front();
@@ -133,18 +164,17 @@ void GameplayManager::checkTurnTime()
 			wormQueue.front()->activateState(State_ID::WormPlayState);
 			setWorldMessage("Lets go, " + wormQueue.front()->getName() + "!", sf::Color::White, sf::seconds(2));
 
-			// Redundancy
-			hideState = false;
+			// Changes Red to White Color
 			roundTimeText.setFillColor(sf::Color::White);
 			roundClock.restart();
 		}
 
-		// Wrong way to do this!!! Too many setString (need to optimize it later)
+		// Displays time in decreasing order
 		sf::Time timeDisplay;
 		if (hideState)
-			timeDisplay = timePerHide - timeElapsed;
+			timeDisplay = timePerHide + additionalTime - timeElapsed;
 		else
-			timeDisplay = timePerTurn - timeElapsed;
+			timeDisplay = timePerTurn + additionalTime - timeElapsed;
 		
 		roundTimeText.setString(std::to_string(static_cast<int>(timeDisplay.asSeconds())));
 		roundTimeText.setOrigin(roundTimeText.getLocalBounds().width / 2.f, roundTimeText.getLocalBounds().height / 2.f);

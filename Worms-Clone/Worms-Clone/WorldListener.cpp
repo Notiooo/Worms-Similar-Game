@@ -35,7 +35,7 @@ void WorldListener::BeginContact(b2Contact* contact)
 		case CollideTypes::Bullet:
 		{
 			if (Bullet* bullet = dynamic_cast<Bullet*>(node->object))
-				bullet->setDestroyed();
+				bullet->collision();
 			break;
 		}
 

@@ -16,6 +16,8 @@
 #include "WormInventoryState.h"
 #include "Weapons/Bazooka.h"
 #include "Weapons/Cannon.h"
+#include "Weapons/Grenade.h"
+
 
 Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position):
 	NodePhysicalBody(world, Physical_Types::Dynamic_Type, position),
@@ -114,6 +116,7 @@ Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::Ren
 	// Test purposes
 	inventory.push_back(std::move(std::make_pair(99, std::make_unique<Bazooka>(world, textures))));
 	inventory.push_back(std::move(std::make_pair(1, std::make_unique<Cannon>(world, textures))));
+	inventory.push_back(std::move(std::make_pair(1, std::make_unique<Grenade>(world, textures, fonts))));
 	selectedWeapon = &inventory.front();
 	
 }

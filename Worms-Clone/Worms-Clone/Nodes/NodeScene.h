@@ -171,13 +171,13 @@ protected:
 	 * \brief Recursively finds the root node
 	 * \return the root node
 	 */
-	NodeScene* getRootNode();
+	virtual NodeScene* getRootNode();
 
 	/**
 	 * \brief Recursively finds the root node
 	 * \return the root node
 	 */
-	const NodeScene* getRootNode() const;
+	virtual const NodeScene* getRootNode() const;
 
 private:
 

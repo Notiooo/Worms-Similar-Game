@@ -17,7 +17,8 @@ WormPlayState::WormPlayState(StateStack& stack, Worm& worm) :
 	triangularPointer.setFillColor(wormTeamColor);
 	triangularPointer.setOutlineThickness(1.5f);
 	triangularPointer.setOutlineColor(sf::Color(wormTeamColor.r + 50, wormTeamColor.g + 50, wormTeamColor.b + 50, wormTeamColor.a));
-
+	triangularPointer.setOrigin(triangularPointer.getLocalBounds().width / 2.f, triangularPointer.getLocalBounds().height / 2.f);
+	
 	shootingBar.setOrigin(shootingBar.getLocalBounds().width / 2.f, shootingBar.getLocalBounds().height / 2.f);
 	shootingBar.setOutlineThickness(1.5f);
 	
@@ -101,6 +102,9 @@ void WormPlayState::shoot()
 		
 		if(weapon->isRoundEnding())
 			worm.activateState(State_ID::WormHideState);
+
+		//if (GameplayManager* gameplayManager = dynamic_cast<GameplayManager*>(rootNode))
+		//	gameplayManager.addTime()
 	}
 }
 

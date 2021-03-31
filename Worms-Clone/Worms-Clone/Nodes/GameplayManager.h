@@ -56,6 +56,12 @@ public:
 	 */
 	void setWorldMessage(const std::string& text, sf::Color color = sf::Color::White, sf::Time time = sf::Time::Zero);
 
+	void addTime(sf::Time time);
+
+	NodeScene* getRootNode() override;
+
+	const NodeScene* getRootNode() const override;
+
 private:
 	/**
 	 * \brief It controls a turn-based game system.
@@ -70,14 +76,21 @@ private:
 	sf::RenderWindow& window;
 	
 	// Variables used to control the turn-based game system.
+
+	// ==== Timer ==== //
 	sf::Clock roundClock; //!< Timer to control game time
 	sf::Time timePerTurn = sf::seconds(30); //!< Time allowed per turn
 	sf::Time timePerHide = sf::seconds(5); //!< Time allowed for escape during turn change
 	sf::Text roundTimeText; //!< Text that displays the current time on the screen
+
+	// === Game Message === //
 	sf::Text gameMessageText; //!< Text that displays below the timer
 	sf::Clock gameMessageClock; //!< Used to measure the time at which text should disappear
 	sf::Time gameMessageTime; //!< Time for how long the game message should appear on the screen. Zero if infinitely many time.
+
+	
 	std::deque<std::unique_ptr<Worm>> wormQueue; //!< Order in which particular worms can play
+	sf::Time additionalTime = sf::Time::Zero;
 };
 
 

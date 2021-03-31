@@ -27,28 +27,30 @@ void Bullet::updateThis(sf::Time deltaTime)
 	Body->SetTransform(Body->GetWorldCenter(), std::atan2(Body->GetLinearVelocity().y, Body->GetLinearVelocity().x));
 }
 
-void Bullet::collision()
-{
-	// This line will calculate the position of explosion to be more accurate.
-	//sf::Vector2f explosion_point = collisionPoint + sf::Vector2f(sprite.getLocalBounds().width * collisionVector.x, sprite.getLocalBounds().height * collisionVector.y);
-
-	std::unique_ptr<Hitbox> hitbox = std::make_unique<Hitbox>(*World, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()), range, force);
-	this->getRootNode()->pinNode(std::move(hitbox));
-	
-	std::unique_ptr<NodePhysicalSpark> spark = std::make_unique<NodePhysicalSpark>(*World, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()), sparkColor);
-	this->getRootNode()->pinNode(std::move(spark));
-
-}
 
 
 bool Bullet::isDestroyed()
 {
 	if (NodeScene::isDestroyed())
 	{
-		collision();
+		explode();
 		return true;
 	}
 	return false;
+}
+
+void Bullet::explode()
+{
+	std::unique_ptr<Hitbox> hitbox = std::make_unique<Hitbox>(*World, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()), range, force);
+	this->getRootNode()->pinNode(std::move(hitbox));
+
+	std::unique_ptr<NodePhysicalSpark> spark = std::make_unique<NodePhysicalSpark>(*World, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()), sparkColor);
+	this->getRootNode()->pinNode(std::move(spark));
+}
+
+void Bullet::collision()
+{
+	setDestroyed();
 }
 
 void Bullet::setSparkColor(const sf::Color& color)

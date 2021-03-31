@@ -132,6 +132,23 @@ void World::processEvents(const sf::Event& event)
 
 void World::loadResources()
 {
+
+	// ==== Weapons ==== //
+	// Bazooka
+	worldTextures.storeResource(Textures_ID::Bazooka, "Resources/Textures/Weapons/bazooka.png");
+	worldTextures.storeResource(Textures_ID::BazookaThumbnail, "Resources/Textures/Weapons/bazooka_thumbnail.png");
+	worldTextures.storeResource(Textures_ID::BazookaBullet, "Resources/Textures/Weapons/bazooka_bullet.png");
+
+	// Cannon
+	worldTextures.storeResource(Textures_ID::Cannon, "Resources/Textures/Weapons/cannon.png");
+	worldTextures.storeResource(Textures_ID::CannonThumbnail, "Resources/Textures/Weapons/cannon_thumbnail.png");
+	worldTextures.storeResource(Textures_ID::CannonBullet, "Resources/Textures/Weapons/cannon_bullet.png");
+
+	// Grenade
+	worldTextures.storeResource(Textures_ID::Grenade, "Resources/Textures/Weapons/grenade.png");
+	worldTextures.storeResource(Textures_ID::GrenadeThumbnail, "Resources/Textures/Weapons/grenade_thumbnail.png");
+	worldTextures.storeResource(Textures_ID::GrenadeBullet, "Resources/Textures/Weapons/grenade_bullet.png");
+	
 	worldTextures.storeResource(Textures_ID::WorldBackground, "Resources/Textures/World/background_texture.png");
 	worldTextures.getResourceReference(Textures_ID::WorldBackground).setRepeated(true);
 	worldTextures.storeResource(Textures_ID::Paper, "Resources/Textures/World/paper_texture.png");
@@ -144,14 +161,8 @@ void World::loadResources()
 	worldTextures.storeResource(Textures_ID::Rope, "Resources/Textures/World/rope.png");
 	worldTextures.getResourceReference(Textures_ID::Rope).setRepeated(true);
 
-	worldTextures.storeResource(Textures_ID::Bazooka, "Resources/Textures/Weapons/bazooka.png");
-	worldTextures.storeResource(Textures_ID::BazookaThumbnail, "Resources/Textures/Weapons/bazooka_thumbnail.png");
-	worldTextures.storeResource(Textures_ID::BazookaBullet, "Resources/Textures/Weapons/bazooka_bullet.png");
 	worldTextures.storeResource(Textures_ID::Inventory, "Resources/Textures/Weapons/Inventory/background.png");
 
-	worldTextures.storeResource(Textures_ID::Cannon, "Resources/Textures/Weapons/cannon.png");
-	worldTextures.storeResource(Textures_ID::CannonThumbnail, "Resources/Textures/Weapons/cannon_thumbnail.png");
-	worldTextures.storeResource(Textures_ID::CannonBullet, "Resources/Textures/Weapons/cannon_bullet.png");
 
 
 	worldFonts.storeResource(Fonts_ID::ArialNarrow, "Resources/Fonts/arial_narrow.ttf");
