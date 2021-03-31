@@ -1,8 +1,10 @@
 #include "GameplayManager.h"
 
+#include "Physical/Specified/Worm/Weapons/Bullet.h"
+#include <iostream>
 
 GameplayManager::GameplayManager(b2World& _physicalWorld, TextureManager& _textures, FontManager& _fonts,
-	sf::RenderWindow& _window):
+                                 sf::RenderWindow& _window) :
 	physicalWorld(_physicalWorld),
 	textures(_textures),
 	fonts(_fonts),
@@ -36,7 +38,7 @@ void GameplayManager::addWorm(const std::string& name, sf::Color teamColor, sf::
 
 void GameplayManager::drawThis(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	for(auto beg = wormQueue.crbegin(), end = wormQueue.crend(); beg != end; ++beg)
+	for (auto beg = wormQueue.crbegin(), end = wormQueue.crend(); beg != end; ++beg)
 		(*beg)->draw(target, states);
 
 	target.draw(roundTimeText);
@@ -51,11 +53,11 @@ void GameplayManager::updateThis(sf::Time deltaTime)
 	checkTurnTime();
 	roundTimeText.setPosition(
 		window.mapPixelToCoords(sf::Vector2i(window.getSize().x / 2, roundTimeText.getLocalBounds().height)));
-	
+
 	gameMessageText.setPosition(
 		window.mapPixelToCoords(sf::Vector2i(window.getSize().x / 2, gameMessageText.getLocalBounds().height * 2.5)));
-	
-	if(gameMessageTime != sf::Time::Zero && gameMessageClock.getElapsedTime() > gameMessageTime)
+
+	if (gameMessageTime != sf::Time::Zero && gameMessageClock.getElapsedTime() > gameMessageTime)
 		setWorldMessage("");
 }
 
@@ -70,11 +72,11 @@ void GameplayManager::handleThisEvents(const sf::Event& event)
 		// Fixes the position of the timer and world message
 		roundTimeText.setPosition(
 			window.mapPixelToCoords(sf::Vector2i(window.getSize().x / 2,
-			                                          roundTimeText.getCharacterSize())));
+				roundTimeText.getCharacterSize())));
 
 		// Current zoom of the window
 		auto currentScale = sf::Vector2f(window.getView().getSize().x / window.getDefaultView().getSize().x,
-												window.getView().getSize().y / window.getDefaultView().getSize().y);
+			window.getView().getSize().y / window.getDefaultView().getSize().y);
 
 		// Updates all fixed text to stay at proper scale
 		roundTimeText.setScale(currentScale);
@@ -107,6 +109,14 @@ void GameplayManager::setWorldMessage(const std::string& text, sf::Color color, 
 void GameplayManager::addTime(sf::Time time)
 {
 	additionalTime = time;
+}
+
+bool GameplayManager::anyBullet()
+{
+	return std::any_of(pinnedNodes.cbegin(), pinnedNodes.cend(), [](const NodeScene::Node& node)
+	{
+		return static_cast<bool>(dynamic_cast<Bullet*>(node.get()));
+	});
 }
 
 NodeScene* GameplayManager::getRootNode()
@@ -149,11 +159,11 @@ void GameplayManager::checkTurnTime()
 			timeElapsed = sf::Time::Zero;
 		}
 
-		if (hideState && (timeElapsed > timePerHide))
+		if (hideState && (timeElapsed > timePerHide) && !anyBullet())
 		{
 			hideState = false;
 			additionalTime = sf::Time::Zero;
-			
+
 			// If the HideState is over I need to change the current
 			// worm state to WaitState, and move it at the back of the queue.
 			// Next switch the worm at the front to the PlayState
@@ -170,13 +180,10 @@ void GameplayManager::checkTurnTime()
 		}
 
 		// Displays time in decreasing order
-		sf::Time timeDisplay;
-		if (hideState)
-			timeDisplay = timePerHide + additionalTime - timeElapsed;
-		else
-			timeDisplay = timePerTurn + additionalTime - timeElapsed;
-		
-		roundTimeText.setString(std::to_string(static_cast<int>(timeDisplay.asSeconds())));
+		sf::Time timeDisplay = ((hideState) ? timePerHide : timePerTurn);
+		timeDisplay = timeDisplay + additionalTime - timeElapsed;
+		if(roundTimeText.getString() != "0")
+			roundTimeText.setString(std::to_string(static_cast<int>(timeDisplay.asSeconds())));
 		roundTimeText.setOrigin(roundTimeText.getLocalBounds().width / 2.f, roundTimeText.getLocalBounds().height / 2.f);
 	}
 }

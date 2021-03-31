@@ -2,7 +2,6 @@
 #define WORLD_H
 
 #include <array>
-#include <queue>
 #include <SFML/Graphics/Sprite.hpp>
 
 
@@ -13,7 +12,6 @@
 
 #include "Resources/Resources.h"
 #include "Nodes/NodeScene.h"
-#include "SFML/Graphics/Text.hpp"
 
 #include "WorldListener.h"
 #include "Nodes/GameplayManager.h"

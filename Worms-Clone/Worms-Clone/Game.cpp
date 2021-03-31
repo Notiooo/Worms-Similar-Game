@@ -2,6 +2,7 @@
 #include "States/States.h"
 #include "States/Application_States/GameState.h"
 #include "States/Application_States/TitleState.h"
+#include "States/Application_States/MenuState.h"
 
 const sf::Time Game::TIME_PER_FRAME = sf::seconds(1.f / 60.f);
 
@@ -13,6 +14,7 @@ Game::Game():
 
 	// Setup all application-flow states
 	appStack.saveState<TitleState>(State_ID::TitleState, gameWindow, fonts);
+	appStack.saveState<MenuState>(State_ID::MenuState, fonts, gameWindow);
 	appStack.saveState<GameState>(State_ID::GameState, gameWindow);
 
 
@@ -70,6 +72,7 @@ void Game::render()
 
 	// draw the application
 	appStack.draw();
+	appStack.draw(gameWindow, sf::Transform::Identity);
 
 	// display to the window
 	gameWindow.display();

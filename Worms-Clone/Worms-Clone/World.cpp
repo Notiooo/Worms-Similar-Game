@@ -1,5 +1,4 @@
 #include "World.h"
-#include "SFML/Graphics/RectangleShape.hpp"
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "Nodes/Physical/Specified/Worm/Worm.h"
 #include <memory>
@@ -47,8 +46,6 @@ void World::update(sf::Time deltaTime)
 
 	// Update the physical world
 	b2_World.Step(1 / 60.f, 8, 3);
-
-
 }
 
 

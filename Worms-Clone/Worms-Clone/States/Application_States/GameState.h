@@ -11,11 +11,11 @@ class GameState : public State
 public:
 	GameState(StateStack& stack, sf::RenderWindow& window);
 
-	virtual void draw() const override;
-	virtual void draw(sf::RenderTarget&, sf::RenderStates) const override;
+	void draw() const override;
+	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
-	virtual bool update(sf::Time) override;
-	virtual bool handleEvent(const sf::Event& event) override;
+	bool update(sf::Time) override;
+	bool handleEvent(const sf::Event& event) override;
 
 private:
 	World gameWorld;

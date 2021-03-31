@@ -56,10 +56,28 @@ public:
 	 */
 	void setWorldMessage(const std::string& text, sf::Color color = sf::Color::White, sf::Time time = sf::Time::Zero);
 
+	/**
+	 * \brief Adds an additional amount of time to the current state.
+	 * \param time time to add
+	 */
 	void addTime(sf::Time time);
 
+	/**
+	 * \brief It checks if any bullet has been pinned to the scene.
+	 * \return True if there is any bullet pinned to the scene, false otherwise
+	 */
+	bool anyBullet();
+
+	/**
+	 * \brief Returns itself as RootNode. This ensures that any bullets are assigned to this node.
+	 * \return Itself (GameplayManager)
+	 */
 	NodeScene* getRootNode() override;
 
+	/**
+	 * \brief Returns itself as RootNode. This ensures that any bullets are assigned to this node.
+	 * \return Itself (GameplayManager)
+	 */
 	const NodeScene* getRootNode() const override;
 
 private:
