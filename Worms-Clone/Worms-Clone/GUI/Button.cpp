@@ -32,7 +32,15 @@ void GUI::Button::activate()
 	GUI::Component::activate();
 
 	if (activateFunction)
-		activateFunction();
+		activateFunction(*this);
+}
+
+void GUI::Button::deactivate()
+{
+	GUI::Component::deactivate();
+
+	if (deactivateFunction)
+		deactivateFunction(*this);
 }
 
 void GUI::Button::setSize(int x, int y)
@@ -48,16 +56,21 @@ text("", fonts.getResourceReference(Fonts_ID::ArialNarrow), 20),
 window(window)
 {
 	text.setFillColor(sf::Color::White);
-	text.setOutlineColor(sf::Color::Black);
-	text.setOutlineThickness(1.f);
+	text.setOutlineColor(sf::Color(47, 60, 76, 255));
+	text.setOutlineThickness(1.5f);
 	
 	sprite.setTexture(normalTexture);
 	centerOrigin(sprite);
 }
 
-void GUI::Button::setActiveFunction(std::function<void()> onActivate)
+void GUI::Button::setActiveFunction(std::function<void(Button&)> onActivate)
 {
 	activateFunction = std::move(onActivate);
+}
+
+void GUI::Button::setDeactiveFunction(std::function<void(Button&)> onDeactivate)
+{
+	deactivateFunction = std::move(onDeactivate);
 }
 
 void GUI::Button::setText(const std::string& _text)
@@ -66,10 +79,15 @@ void GUI::Button::setText(const std::string& _text)
 	centerOrigin(text);
 }
 
-sf::FloatRect GUI::Button::getGlobalBounds()
+sf::FloatRect GUI::Button::getGlobalBounds() const
 {
 	return sf::FloatRect(getPosition().x - sprite.getOrigin().x, getPosition().y - sprite.getOrigin().y,
 		sprite.getLocalBounds().width * sprite.getScale().x, sprite.getLocalBounds().height * sprite.getScale().y);
+}
+
+sf::FloatRect GUI::Button::getLocalBounds() const
+{
+	return sprite.getLocalBounds();
 }
 
 void GUI::Button::matchSizeToText(float padding)
@@ -84,7 +102,13 @@ void GUI::Button::matchSizeToText(float padding)
 void GUI::Button::handleEvents(const sf::Event& event)
 {
 	if (event.type == sf::Event::MouseButtonPressed && isSelected())
-		activate();
+	{
+		if(event.key.code == sf::Mouse::Left)
+			activate();
+		if (event.key.code == sf::Mouse::Right)
+			deactivate();
+	}
+	
 }
 
 void GUI::Button::update()

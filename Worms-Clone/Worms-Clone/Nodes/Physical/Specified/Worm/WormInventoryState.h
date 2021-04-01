@@ -8,7 +8,7 @@
 class WormInventoryState : public State
 {
 public:
-	WormInventoryState(StateStack&, Worm&, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window);
+	WormInventoryState(StateStack&, Worm&, TextureManager& textures, const FontManager& fonts, sf::RenderWindow& window);
 
 	void draw() const override;
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
@@ -21,7 +21,7 @@ private:
 	sf::Sprite menuSprite; //!< The background of the menu
 	sf::Sprite ropeSprite; //!< Rope at which the menu is swinging
 	sf::Color selectedColor = sf::Color::Red; //!< Color of selected weapon
-	sf::Font& font;
+	const sf::Font& font;
 
 	std::vector<sf::Text> amounts; //!< Contains text indicating the number of available uses for a given weapon.
 

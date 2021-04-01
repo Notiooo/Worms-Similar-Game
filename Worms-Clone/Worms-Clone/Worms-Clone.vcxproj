@@ -150,6 +150,7 @@
     <ClCompile Include="GUI\Button.cpp" />
     <ClCompile Include="GUI\Component.cpp" />
     <ClCompile Include="GUI\Container.cpp" />
+    <ClCompile Include="GUI\Incremental_Button.cpp" />
     <ClCompile Include="Nodes\NodeScene.cpp" />
     <ClCompile Include="Nodes\NodeSprite.cpp" />
     <ClCompile Include="Nodes\NodeText.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="GUI\Button.h" />
     <ClInclude Include="GUI\Component.h" />
     <ClInclude Include="GUI\Container.h" />
+    <ClInclude Include="GUI\Incremental_Button.h" />
     <ClInclude Include="Nodes\NodeScene.h" />
     <ClInclude Include="Nodes\NodeSprite.h" />
     <ClInclude Include="Nodes\NodeText.h" />

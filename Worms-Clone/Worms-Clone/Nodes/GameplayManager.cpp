@@ -3,6 +3,8 @@
 #include "Physical/Specified/Worm/Weapons/Bullet.h"
 #include <iostream>
 
+#include "Physical/Specified/Worm/Weapons/Hitbox.h"
+
 GameplayManager::GameplayManager(b2World& _physicalWorld, TextureManager& _textures, FontManager& _fonts,
                                  sf::RenderWindow& _window) :
 	physicalWorld(_physicalWorld),
@@ -115,7 +117,7 @@ bool GameplayManager::anyBullet()
 {
 	return std::any_of(pinnedNodes.cbegin(), pinnedNodes.cend(), [](const NodeScene::Node& node)
 	{
-		return static_cast<bool>(dynamic_cast<Bullet*>(node.get()));
+		return (static_cast<bool>(dynamic_cast<Bullet*>(node.get())) || static_cast<bool>(dynamic_cast<Hitbox*>(node.get())));
 	});
 }
 
@@ -159,7 +161,7 @@ void GameplayManager::checkTurnTime()
 			timeElapsed = sf::Time::Zero;
 		}
 
-		if (hideState && (timeElapsed > timePerHide) && !anyBullet())
+		if (hideState && (timeElapsed > timePerHide + additionalTime) && !anyBullet())
 		{
 			hideState = false;
 			additionalTime = sf::Time::Zero;
@@ -182,8 +184,24 @@ void GameplayManager::checkTurnTime()
 		// Displays time in decreasing order
 		sf::Time timeDisplay = ((hideState) ? timePerHide : timePerTurn);
 		timeDisplay = timeDisplay + additionalTime - timeElapsed;
-		if(roundTimeText.getString() != "0")
-			roundTimeText.setString(std::to_string(static_cast<int>(timeDisplay.asSeconds())));
+		int timeSeconds = static_cast<int>(timeDisplay.asSeconds());
+		if(timeSeconds >= 0)
+			roundTimeText.setString(std::to_string(timeSeconds));
 		roundTimeText.setOrigin(roundTimeText.getLocalBounds().width / 2.f, roundTimeText.getLocalBounds().height / 2.f);
 	}
+}
+
+void GameplayManager::checkIfHasEnded()
+{
+	if(wormQueue.empty())
+	{
+		gameFinished = true;
+		setWorldMessage("The game ended in a draw!");
+	}
+
+	//sf::Color teamColor = wormQueue.back();
+	//for(auto& worm : wormQueue)
+	//{
+	//	
+	//}
 }

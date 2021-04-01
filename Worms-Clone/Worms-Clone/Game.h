@@ -89,6 +89,9 @@ private:
 	 * itself, as well as to pause the game.
 	 */
 	StateStack appStack;
+
+	int wormAmount = 4;
+	int numberOfTeams = 2;
 };
 
 

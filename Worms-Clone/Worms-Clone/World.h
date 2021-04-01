@@ -29,7 +29,7 @@ class Worm;
 class World : sf::NonCopyable
 {
 public:
-	explicit World(sf::RenderWindow& window);
+	World(sf::RenderWindow& window, int wormAmount, int numberOfTeams);
 
 	// === Functions that controls flow of the world === //
 
@@ -87,6 +87,8 @@ private:
 	DebugBox2D debugDraw; //!< Object for displaying hitboxes
 	NodeScene rootScene; //!< Main stage of the game
 	WorldListener worldListener; //!< It carries all collisions inside the world
+	const int wormAmount;
+	const int numberOfTeams;
 
 	/**
 	 * \brief Defines individual layers on which the image will be drawn

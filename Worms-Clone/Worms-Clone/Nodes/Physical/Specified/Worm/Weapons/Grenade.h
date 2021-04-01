@@ -11,7 +11,7 @@
 class Grenade : public Weapon
 {
 public:
-	Grenade(b2World& world, TextureManager& textures, FontManager& fonts);
+	Grenade(b2World& world, TextureManager& textures, const FontManager& fonts);
 	
 	void shoot(NodeScene* rootNode, sf::Vector2f position, sf::Vector2f force) override;
 	
@@ -19,7 +19,7 @@ public:
 	bool isRoundEnding() override;
 
 private:
-	FontManager& fonts;
+	const FontManager& fonts;
 };
 
 #endif // !BAZOOKA_H

@@ -87,6 +87,9 @@ private:
 	 */
 	void checkTurnTime();
 
+	void checkIfHasEnded();
+
+
 	// Useful
 	b2World& physicalWorld;
 	TextureManager& textures;
@@ -109,6 +112,7 @@ private:
 	
 	std::deque<std::unique_ptr<Worm>> wormQueue; //!< Order in which particular worms can play
 	sf::Time additionalTime = sf::Time::Zero;
+	bool gameFinished = false;
 };
 
 

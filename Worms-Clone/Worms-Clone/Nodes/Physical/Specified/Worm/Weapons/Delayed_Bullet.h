@@ -11,7 +11,7 @@
 
 struct Delayed_Bullet : public Bullet
 {
-	Delayed_Bullet(b2World& world, FontManager& fonts, sf::Vector2f position, sf::Texture& texture, float force, float range, sf::Time timeToDestroy);
+	Delayed_Bullet(b2World& world, const FontManager& fonts, sf::Vector2f position, sf::Texture& texture, float force, float range, sf::Time timeToDestroy);
 
 	void updateThis(sf::Time deltaTime) override;
 	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;

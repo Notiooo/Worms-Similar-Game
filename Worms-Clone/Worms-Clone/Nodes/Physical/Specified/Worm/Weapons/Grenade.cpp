@@ -6,7 +6,7 @@
 #include "SFML/Graphics/RenderTarget.hpp"
 
 
-Grenade::Grenade(b2World& world, TextureManager& textures, FontManager& fonts):
+Grenade::Grenade(b2World& world, TextureManager& textures, const FontManager& fonts):
 	Weapon(world, textures.getResourceReference(Textures_ID::Grenade), textures.getResourceReference(Textures_ID::GrenadeThumbnail), textures.getResourceReference(Textures_ID::GrenadeBullet)),
 	fonts(fonts)
 {

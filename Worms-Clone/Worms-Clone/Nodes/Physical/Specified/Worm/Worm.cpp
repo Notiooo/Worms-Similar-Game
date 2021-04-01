@@ -19,7 +19,7 @@
 #include "Weapons/Grenade.h"
 
 
-Worm::Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position):
+Worm::Worm(b2World& world, TextureManager& textures, const FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position):
 	NodePhysicalBody(world, Physical_Types::Dynamic_Type, position),
 	wormSprite(textures.getResourceReference(Textures_ID::AnExemplaryWorm)),
 	deadWorm(textures.getResourceReference(Textures_ID::DeadWorm))

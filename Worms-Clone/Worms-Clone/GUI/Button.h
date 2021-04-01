@@ -21,14 +21,19 @@ namespace GUI
         void onLeave() override;
 
         void activate() override;
+        void deactivate() override;
 
         void setSize(int x, int y);
 
     	
-        void setActiveFunction(std::function<void()> onActivate);
+        void setActiveFunction(std::function<void(Button&) > onActivate);
+        void setDeactiveFunction(std::function<void(Button&)> onDectivate);
+
+    	
         void setText(const std::string& text);
 
-        sf::FloatRect getGlobalBounds();
+        sf::FloatRect getGlobalBounds() const;
+        sf::FloatRect getLocalBounds() const;
 
         void matchSizeToText(float padding = 0.f);
     	
@@ -38,7 +43,8 @@ namespace GUI
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:
-        std::function<void()> activateFunction;
+        std::function<void(Button&)> activateFunction;
+        std::function<void(Button&)> deactivateFunction;
         const sf::Texture& normalTexture;
         const sf::Texture& selectedTexture;
 

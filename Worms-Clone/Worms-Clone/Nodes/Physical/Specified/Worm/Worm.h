@@ -39,7 +39,7 @@ public:
 	 * \param position Position in which the worm should appear
 	 * \param wormQueue Queue of movements in which the worm is placed
 	 */
-	Worm(b2World& world, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position);
+	Worm(b2World& world, TextureManager& textures, const FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position);
 	
 	/**
 	 * \brief Draws the worm to the given target

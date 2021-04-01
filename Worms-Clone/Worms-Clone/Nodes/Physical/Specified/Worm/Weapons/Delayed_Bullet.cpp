@@ -6,7 +6,7 @@
 #include "../../../NodePhysicalSpark.h"
 
 
-Delayed_Bullet::Delayed_Bullet(b2World& world, FontManager& fonts, sf::Vector2f position, sf::Texture& texture, float force, float range, sf::Time timeToDestroy):
+Delayed_Bullet::Delayed_Bullet(b2World& world, const FontManager& fonts, sf::Vector2f position, sf::Texture& texture, float force, float range, sf::Time timeToDestroy):
 	Bullet(world, position, texture, force, range),
 	timeToDestroy(timeToDestroy)
 {

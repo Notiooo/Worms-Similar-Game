@@ -14,8 +14,8 @@ Game::Game():
 
 	// Setup all application-flow states
 	appStack.saveState<TitleState>(State_ID::TitleState, gameWindow, fonts);
-	appStack.saveState<MenuState>(State_ID::MenuState, fonts, gameWindow);
-	appStack.saveState<GameState>(State_ID::GameState, gameWindow);
+	appStack.saveState<MenuState>(State_ID::MenuState, fonts, gameWindow, wormAmount, numberOfTeams);
+	appStack.saveState<GameState>(State_ID::GameState, gameWindow, wormAmount, numberOfTeams);
 
 
 	// load resources

@@ -9,7 +9,7 @@ class StateStack;
 class GameState : public State
 {
 public:
-	GameState(StateStack& stack, sf::RenderWindow& window);
+	GameState(StateStack& stack, sf::RenderWindow& window, int& wormAmount, int& numberOfTeams);
 
 	void draw() const override;
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;

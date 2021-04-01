@@ -3,9 +3,9 @@
 #include "../StateStack.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 
-GameState::GameState(StateStack& stack, sf::RenderWindow& window):
+GameState::GameState(StateStack& stack, sf::RenderWindow& window, int& wormAmount, int& numberOfTeams):
 	State(stack),
-	gameWorld(window)
+	gameWorld(window, wormAmount, numberOfTeams)
 {
 
 }

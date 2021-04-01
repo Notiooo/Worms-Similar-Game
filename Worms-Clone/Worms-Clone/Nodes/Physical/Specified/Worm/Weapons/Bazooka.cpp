@@ -12,7 +12,7 @@ Bazooka::Bazooka(b2World& world, TextureManager& textures):
 	weaponSprite.setPosition(getPosition().x, getPosition().y + 40);
 	setSparkColor(sf::Color::Blue);
 	setMaxDmg(80.f);
-	setRange(150.f);
+	setRange(220.f);
 }
 
 bool Bazooka::isActivation()

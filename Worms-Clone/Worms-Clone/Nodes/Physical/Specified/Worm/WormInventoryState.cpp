@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
-WormInventoryState::WormInventoryState(StateStack& stack, Worm& worm, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window) :
+WormInventoryState::WormInventoryState(StateStack& stack, Worm& worm, TextureManager& textures, const FontManager& fonts, sf::RenderWindow& window) :
 	State(stack),
 	window(window),
 	worm(worm),

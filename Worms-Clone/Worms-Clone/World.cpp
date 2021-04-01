@@ -6,14 +6,17 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <random>
 
 
-World::World(sf::RenderWindow& window) :
+World::World(sf::RenderWindow& window, int _wormAmount, int _numberOfTeams) :
 	worldWindow(window),
 	worldView(window.getDefaultView()),
 	b2_World(b2Vec2(0.f, 9.8f)),
 	debugDraw(window),
-	essentials({&b2_World, &worldWindow, &worldTextures, &worldFonts})
+	essentials({ &b2_World, &worldWindow, &worldTextures, &worldFonts }),
+	wormAmount(_wormAmount),
+	numberOfTeams(_numberOfTeams)
 {
 	// Tells the physical world what to draw
 	b2_World.SetDebugDraw(&debugDraw);
@@ -185,10 +188,12 @@ void World::createWorld()
 	// Object that the world can create
 	enum class WorldObjects
 	{
-		Worm,
+		WormSpawnPoint,
 		StaticPaperBlock,
 		DynamicPaperBlock,
 	};
+
+	std::vector<sf::Vector2f> wormSpawnPoints;
 
 	// Code that reads from the file particular commands and generates the world
 	std::ifstream worldMap("Resources/Maps/main_world.txt");
@@ -205,25 +210,12 @@ void World::createWorld()
 
 		switch (objectId)
 		{
-		case static_cast<unsigned>(WorldObjects::Worm):
+		case static_cast<unsigned>(WorldObjects::WormSpawnPoint):
 			{
 				float positionX, positionY;
 				ss >> positionX >> positionY;
 
-				// For testing purposes they are hardcoded here
-				static std::array<std::string, 8> wormNames{ "Steve", "John", "Patrick", "Caroline", "Julia", "Richard", "David", "Robert" };
-				static std::array<sf::Color, 3> wormColors{ sf::Color::Blue, sf::Color::Green, sf::Color::Yellow };
-
-				static auto wormNameIter = wormNames.cbegin();
-				if (wormNameIter == wormNames.cend())
-					wormNameIter = wormNames.cbegin();
-				
-				static auto wormColorsIter = wormColors.cbegin();
-				if (wormColorsIter == wormColors.cend())
-					wormColorsIter = wormColors.cbegin();
-
-				
-				worldGameManager->addWorm(std::string( *wormNameIter++ + " The Worm"), *wormColorsIter++, sf::Vector2f(positionX, positionY));
+				wormSpawnPoints.emplace_back(positionX, positionY);
 			}
 			break;
 
@@ -259,6 +251,42 @@ void World::createWorld()
 			}
 			break;
 		}
+	}
+
+	// Spawn Worms
+
+	std::random_device r;
+	std::default_random_engine e(r());
+	std::shuffle(wormSpawnPoints.begin(), wormSpawnPoints.end(), e);
+
+	static std::array<std::string, 8> wormNames{ "Steve", "John", "Patrick", "Caroline", "Julia", "Richard", "David", "Robert" };
+	static std::array<sf::Color, 5> wormColors{ sf::Color::Blue, sf::Color::Green, sf::Color::Yellow, sf::Color::Magenta, sf::Color::Red };
+
+	if (wormColors.size() < numberOfTeams)
+		throw std::runtime_error("Not enough color teams!");
+	
+	auto wormNameIter = wormNames.cbegin();
+	auto wormColorsIter = wormColors.cbegin();
+	auto wormSpawnPointIter = wormSpawnPoints.cbegin();
+	
+	// For testing purposes they are hardcoded here
+	for(int i = 0; i < numberOfTeams; ++i)
+	{
+		for (int j = 0; j < wormAmount; ++j)
+		{
+			if (wormNameIter == wormNames.cend())
+				wormNameIter = wormNames.cbegin();
+
+			if (wormSpawnPointIter == wormSpawnPoints.cend())
+			{
+				for (auto& spawnPoint : wormSpawnPoints)
+					spawnPoint.y -= 100;
+				wormSpawnPointIter = wormSpawnPoints.cbegin();
+			}
+			
+			worldGameManager->addWorm(std::string(*wormNameIter++ + " The Worm"), *wormColorsIter, *wormSpawnPointIter++);
+		}
+		++wormColorsIter;
 	}
 }
 
