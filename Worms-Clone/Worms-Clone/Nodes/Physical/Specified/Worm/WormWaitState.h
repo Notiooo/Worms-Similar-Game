@@ -8,15 +8,21 @@ class WormWaitState : public State
 public:
 	WormWaitState(StateStack&, Worm&);
 
-	virtual void draw() const override;
-	virtual void draw(sf::RenderTarget&, sf::RenderStates) const override;
+	void draw() const override;
+	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
-	virtual bool update(sf::Time) override;
-	virtual bool handleEvent(const sf::Event& event) override;
+	bool update(sf::Time) override;
+	bool handleEvent(const sf::Event& event) override;
 private:
 	Worm& worm;
 	
-	// It says if player can be moved or not
+	/**
+	 * \brief Current position of the player.
+	 *
+	 * The saved is used to block the movement
+	 * of the character so that no physical object
+	 * can move it.
+	 */
 	b2Vec2 savedPosition;
 };
 

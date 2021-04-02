@@ -10,6 +10,12 @@
 
 #include "Weapons/Weapon.h"
 
+/**
+ * \brief A worm state in which the worm is controlled by the player.
+ *
+ * This state allows the worm to move around the game world.
+ * Change states (for example, open equipment) or shoot.
+ */
 class WormPlayState : public WormMoveableState
 {
 public:
@@ -21,43 +27,49 @@ public:
 	bool update(sf::Time) override;
 	bool handleEvent(const sf::Event& event) override;
 
-	// === Useful functions == //
+	/**
+	 * \brief A function that shoots a bullet
+	 *
+	 * Depending on the weapon setting,
+	 * it can change the worm's state to "HideState".
+	 */
 	void shoot();
 
 private:
+	/**
+	 * \brief It interprets player input and operates the shooting system according to it.
+	 * \param event input of the player
+	 */
 	void handleShooting(const sf::Event& event);
-	void updateShooting(sf::Time);
+	
+	/**
+	 * \brief Updates all things in terms of the shooting system
+	 * \param deltaTime Time elapsed since the previous frame
+	 */
+	void updateShooting(sf::Time deltaTime);
 
-private:
-	// Pointing the direction of shooting
-	sf::Vector2f pointer;
-	float pointerLength = 100.f;
-	float pointerSpeed = 0.05f;
-	float pointerAngle = b2_pi / 2.f;
 
-	// Point the direction of shooting
-	sf::CircleShape triangularPointer;
+	//// ====== SHOOTING ====== ////
 
-	// === Shooting Bar === //
+	// === Controls === /
+	sf::Keyboard::Key shootingKey = sf::Keyboard::Enter; //!< Button with which the player starts shooting
+	sf::Keyboard::Key pointHigherKey = sf::Keyboard::Left; //!< Button that raises the pointer upwards
+	sf::Keyboard::Key pointLowerKey = sf::Keyboard::Right; //!< Button that raises the pointer downwards
 
-	// Button to used to shoot
-	sf::Keyboard::Key shootingKey = sf::Keyboard::Enter;
-	sf::Keyboard::Key pointHigherKey = sf::Keyboard::Left;
-	sf::Keyboard::Key pointLowerKey = sf::Keyboard::Right;
+	// === Pointer of shooting === //
 
-	// How far we can shoot
-	float maxShootingForce = 35000.f;
+	sf::CircleShape triangularPointer; //!< Graphical class to be drawn representing the pointer
+	sf::Vector2f pointer; //!< Position of the pointer
+	float pointerLength = 100.f; //!< How far away from the worm is the pointer
+	float pointerSpeed = 0.05f; //!< How fast the pointer moves/rotates
+	float pointerAngle = b2_pi / 2.f; //!< Default angle at which the pointer points
 
-	// It measures current shooting force load
-	float currentShootingForce = 0.f;
+	// === The Shooting Bar === //
 
-	// It states how fast the bar is loading per second
-	float shootingLoadingSpeed = (maxShootingForce * 1/2); // half bar per second
-
-	// How long is the bear
-	float shootingBarSize = 100.f;
-
-	// Graphical element of the shooting bar
-	sf::RectangleShape shootingBar;
+	sf::RectangleShape shootingBar; //!< Graphical class to be drawn representing the shooting bar
+	float maxShootingForce = 35000.f; //!< The maximum power with which a worm can shoot -- this translates into shooting distance.
+	float currentShootingForce = 0.f; //!< Current firing power used when player is shooting
+	float shootingLoadingSpeed = (maxShootingForce * 1/2); //!< How fast the bar is loading per second.
+	float shootingBarSize = 100.f; //!< Drawing length of the shooting bar
 };
 #endif

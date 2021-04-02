@@ -4,6 +4,12 @@
 #include "../NodeScene.h"
 #include "box2d/box2d.h"
 
+/**
+ * \brief An abstract class of physical object.
+ *
+ * Contains helper functions to convert between angles, radians and
+ * units of SFML and BOX2D libraries
+ */
 class NodePhysicalBase : public NodeScene
 {
 public:

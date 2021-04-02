@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics/Texture.hpp>
 
+
+#include "../../utils.h"
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/RenderStates.hpp"
 
@@ -9,7 +11,7 @@ NodePhysicalSprite::NodePhysicalSprite(b2World& world, Physical_Types physical_t
 	NodePhysicalBody(world, physical_type, position),
 	sprite(texture)
 {
-	centerOrigin();
+	centerOrigin(sprite);
 	createBody();
 }
 
@@ -19,7 +21,7 @@ NodePhysicalSprite::NodePhysicalSprite(b2World& world, Physical_Types physical_t
 	sprite(texture)
 {
 	sprite.setTextureRect(rect);
-	centerOrigin();
+	centerOrigin(sprite);
 	createBody();
 	
 }
@@ -44,7 +46,7 @@ void NodePhysicalSprite::updateThis(sf::Time deltaTime)
 void NodePhysicalSprite::setSize(const sf::IntRect& rect)
 {
 	sprite.setTextureRect(rect);
-	centerOrigin();
+	centerOrigin(sprite);
 	Body->DestroyFixture(fixture);
 	createBody();
 }
@@ -61,11 +63,4 @@ void NodePhysicalSprite::createBody()
 	FixtureDef.restitution = 0.2f;
 	FixtureDef.shape = &Shape;
 	fixture = Body->CreateFixture(&FixtureDef);
-}
-
-void NodePhysicalSprite::centerOrigin()
-{
-	// set origin to the center
-	sf::FloatRect boundaries_of_rectangle = sprite.getLocalBounds();
-	sprite.setOrigin(boundaries_of_rectangle.width / 2.f, boundaries_of_rectangle.height / 2.f);
 }

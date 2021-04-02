@@ -82,10 +82,12 @@ bool WormInventoryState::update(sf::Time deltaTime)
 	float columnSpacing = 0;
 
 	// Display weapon thumbnails
-	
+
+	// The bullets are iterated separately
 	auto bullets_left = amounts.begin();
 	for (auto& weapon : worm.inventory)
 	{
+		// Set position of thumbnail and the bullets
 		auto& thumbnail = weapon.second->getThumbnailSprite();
 
 		thumbnail.setPosition(globalBounds.left + padding + columnSpacing,
@@ -94,7 +96,7 @@ bool WormInventoryState::update(sf::Time deltaTime)
 		bullets_left->setPosition(thumbnail.getPosition() + 
 			sf::Vector2f(thumbnail.getLocalBounds().width, thumbnail.getLocalBounds().height));
 		++bullets_left;
-		
+
 		// Move further to the next column
 		columnSpacing += spacing + thumbnail.getLocalBounds().width;
 

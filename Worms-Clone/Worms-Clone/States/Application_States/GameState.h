@@ -6,6 +6,10 @@
 
 class StateStack;
 
+/**
+ * \brief The game state in which the game world is created,
+ * all objects are placed and the processes inside the game world are controlled.
+ */
 class GameState : public State
 {
 public:

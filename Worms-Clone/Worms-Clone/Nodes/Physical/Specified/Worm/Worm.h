@@ -106,6 +106,8 @@ public:
 
 private:
 	//#define SHOW_WORM_STATES
+	// Uncomment if you want to see current State of
+	// the worm, instead of its name
 	
 	// === Graphical variables === //
 	sf::Sprite wormSprite;

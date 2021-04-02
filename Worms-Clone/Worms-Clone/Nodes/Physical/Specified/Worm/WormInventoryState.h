@@ -5,6 +5,12 @@
 
 #include "Weapons/Weapon.h"
 
+/**
+ * \brief A condition that displays the player's inventory and allows
+ * them to change to another weapon.
+ *
+ * It also displays the number of weapons the player has.
+ */
 class WormInventoryState : public State
 {
 public:
@@ -16,23 +22,25 @@ public:
 	bool handleEvent(const sf::Event& event) override;
 
 private:
-	sf::RenderWindow& window;
-	Worm& worm; //!< Worm for which inventory should it display
-	sf::Sprite menuSprite; //!< The background of the menu
-	sf::Sprite ropeSprite; //!< Rope at which the menu is swinging
-	sf::Color selectedColor = sf::Color::Red; //!< Color of selected weapon
-	const sf::Font& font;
 
+	sf::RenderWindow& window;
+	const sf::Font& font;
+	Worm& worm; //!< Worm for which inventory should it display
+
+	// === Inventory === //
+	sf::Sprite ropeSprite; //!< Rope at which the menu is swinging
+	sf::Sprite menuSprite; //!< The background of the menu
+	sf::Color selectedColor = sf::Color::Red; //!< Color of selected weapon
 	std::vector<sf::Text> amounts; //!< Contains text indicating the number of available uses for a given weapon.
 
-	// == Animating the menu == //
+	// === Animating the menu === //
 	float moveSpeed = 800.f; // how fast it moves down
 	float stopPosition; // Y at which it stops
 	bool stopAnimating = false;
 
-	//
-	float padding = 10.f;
-	float spacing = 10.f;
+	// === Additional variables for setting the display of weapons === //
+	float padding = 10.f; //!< Additional distance from the upper left side of the equipment
+	float spacing = 10.f; //!< Distance between weapon columns
 	
 };
 #endif

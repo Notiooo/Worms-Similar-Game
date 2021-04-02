@@ -102,9 +102,6 @@ void WormPlayState::shoot()
 		
 		if(weapon->isRoundEnding())
 			worm.activateState(State_ID::WormHideState);
-
-		//if (GameplayManager* gameplayManager = dynamic_cast<GameplayManager*>(rootNode))
-		//	gameplayManager.addTime()
 	}
 }
 

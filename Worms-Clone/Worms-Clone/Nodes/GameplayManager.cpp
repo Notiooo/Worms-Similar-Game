@@ -56,8 +56,8 @@ void GameplayManager::updateThis(sf::Time deltaTime)
 	//	worm->update(deltaTime);
 	wormQueue.update(deltaTime);
 
-	checkTurnTime();
 	checkIfHasEnded();
+	checkTurnTime();
 	
 	roundTimeText.setPosition(
 		window.mapPixelToCoords(sf::Vector2i(window.getSize().x / 2, roundTimeText.getLocalBounds().height)));
@@ -236,6 +236,12 @@ void GameplayManager::checkIfHasEnded()
 	//});
 
 	int numberOfAliveTeams = wormQueue.aliveTeams();
+
+	if(numberOfAliveTeams == 0)
+	{
+		setGameFinished();
+		setWorldMessage("The game ended in a draw!");
+	}
 
 	if(numberOfAliveTeams == 1)
 	{

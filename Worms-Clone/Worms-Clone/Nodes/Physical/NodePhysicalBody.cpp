@@ -38,7 +38,6 @@ NodePhysicalBody::~NodePhysicalBody()
 void NodePhysicalBody::updatePhysics()
 {
 	this->setPosition(B2_SCALAR * Body->GetPosition().x, B2_SCALAR * Body->GetPosition().y);
-	//this->setRotation(radiansToAngle(Body->GetAngle()));
 	this->NodeScene::setRotation(radiansToAngle(Body->GetAngle()));
 }
 

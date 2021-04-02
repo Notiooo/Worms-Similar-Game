@@ -5,6 +5,9 @@
 #include "SFML/Graphics/RectangleShape.hpp"
 
 
+/**
+ * \brief A physical and graphical object representing a rectangle within a game.
+ */
 class NodeRectangularPhysical : public NodePhysicalBody
 {
 public:

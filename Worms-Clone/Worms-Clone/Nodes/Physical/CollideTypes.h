@@ -3,8 +3,9 @@
 
 #include "../../Nodes/NodeScene.h"
 
-// I changed my mind, it wont be deprecated
-
+/**
+ * \brief Specifies which object collides
+ */
 enum class CollideTypes
 {
 	// Worm related
@@ -16,6 +17,10 @@ enum class CollideTypes
 	Hitbox,
 };
 
+/**
+ * \brief A collision object that contains information about what object
+ * is colliding, and stores a pointer to that object.
+ */
 struct Collision
 {
 	CollideTypes type;

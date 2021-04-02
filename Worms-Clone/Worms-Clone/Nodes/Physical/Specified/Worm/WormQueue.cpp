@@ -1,4 +1,5 @@
 #include "WormQueue.h"
+#include <iostream>
 
 void WormQueue::addWorm(std::unique_ptr<Worm>& worm)
 {
@@ -19,55 +20,34 @@ void WormQueue::addWorm(std::unique_ptr<Worm>& worm)
 
 Worm& WormQueue::getNextWorm()
 {
-	while (currentTeam->worms.empty())
-	{
-		++currentTeam;
-		if (currentTeam == wormQueue.end())
-			currentTeam = wormQueue.begin();
-	}
-	
-	std::unique_ptr<Worm> wormPtr = std::move(currentTeam->worms.front());
-	currentTeam->worms.pop_front();
-	currentTeam->worms.push_back(std::move(wormPtr));
-
+	auto previousTeam = currentTeam;
 	++currentTeam;
-	if (currentTeam == wormQueue.end())
+
+	if (previousTeam->worms.size() > 1)
+	{
+		std::unique_ptr<Worm> wormPtr = std::move(previousTeam->worms.front());
+		previousTeam->worms.pop_front();
+		previousTeam->worms.push_back(std::move(wormPtr));
+	}
+
+	if(currentTeam == wormQueue.end())
 		currentTeam = wormQueue.begin();
-	return *currentTeam->worms.front().get();
-}
-
-Worm& WormQueue::getPreviousWorm()
-{
-	std::unique_ptr<Worm> wormPtr = std::move(currentTeam->worms.back());
-	currentTeam->worms.pop_back();
-
-	Worm& worm = *wormPtr;
-
-	currentTeam->worms.push_front(std::move(wormPtr));
-
-	--currentTeam;
-	if (currentTeam == wormQueue.begin())
-		currentTeam = wormQueue.end();
-	return worm;
+	
+	return *currentTeam->worms.front();
 }
 
 bool WormQueue::isEmpty() const
 {
-	return std::all_of(wormQueue.cbegin(), wormQueue.cend(), [](const Team& team)
-		{
-			return team.worms.empty();
-		});
+	//return std::all_of(wormQueue.cbegin(), wormQueue.cend(), [](const Team& team)
+	//	{
+	//		return team.worms.empty();
+	//	});
+	return wormQueue.empty();
 }
 
 int WormQueue::aliveTeams()
 {
-	int counter = 0;
-	for(auto& team : wormQueue)
-	{
-		if (!team.worms.empty())
-			++counter;
-	}
-	return counter;
+	return wormQueue.size();
 }
 
 void WormQueue::update(sf::Time deltaTime)
@@ -103,8 +83,8 @@ void WormQueue::draw(sf::RenderTarget& target, sf::RenderStates states) const
 			team = wormQueue.cbegin();
 	}
 
-	for (auto& worm : team->worms)
-		worm->draw(target, states);
+	for (auto beg = team->worms.crbegin(), end = team->worms.crend(); beg != end; ++beg)
+		(*beg)->draw(target, states);
 }
 
 void WormQueue::handleEvents(const sf::Event& event)
@@ -118,20 +98,38 @@ void WormQueue::handleEvents(const sf::Event& event)
 
 Worm& WormQueue::front()
 {
-	while (currentTeam->worms.empty())
-	{
-		++currentTeam;
-		if (currentTeam == wormQueue.end())
-			currentTeam = wormQueue.begin();
-	}
 	return *currentTeam->worms.front();
 }
 
 void WormQueue::removeDestroyed()
 {
-	for(Team& team : wormQueue)
+	for(auto team = wormQueue.begin(), end = wormQueue.end(); team != end; ++team)
 	{
-		auto marked_remove = std::remove_if(team.worms.begin(), team.worms.end(), std::mem_fn(&NodeScene::isDestroyed));
-		team.worms.erase(marked_remove, team.worms.end());
+		// I start with removal of the worms from the teams
+		auto marked_remove = std::remove_if(team->worms.begin(), team->worms.end(), std::mem_fn(&NodeScene::isDestroyed));
+		team->worms.erase(marked_remove, team->worms.end());
+
+		// Then If any team is empty I want to remove it from the list
+		if (team->worms.empty())
+		{
+			if (*team == *currentTeam)
+			{
+				auto toDelete = currentTeam;
+				++currentTeam;
+
+				if (currentTeam == wormQueue.end())
+					currentTeam = wormQueue.begin();
+				
+				team = wormQueue.erase(std::find(wormQueue.begin(), wormQueue.end(), *toDelete));
+			}
+			else
+			{
+				team = wormQueue.erase(std::find(wormQueue.begin(), wormQueue.end(), *team));
+			}
+			
+			if(team == end)
+				--team;
+
+		}
 	}
 }
