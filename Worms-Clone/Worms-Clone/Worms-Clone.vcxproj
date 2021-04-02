@@ -150,7 +150,6 @@
     <ClCompile Include="GUI\Button.cpp" />
     <ClCompile Include="GUI\Component.cpp" />
     <ClCompile Include="GUI\Container.cpp" />
-    <ClCompile Include="GUI\Incremental_Button.cpp" />
     <ClCompile Include="Nodes\NodeScene.cpp" />
     <ClCompile Include="Nodes\NodeSprite.cpp" />
     <ClCompile Include="Nodes\NodeText.cpp" />
@@ -177,6 +176,7 @@
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormWaitState.cpp" />
     <ClCompile Include="States\Application_States\GameState.cpp" />
     <ClCompile Include="States\Application_States\MenuState.cpp" />
+    <ClCompile Include="States\Application_States\PauseState.cpp" />
     <ClCompile Include="States\Application_States\TitleState.cpp" />
     <ClCompile Include="States\State.cpp" />
     <ClCompile Include="States\StateStack.cpp" />
@@ -191,7 +191,6 @@
     <ClInclude Include="GUI\Button.h" />
     <ClInclude Include="GUI\Component.h" />
     <ClInclude Include="GUI\Container.h" />
-    <ClInclude Include="GUI\Incremental_Button.h" />
     <ClInclude Include="Nodes\NodeScene.h" />
     <ClInclude Include="Nodes\NodeSprite.h" />
     <ClInclude Include="Nodes\NodeText.h" />
@@ -221,6 +220,7 @@
     <ClInclude Include="Resources\Resources.h" />
     <ClInclude Include="States\Application_States\GameState.h" />
     <ClInclude Include="States\Application_States\MenuState.h" />
+    <ClInclude Include="States\Application_States\PauseState.h" />
     <ClInclude Include="States\Application_States\TitleState.h" />
     <ClInclude Include="States\State.h" />
     <ClInclude Include="States\States.h" />

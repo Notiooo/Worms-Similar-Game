@@ -43,9 +43,9 @@ void GUI::Button::deactivate()
 		deactivateFunction(*this);
 }
 
-void GUI::Button::setSize(int x, int y)
+void GUI::Button::setSize(int width, int height)
 {
-	sprite.setTextureRect(sf::IntRect(0, 0, x, y));
+	sprite.setTextureRect(sf::IntRect(0, 0, width, height));
 	centerOrigin(sprite);
 }
 
@@ -81,8 +81,11 @@ void GUI::Button::setText(const std::string& _text)
 
 sf::FloatRect GUI::Button::getGlobalBounds() const
 {
-	return sf::FloatRect(getPosition().x - sprite.getOrigin().x, getPosition().y - sprite.getOrigin().y,
-		sprite.getLocalBounds().width * sprite.getScale().x, sprite.getLocalBounds().height * sprite.getScale().y);
+	auto windowScale = sf::Vector2f(window.getView().getSize().x / window.getDefaultView().getSize().x,
+		window.getView().getSize().y / window.getDefaultView().getSize().y);
+	
+	return sf::FloatRect(getPosition().x - sprite.getOrigin().x * windowScale.x, getPosition().y - sprite.getOrigin().y * windowScale.y,
+		sprite.getLocalBounds().width * sprite.getScale().x * windowScale.x, sprite.getLocalBounds().height * sprite.getScale().y * windowScale.y);
 }
 
 sf::FloatRect GUI::Button::getLocalBounds() const
@@ -114,11 +117,11 @@ void GUI::Button::handleEvents(const sf::Event& event)
 void GUI::Button::update()
 {
 	// If mouse has left the button
-	if (isSelected() && !getGlobalBounds().contains(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y))
+	if (isSelected() && !getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 		onLeave();
 
 	// If mouse has entered the button
-	if(!isSelected() && getGlobalBounds().contains(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y))
+	if(!isSelected() && getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 		onEnter();
 }
 

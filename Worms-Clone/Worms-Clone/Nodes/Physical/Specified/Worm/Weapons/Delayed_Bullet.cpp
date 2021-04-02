@@ -15,6 +15,11 @@ Delayed_Bullet::Delayed_Bullet(b2World& world, const FontManager& fonts, sf::Vec
 	counter.setOutlineColor(sf::Color::Black);
 	counter.setOutlineThickness(1.f);
 
+	for (b2Fixture* fix = Body->GetFixtureList(); fix; fix = fix->GetNext())
+	{
+		delete reinterpret_cast<Collision*>(fix->GetUserData().pointer);
+	}
+	
 	Body->DestroyFixture(fixture);
 
 	// Defines its shape

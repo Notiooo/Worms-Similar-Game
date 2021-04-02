@@ -22,6 +22,8 @@ MenuState::MenuState(StateStack& stack, const FontManager& fonts, sf::RenderWind
 	wormsPerTeam(_wormAmount),
 	numberOfTeams(_numberOfTeams)
 {
+	window.setView(window.getDefaultView());
+	
 	loadResources();
 	backgroundTexture.setTexture(textures.getResourceReference(Textures_ID::WorldBackground));
 	backgroundTexture.setTextureRect(sf::IntRect(0, 0, window.getSize().x, window.getSize().y));
@@ -47,8 +49,18 @@ MenuState::MenuState(StateStack& stack, const FontManager& fonts, sf::RenderWind
 			requestPush(State_ID::GameState);
 		});
 
-	amountText.setPosition(play_button->getPosition().x,
-		play_button->getPosition().y + play_button->getLocalBounds().height + amountText.getLocalBounds().height / 2.f);
+	auto exitButton = std::make_unique<GUI::Button>(textures, fonts, window);
+	exitButton->setText("Exit the game");
+	exitButton->matchSizeToText(20.f);
+	exitButton->setPosition(play_button->getPosition().x,
+		play_button->getPosition().y + play_button->getLocalBounds().height + exitButton->getLocalBounds().height / 2.f);
+	exitButton->setActiveFunction([&window](GUI::Button& self)
+		{
+			window.close();
+		});
+
+	amountText.setPosition(exitButton->getPosition().x,
+		exitButton->getPosition().y + exitButton->getLocalBounds().height + amountText.getLocalBounds().height / 2.f);
 	centerOrigin(amountText);
 	
 	auto noWormsPerTeam = std::make_unique<GUI::Button>(textures, fonts, window);
@@ -83,7 +95,6 @@ MenuState::MenuState(StateStack& stack, const FontManager& fonts, sf::RenderWind
 	noOfTeams->matchSizeToText(20.f);
 	noOfTeams->setPosition(amountTeams.getPosition().x,
 		amountTeams.getPosition().y + amountTeams.getLocalBounds().height + noOfTeams->getLocalBounds().height / 2.f);
-	centerOrigin(amountTeams);
 	noOfTeams->setActiveFunction([this](GUI::Button& self)
 		{
 			if (numberOfTeams < maxTeamsAmount)
@@ -104,6 +115,7 @@ MenuState::MenuState(StateStack& stack, const FontManager& fonts, sf::RenderWind
 	buttons.store(std::move(play_button));
 	buttons.store(std::move(noWormsPerTeam));
 	buttons.store(std::move(noOfTeams));
+	buttons.store(std::move(exitButton));
 	
 }
 

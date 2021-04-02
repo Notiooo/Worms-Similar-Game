@@ -183,11 +183,11 @@
     <ClCompile Include="utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GUI\Incremental_Button.cpp">
-      <Filter>Source Files\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormQueue.cpp">
       <Filter>Source Files\Nodes\Physical\Specified\Worm</Filter>
+    </ClCompile>
+    <ClCompile Include="States\Application_States\PauseState.cpp">
+      <Filter>Source Files\States\Application_States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -311,11 +311,11 @@
     <ClInclude Include="utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GUI\Incremental_Button.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormQueue.h">
       <Filter>Header Files\Nodes\Physical\Specified\Worm</Filter>
+    </ClInclude>
+    <ClInclude Include="States\Application_States\PauseState.h">
+      <Filter>Header Files\States\Application_States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

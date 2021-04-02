@@ -1,8 +1,6 @@
 #include "GameplayManager.h"
 
 #include "Physical/Specified/Worm/Weapons/Bullet.h"
-#include <iostream>
-
 
 #include "../utils.h"
 #include "Physical/Specified/Worm/Weapons/Hitbox.h"
@@ -205,6 +203,8 @@ void GameplayManager::checkTurnTime()
 	}
 	else
 	{
+		hideState = false;
+		
 		sf::Time timeElapsed = roundClock.getElapsedTime();
 		sf::Time timeDisplay = leaveGameTime - timeElapsed;
 		int timeSeconds = static_cast<int>(timeDisplay.asSeconds());

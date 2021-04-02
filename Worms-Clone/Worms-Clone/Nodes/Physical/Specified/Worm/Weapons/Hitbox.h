@@ -10,7 +10,7 @@ public:
 	friend class WorldListener;
 	Hitbox(b2World& world, sf::Vector2f position, float area_of_range,float max_dmg);
 
-	virtual void updateThis(sf::Time deltaTime) override;
+	void updateThis(sf::Time deltaTime) override;
 	
 
 private:

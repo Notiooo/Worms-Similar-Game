@@ -3,6 +3,7 @@
 #include "States/Application_States/GameState.h"
 #include "States/Application_States/TitleState.h"
 #include "States/Application_States/MenuState.h"
+#include "States/Application_States/PauseState.h"
 
 const sf::Time Game::TIME_PER_FRAME = sf::seconds(1.f / 60.f);
 
@@ -16,6 +17,7 @@ Game::Game():
 	appStack.saveState<TitleState>(State_ID::TitleState, gameWindow, fonts);
 	appStack.saveState<MenuState>(State_ID::MenuState, fonts, gameWindow, wormAmount, numberOfTeams);
 	appStack.saveState<GameState>(State_ID::GameState, gameWindow, wormAmount, numberOfTeams);
+	appStack.saveState<PauseState>(State_ID::PauseState, gameWindow, fonts);
 
 
 	// load resources

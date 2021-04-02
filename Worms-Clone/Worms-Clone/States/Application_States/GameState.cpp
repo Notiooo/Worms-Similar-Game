@@ -14,6 +14,9 @@ GameState::GameState(StateStack& stack, sf::RenderWindow& window, int& wormAmoun
 
 bool GameState::handleEvent(const sf::Event& event)
 {
+	if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+		requestPush(State_ID::PauseState);
+	
 	gameWorld.processEvents(event);
 
 	// Set this state to transparent -- in other words

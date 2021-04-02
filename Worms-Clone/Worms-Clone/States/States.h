@@ -10,6 +10,7 @@ enum class State_ID
 	TitleState,
 	GameState,
 	MenuState,
+	PauseState,
 
 
 	// === Inside-game objects flow states === //

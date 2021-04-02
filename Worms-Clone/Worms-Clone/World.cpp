@@ -5,7 +5,6 @@
 #include "Nodes/Physical/Specified/Worm/Weapons/Bullet.h"
 #include <fstream>
 #include <sstream>
-#include <iostream>
 #include <random>
 
 
@@ -14,8 +13,8 @@ World::World(sf::RenderWindow& window, int _wormAmount, int _numberOfTeams) :
 	worldView(window.getDefaultView()),
 	b2_World(b2Vec2(0.f, 9.8f)),
 	debugDraw(window),
-	essentials({ &b2_World, &worldWindow, &worldTextures, &worldFonts }),
 	wormAmount(_wormAmount),
+	essentials({ &b2_World, &worldWindow, &worldTextures, &worldFonts }),
 	numberOfTeams(_numberOfTeams)
 {
 	// Tells the physical world what to draw
