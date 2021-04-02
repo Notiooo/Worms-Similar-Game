@@ -5,6 +5,7 @@
 
 GameState::GameState(StateStack& stack, sf::RenderWindow& window, int& wormAmount, int& numberOfTeams):
 	State(stack),
+	gameWindow(window),
 	gameWorld(window, wormAmount, numberOfTeams)
 {
 
@@ -29,6 +30,13 @@ bool GameState::update(sf::Time deltaTime)
 	// works according to
 	// d = st (distane = speed * time)
 	gameWorld.update(deltaTime);
+
+	if(gameWorld.isGameFinished())
+	{
+		gameWindow.setView(gameWindow.getDefaultView());
+		requestPop();
+		requestPush(State_ID::MenuState);
+	}
 
 	// Set this state to transparent -- in other words
 	// allow States below in stack to be rendered.

@@ -192,6 +192,11 @@ std::string Worm::getName()
 	return wormName.getString();
 }
 
+sf::Color Worm::getTeam() const
+{
+	return teamColor;
+}
+
 void Worm::setTeam(sf::Color _teamColor)
 {
 	teamColor = _teamColor;

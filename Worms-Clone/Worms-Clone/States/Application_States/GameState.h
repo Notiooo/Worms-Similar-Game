@@ -19,6 +19,7 @@ public:
 
 private:
 	World gameWorld;
+	sf::RenderWindow& gameWindow;
 };
 
 

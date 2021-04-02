@@ -3,6 +3,8 @@
 #include "Physical/Specified/Worm/Weapons/Bullet.h"
 #include <iostream>
 
+
+#include "../utils.h"
 #include "Physical/Specified/Worm/Weapons/Hitbox.h"
 
 GameplayManager::GameplayManager(b2World& _physicalWorld, TextureManager& _textures, FontManager& _fonts,
@@ -28,20 +30,21 @@ void GameplayManager::addWorm(const std::string& name, sf::Color teamColor, sf::
 	worm->setName(name);
 	worm->setTeam(teamColor);
 
-	if (wormQueue.empty())
+	if (wormQueue.isEmpty())
 		worm->activateState(State_ID::WormPlayState);
 
 	// Worm need this node as a parent to properly calculate transform
 	// as also it will use this node to get through it to the root node
 	// during creating a bullet -- which is object pinned to the root node
 	worm->parent = this;
-	wormQueue.push_back(std::move(worm));
+	wormQueue.addWorm(worm);
 }
 
 void GameplayManager::drawThis(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	for (auto beg = wormQueue.crbegin(), end = wormQueue.crend(); beg != end; ++beg)
-		(*beg)->draw(target, states);
+	//for (auto beg = wormQueue.crbegin(), end = wormQueue.crend(); beg != end; ++beg)
+	//	(*beg)->draw(target, states);
+	wormQueue.draw(target, states);
 
 	target.draw(roundTimeText);
 	target.draw(gameMessageText);
@@ -49,10 +52,13 @@ void GameplayManager::drawThis(sf::RenderTarget& target, sf::RenderStates states
 
 void GameplayManager::updateThis(sf::Time deltaTime)
 {
-	for (const auto& worm : wormQueue)
-		worm->update(deltaTime);
+	//for (const auto& worm : wormQueue)
+	//	worm->update(deltaTime);
+	wormQueue.update(deltaTime);
 
 	checkTurnTime();
+	checkIfHasEnded();
+	
 	roundTimeText.setPosition(
 		window.mapPixelToCoords(sf::Vector2i(window.getSize().x / 2, roundTimeText.getLocalBounds().height)));
 
@@ -61,12 +67,14 @@ void GameplayManager::updateThis(sf::Time deltaTime)
 
 	if (gameMessageTime != sf::Time::Zero && gameMessageClock.getElapsedTime() > gameMessageTime)
 		setWorldMessage("");
+
 }
 
 void GameplayManager::handleThisEvents(const sf::Event& event)
 {
-	for (const auto& worm : wormQueue)
-		worm->handleEvents(event);
+	//for (const auto& worm : wormQueue)
+	//	worm->handleEvents(event);
+	wormQueue.handleEvents(event);
 
 	if (event.type == sf::Event::MouseWheelScrolled)
 	{
@@ -90,8 +98,9 @@ void GameplayManager::removeDestroyed()
 {
 	NodeScene::removeDestroyed();
 
-	auto removal_mark = std::remove_if(wormQueue.begin(), wormQueue.end(), std::mem_fn(&NodeScene::isDestroyed));
-	wormQueue.erase(removal_mark, wormQueue.end());
+	//auto removal_mark = std::remove_if(wormQueue.begin(), wormQueue.end(), std::mem_fn(&NodeScene::isDestroyed));
+	//wormQueue.erase(removal_mark, wormQueue.end());
+	wormQueue.removeDestroyed();
 
 	for (const auto& worm : pinnedNodes)
 		worm->removeDestroyed();
@@ -131,20 +140,25 @@ const NodeScene* GameplayManager::getRootNode() const
 	return this;
 }
 
+bool GameplayManager::isGameFinished() const
+{
+	return gameFinished;
+}
+
 void GameplayManager::checkTurnTime()
 {
 	// On default the game should stay with PlayState for some worm
 	static bool hideState = false;
 
 	// The game should go on if there are worms in the queue
-	if (!wormQueue.empty())
+	if (!isGameFinished() && !wormQueue.isEmpty())
 	{
 		sf::Time timeElapsed = roundClock.getElapsedTime();
 
 		// The game should allow to play another worm if
 		// a) The time has passed
 		// b) The current worm shoot, and now is in the HideState
-		if (!hideState && ((timeElapsed > timePerTurn + additionalTime) || (wormQueue.front()->getCurrentState() ==
+		if (!hideState && ((timeElapsed > timePerTurn + additionalTime) || (wormQueue.front().getCurrentState() ==
 			State_ID::WormHideState)))
 		{
 			hideState = true;
@@ -152,8 +166,8 @@ void GameplayManager::checkTurnTime()
 			setWorldMessage("HIDE!", sf::Color::Red, timePerHide);
 
 			// If player did not shoot, then switch him to HideState
-			if (wormQueue.front()->getCurrentState() == State_ID::WormPlayState)
-				wormQueue.front()->activateState(State_ID::WormHideState);
+			if (wormQueue.front().getCurrentState() == State_ID::WormPlayState)
+				wormQueue.front().activateState(State_ID::WormHideState);
 
 			// Red color stresses the player
 			roundTimeText.setFillColor(sf::Color::Red);
@@ -169,12 +183,12 @@ void GameplayManager::checkTurnTime()
 			// If the HideState is over I need to change the current
 			// worm state to WaitState, and move it at the back of the queue.
 			// Next switch the worm at the front to the PlayState
-			std::unique_ptr<Worm> worm = std::move(wormQueue.front());
-			worm->activateState(State_ID::WormWaitState);
-			wormQueue.pop_front();
-			wormQueue.push_back(std::move(worm));
-			wormQueue.front()->activateState(State_ID::WormPlayState);
-			setWorldMessage("Lets go, " + wormQueue.front()->getName() + "!", sf::Color::White, sf::seconds(2));
+			wormQueue.front().activateState(State_ID::WormWaitState);
+			wormQueue.getNextWorm().activateState(State_ID::WormPlayState);
+
+			sf::Color currentTeam = wormQueue.front().getTeam();
+
+			setWorldMessage("Lets go, " + wormQueue.front().getName() + "!", sf::Color::White, sf::seconds(2));
 
 			// Changes Red to White Color
 			roundTimeText.setFillColor(sf::Color::White);
@@ -189,19 +203,68 @@ void GameplayManager::checkTurnTime()
 			roundTimeText.setString(std::to_string(timeSeconds));
 		roundTimeText.setOrigin(roundTimeText.getLocalBounds().width / 2.f, roundTimeText.getLocalBounds().height / 2.f);
 	}
+	else
+	{
+		sf::Time timeElapsed = roundClock.getElapsedTime();
+		sf::Time timeDisplay = leaveGameTime - timeElapsed;
+		int timeSeconds = static_cast<int>(timeDisplay.asSeconds());
+		if (timeSeconds >= 0)
+		{
+			roundTimeText.setString("You'll be redirected to menu in " + std::to_string(timeSeconds) + " seconds");
+			centerOrigin(roundTimeText);
+		}
+		else
+			setDestroyed();
+	}
 }
 
 void GameplayManager::checkIfHasEnded()
 {
-	if(wormQueue.empty())
+	if (isGameFinished())
+		return;
+	
+	if(wormQueue.isEmpty())
 	{
-		gameFinished = true;
+		setGameFinished();
 		setWorldMessage("The game ended in a draw!");
 	}
 
-	//sf::Color teamColor = wormQueue.back();
-	//for(auto& worm : wormQueue)
+	//sf::Color teamColor = wormQueue.front().getTeam();
+	//bool anyDifferentTeam = std::any_of(wormQueue.cbegin(), wormQueue.cend(), [&teamColor](Worm& worm)
 	//{
-	//	
-	//}
+	//		return teamColor != worm.getTeam();
+	//});
+
+	int numberOfAliveTeams = wormQueue.aliveTeams();
+
+	if(numberOfAliveTeams == 1)
+	{
+		setGameFinished();
+		std::string winner;
+
+		sf::Color teamColor = wormQueue.front().getTeam();
+
+		// Wrong way to do this! I have to change it later.
+		if (teamColor == sf::Color::Red)
+			winner = "red";
+		else if (teamColor == sf::Color::Blue)
+			winner = "blue";
+		else if (teamColor == sf::Color::Green)
+			winner = "green";
+		else if (teamColor == sf::Color::Magenta)
+			winner = "magneta";
+		else if (teamColor == sf::Color::Yellow)
+			winner = "yellow";
+		else
+			winner = "unknown color";
+		
+		setWorldMessage("The game has been won by " + winner);
+	}
+}
+
+void GameplayManager::setGameFinished()
+{
+	gameFinished = true;
+	roundClock.restart();
+	roundTimeText.setString("");
 }

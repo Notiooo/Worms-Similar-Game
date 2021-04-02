@@ -88,6 +88,7 @@ public:
 
 	void setName(const std::string& name);
 	std::string getName();
+	sf::Color getTeam() const;
 
 	void setTeam(sf::Color teamColor);
 

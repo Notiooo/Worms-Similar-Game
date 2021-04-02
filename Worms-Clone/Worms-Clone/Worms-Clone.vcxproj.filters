@@ -186,6 +186,9 @@
     <ClCompile Include="GUI\Incremental_Button.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="Nodes\Physical\Specified\Worm\WormQueue.cpp">
+      <Filter>Source Files\Nodes\Physical\Specified\Worm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -310,6 +313,9 @@
     </ClInclude>
     <ClInclude Include="GUI\Incremental_Button.h">
       <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Physical\Specified\Worm\WormQueue.h">
+      <Filter>Header Files\Nodes\Physical\Specified\Worm</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

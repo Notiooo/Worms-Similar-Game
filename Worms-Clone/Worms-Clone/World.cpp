@@ -130,6 +130,11 @@ void World::processEvents(const sf::Event& event)
 	rootScene.handleEvents(event);
 }
 
+bool World::isGameFinished() const
+{
+	return worldGameManager->isDestroyed();
+}
+
 void World::loadResources()
 {
 
@@ -268,7 +273,7 @@ void World::createWorld()
 	auto wormNameIter = wormNames.cbegin();
 	auto wormColorsIter = wormColors.cbegin();
 	auto wormSpawnPointIter = wormSpawnPoints.cbegin();
-	
+
 	// For testing purposes they are hardcoded here
 	for(int i = 0; i < numberOfTeams; ++i)
 	{

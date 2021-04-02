@@ -55,6 +55,9 @@ public:
 	 */
 	void processEvents(const sf::Event& event);
 
+
+	bool isGameFinished() const;
+
 private:
 
 	// ==== Functions to create and control the game world === //

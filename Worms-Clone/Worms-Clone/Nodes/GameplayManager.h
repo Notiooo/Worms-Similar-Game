@@ -5,6 +5,7 @@
 #include <deque>
 
 #include "Physical/Specified/Worm/Worm.h"
+#include "Physical/Specified/Worm/WormQueue.h"
 
 /**
  * \brief It handles the gameplay rules such as the order of moves
@@ -80,6 +81,8 @@ public:
 	 */
 	const NodeScene* getRootNode() const override;
 
+	bool isGameFinished() const;
+
 private:
 	/**
 	 * \brief It controls a turn-based game system.
@@ -88,6 +91,8 @@ private:
 	void checkTurnTime();
 
 	void checkIfHasEnded();
+
+	void setGameFinished();
 
 
 	// Useful
@@ -110,9 +115,11 @@ private:
 	sf::Time gameMessageTime; //!< Time for how long the game message should appear on the screen. Zero if infinitely many time.
 
 	
-	std::deque<std::unique_ptr<Worm>> wormQueue; //!< Order in which particular worms can play
+	WormQueue wormQueue; //!< Order in which particular worms can play
 	sf::Time additionalTime = sf::Time::Zero;
 	bool gameFinished = false;
+
+	sf::Time leaveGameTime = sf::seconds(5);
 };
 
 
