@@ -49,9 +49,9 @@ namespace GUI
 		 * (for example pressed with other button).
 		 */
 		virtual void deactivate();
-
+		
 		virtual void handleEvents(const sf::Event& event) = 0;
-		virtual void update() = 0;
+		virtual void update(sf::Vector2f mousePosition) = 0;
 
 	private:
 		bool _isSelected; //!< Flag telling if the component is currently selected

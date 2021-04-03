@@ -20,103 +20,27 @@ MenuState::MenuState(StateStack& stack, const FontManager& fonts, sf::RenderWind
 	amountText("How many worms per team?", fonts.getResourceReference(Fonts_ID::ArialNarrow), 21),
 	amountTeams("How many teams?", fonts.getResourceReference(Fonts_ID::ArialNarrow), 21),
 	wormsPerTeam(_wormAmount),
-	numberOfTeams(_numberOfTeams)
+	numberOfTeams(_numberOfTeams),
+	buttons(window)
 {
+	// It makes sure that the view is at proper place
 	window.setView(window.getDefaultView());
 	
 	loadResources();
 	backgroundTexture.setTexture(textures.getResourceReference(Textures_ID::WorldBackground));
 	backgroundTexture.setTextureRect(sf::IntRect(0, 0, window.getSize().x, window.getSize().y));
 
-	sf::Vector2f menuPosition(window.getSize().x / 4.f, window.getSize().y / 4.f);
-	float menuOffset = 0.f;
+
+	
+	sf::Vector2f titlePosition(window.getSize().x / 4.f, window.getSize().y / 4.f);
 
 	createBackgroundWorld(sf::Vector2f(window.getSize().x / 1.5f, 0.f));
 	centerOrigin(gameName);
 	centerOrigin(author);
-	gameName.setPosition(menuPosition.x, menuPosition.y + menuOffset);
-	menuOffset += gameName.getLocalBounds().height;
-	author.setPosition(menuPosition.x, menuPosition.y + menuOffset);
-	menuOffset += author.getLocalBounds().height;
-	
-	auto play_button = std::make_unique<GUI::Button>(textures, fonts, window);
-	play_button->setText("Play the game!");
-	play_button->matchSizeToText(20.f);
-	play_button->setPosition(menuPosition.x, menuPosition.y + menuOffset + 30.f);
-	play_button->setActiveFunction([this](GUI::Button& self)
-		{
-			requestPop();
-			requestPush(State_ID::GameState);
-		});
+	gameName.setPosition(titlePosition.x, titlePosition.y);
+	setPositionBelow(author, gameName);
 
-	auto exitButton = std::make_unique<GUI::Button>(textures, fonts, window);
-	exitButton->setText("Exit the game");
-	exitButton->matchSizeToText(20.f);
-	exitButton->setPosition(play_button->getPosition().x,
-		play_button->getPosition().y + play_button->getLocalBounds().height + exitButton->getLocalBounds().height / 2.f);
-	exitButton->setActiveFunction([&window](GUI::Button& self)
-		{
-			window.close();
-		});
-
-	amountText.setPosition(exitButton->getPosition().x,
-		exitButton->getPosition().y + exitButton->getLocalBounds().height + amountText.getLocalBounds().height / 2.f);
-	centerOrigin(amountText);
-	
-	auto noWormsPerTeam = std::make_unique<GUI::Button>(textures, fonts, window);
-	noWormsPerTeam->setText(std::to_string(wormsPerTeam) + " worms per team");
-	noWormsPerTeam->matchSizeToText(20.f);
-	noWormsPerTeam->setPosition(amountText.getPosition().x,
-		amountText.getPosition().y + amountText.getLocalBounds().height + noWormsPerTeam->getLocalBounds().height / 2.f);
-	centerOrigin(amountText);
-	noWormsPerTeam->setActiveFunction([this](GUI::Button& self)
-		{
-			if (wormsPerTeam < maxWormAmount)
-			{
-				++wormsPerTeam;
-				self.setText(std::to_string(wormsPerTeam) + " worms per team");
-			}
-		});
-	noWormsPerTeam->setDeactiveFunction([this](GUI::Button& self)
-		{
-			if(wormsPerTeam > minWormAmount)
-			{
-				--wormsPerTeam;
-				self.setText(std::to_string(wormsPerTeam) + " worms per team");
-			}
-		});
-
-	amountTeams.setPosition(play_button->getPosition().x,
-		noWormsPerTeam->getPosition().y + noWormsPerTeam->getLocalBounds().height + amountTeams.getLocalBounds().height / 2.f);
-	centerOrigin(amountTeams);
-
-	auto noOfTeams = std::make_unique<GUI::Button>(textures, fonts, window);
-	noOfTeams->setText(std::to_string(numberOfTeams) + " teams");
-	noOfTeams->matchSizeToText(20.f);
-	noOfTeams->setPosition(amountTeams.getPosition().x,
-		amountTeams.getPosition().y + amountTeams.getLocalBounds().height + noOfTeams->getLocalBounds().height / 2.f);
-	noOfTeams->setActiveFunction([this](GUI::Button& self)
-		{
-			if (numberOfTeams < maxTeamsAmount)
-			{
-				++numberOfTeams;
-				self.setText(std::to_string(numberOfTeams) + " teams");
-			}
-		});
-	noOfTeams->setDeactiveFunction([this](GUI::Button& self)
-		{
-			if (numberOfTeams > minTeamsAmount)
-			{
-				--numberOfTeams;
-				self.setText(std::to_string(numberOfTeams) + " teams");
-			}
-		});
-	
-	buttons.store(std::move(play_button));
-	buttons.store(std::move(noWormsPerTeam));
-	buttons.store(std::move(noOfTeams));
-	buttons.store(std::move(exitButton));
-	
+	createButtons(window, getPositionBelow(author));
 }
 
 void MenuState::createBackgroundWorld(sf::Vector2f pos)
@@ -218,6 +142,87 @@ bool MenuState::handleEvent(const sf::Event& event)
 	buttons.handleEvents(event);
 
 	return false;
+}
+
+void MenuState::createButtons(sf::RenderWindow& window, sf::Vector2f position)
+{
+	// Play Button
+	auto play_button = std::make_unique<GUI::Button>(textures, fonts);
+	play_button->setText("Play the game!");
+	play_button->matchSizeToText(20.f);
+	play_button->setPosition(position.x, position.y + play_button->getLocalBounds().height);
+	play_button->setActiveFunction([this](GUI::Button& self)
+		{
+			requestPop();
+			requestPush(State_ID::GameState);
+		});
+
+	// Exit button
+	auto exitButton = std::make_unique<GUI::Button>(textures, fonts);
+	exitButton->setText("Exit the game");
+	exitButton->matchSizeToText(20.f);
+	exitButton->setPositionBelow(*play_button, 10.f);
+	exitButton->setActiveFunction([&window](GUI::Button& self)
+		{
+			window.close();
+		});
+
+	// Text with information that player can change her amount of worms per team
+	centerOrigin(amountText);
+	setPositionBelow(amountText, *exitButton);
+
+	// Button where player can change amount of worm per team
+	auto noWormsPerTeam = std::make_unique<GUI::Button>(textures, fonts);
+	noWormsPerTeam->setText(std::to_string(wormsPerTeam) + " worms per team");
+	noWormsPerTeam->matchSizeToText(20.f);
+	noWormsPerTeam->setPositionBelow(amountText, 20.f);
+	noWormsPerTeam->setActiveFunction([this](GUI::Button& self)
+		{
+			if (wormsPerTeam < maxWormAmount)
+			{
+				++wormsPerTeam;
+				self.setText(std::to_string(wormsPerTeam) + " worms per team");
+			}
+		});
+	noWormsPerTeam->setDeactiveFunction([this](GUI::Button& self)
+		{
+			if (wormsPerTeam > minWormAmount)
+			{
+				--wormsPerTeam;
+				self.setText(std::to_string(wormsPerTeam) + " worms per team");
+			}
+		});
+
+	// Text with information that player can here change number of teams
+	centerOrigin(amountTeams);
+	setPositionBelow(amountTeams, *noWormsPerTeam);
+
+	// Button that allow player to change number of teams
+	auto noOfTeams = std::make_unique<GUI::Button>(textures, fonts);
+	noOfTeams->setText(std::to_string(numberOfTeams) + " teams");
+	noOfTeams->matchSizeToText(20.f);
+	noOfTeams->setPositionBelow(amountTeams, 20.f);
+	noOfTeams->setActiveFunction([this](GUI::Button& self)
+		{
+			if (numberOfTeams < maxTeamsAmount)
+			{
+				++numberOfTeams;
+				self.setText(std::to_string(numberOfTeams) + " teams");
+			}
+		});
+	noOfTeams->setDeactiveFunction([this](GUI::Button& self)
+		{
+			if (numberOfTeams > minTeamsAmount)
+			{
+				--numberOfTeams;
+				self.setText(std::to_string(numberOfTeams) + " teams");
+			}
+		});
+
+	buttons.store(std::move(play_button));
+	buttons.store(std::move(noWormsPerTeam));
+	buttons.store(std::move(noOfTeams));
+	buttons.store(std::move(exitButton));
 }
 
 void MenuState::loadResources()

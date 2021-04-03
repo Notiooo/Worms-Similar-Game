@@ -4,6 +4,9 @@
 #include "NodeScene.h"
 #include <deque>
 
+
+#include "../GUI/Container.h"
+#include "../GUI/FixedContainer.h"
 #include "Physical/Specified/Worm/Worm.h"
 #include "Physical/Specified/Worm/WormQueue.h"
 
@@ -120,6 +123,8 @@ private:
 	bool gameFinished = false;
 
 	sf::Time leaveGameTime = sf::seconds(5);
+	GUI::Container testContainer;
+	GUI::FixedContainer testFixedContainer;
 };
 
 

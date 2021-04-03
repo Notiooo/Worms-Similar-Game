@@ -34,6 +34,7 @@ public:
 
 
 private:
+	void createButtons(sf::RenderWindow& window, sf::Vector2f position);
 	void loadResources();
 	const FontManager& fonts;
 	sf::RenderWindow& window;

@@ -2,6 +2,11 @@
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
+GUI::Container::Container(const sf::RenderWindow& window):
+window(window)
+{
+}
+
 void GUI::Container::store(std::unique_ptr<Component> component)
 {
 	pinnedComponents.push_back(std::move(component));
@@ -15,8 +20,10 @@ void GUI::Container::handleEvents(const sf::Event& event)
 
 void GUI::Container::update()
 {
+	sf::Vector2f mousePosition = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+	
 	for (auto& pinnedComponent : pinnedComponents)
-		pinnedComponent->update();
+		pinnedComponent->update(mousePosition);
 }
 
 void GUI::Container::draw(sf::RenderTarget& target, sf::RenderStates states) const

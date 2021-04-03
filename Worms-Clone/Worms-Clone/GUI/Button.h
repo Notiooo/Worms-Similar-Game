@@ -15,7 +15,7 @@ namespace GUI
     class Button : public Component
     {
     public:
-        Button(const TextureManager& textures, const FontManager& fonts, sf::RenderWindow& window);
+        Button(const TextureManager& textures, const FontManager& fonts);
 
 
         /**
@@ -81,10 +81,13 @@ namespace GUI
          * \param padding Additional distance of the button edge from the text
          */
         void matchSizeToText(float padding = 0.f);
+
+    	template <typename T>
+        void setPositionBelow(const T& object, float padding = 0.f);
     	
     	
     	void handleEvents(const sf::Event& event) override;
-    	void update() override;
+    	void update(sf::Vector2f mousePosition) override;
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:
@@ -99,9 +102,20 @@ namespace GUI
         // === Functional part of button == //
         std::function<void(Button&)> activateFunction; //!< A function that is performed when a button is pressed (activated)
         std::function<void(Button&)> deactivateFunction; //!< A function that is performed when a button is pressed with alternative key (deactivated)
-
-        sf::RenderWindow& window;
     };
+
+    template <typename T>
+    void Button::setPositionBelow(const T& object, float padding)
+    {
+    	sf::Vector2f pos(object.getPosition().x, object.getPosition().y);
+    	
+        sf::Vector2f offset = sf::Vector2f(0, object.getGlobalBounds().height);
+
+        padding *= getScale().y;
+        offset *= getScale().y;
+        setPosition(pos + offset + sf::Vector2f(0, padding));
+    }
+
 }
 
 

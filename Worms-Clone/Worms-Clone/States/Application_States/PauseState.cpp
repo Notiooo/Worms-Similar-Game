@@ -8,8 +8,9 @@ PauseState::PauseState(StateStack& stack, sf::RenderWindow& window, const FontMa
 	State(stack),
 	window(window),
 	darkBackground(sf::Vector2f(window.getView().getSize().x, window.getView().getSize().y)),
-	pausedText("Pause", fonts.getResourceReference(Fonts_ID::ArialNarrow), 60)
-{
+	pausedText("Pause", fonts.getResourceReference(Fonts_ID::ArialNarrow), 60),
+	containerOfButtons(window)
+{	
 	pausedText.setFillColor(sf::Color::White);
 	pausedText.setOutlineColor(sf::Color::Black);
 	pausedText.setOutlineThickness(1.f);
@@ -23,11 +24,9 @@ PauseState::PauseState(StateStack& stack, sf::RenderWindow& window, const FontMa
 	textures.storeResource(Textures_ID::Paper, "Resources/Textures/World/paper_texture.png");
 	textures.getResourceReference(Textures_ID::Paper).setRepeated(true);
 	
-	auto backToMenuButton = std::make_unique<GUI::Button>(textures, fonts, window);
+	auto backToMenuButton = std::make_unique<GUI::Button>(textures, fonts);
 	backToMenuButton->setText("Exit to the menu");
-	backToMenuButton->setPosition(window.mapPixelToCoords(sf::Vector2i(window.getSize().x / 2.f, window.getSize().y / 2.f)));
-	backToMenuButton->setScale(window.getView().getSize().x / window.getDefaultView().getSize().x,
-		window.getView().getSize().y / window.getDefaultView().getSize().y);
+	backToMenuButton->setPosition(window.getSize().x / 2.f, window.getSize().y / 2.f);
 	backToMenuButton->matchSizeToText(10.f);
 	backToMenuButton->setActiveFunction([this](GUI::Button& button)
 		{
@@ -35,11 +34,9 @@ PauseState::PauseState(StateStack& stack, sf::RenderWindow& window, const FontMa
 			requestPush(State_ID::MenuState);
 		});
 
-	auto exitGameButton = std::make_unique<GUI::Button>(textures, fonts, window);
+	auto exitGameButton = std::make_unique<GUI::Button>(textures, fonts);
 	exitGameButton->setText("Exit the game");
-	exitGameButton->setPosition(window.mapPixelToCoords(sf::Vector2i(window.getSize().x / 2.f, window.getSize().y / 1.8f)));
-	exitGameButton->setScale(window.getView().getSize().x / window.getDefaultView().getSize().x,
-		window.getView().getSize().y / window.getDefaultView().getSize().y);
+	exitGameButton->setPositionBelow(*backToMenuButton, 15.f);
 	exitGameButton->matchSizeToText(10.f);
 	exitGameButton->setActiveFunction([&window](GUI::Button& button)
 		{

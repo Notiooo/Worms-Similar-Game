@@ -189,6 +189,9 @@
     <ClCompile Include="States\Application_States\PauseState.cpp">
       <Filter>Source Files\States\Application_States</Filter>
     </ClCompile>
+    <ClCompile Include="GUI\FixedContainer.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -316,6 +319,9 @@
     </ClInclude>
     <ClInclude Include="States\Application_States\PauseState.h">
       <Filter>Header Files\States\Application_States</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\FixedContainer.h">
+      <Filter>Header Files\GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

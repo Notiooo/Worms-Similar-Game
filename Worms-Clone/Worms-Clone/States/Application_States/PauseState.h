@@ -4,7 +4,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 
 #include "../State.h"
-#include "../../GUI/Container.h"
+#include "../../GUI/FixedContainer.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/Text.hpp"
@@ -28,7 +28,7 @@ public:
 
 private:
 	sf::RectangleShape darkBackground;
-	GUI::Container containerOfButtons;
+	GUI::FixedContainer containerOfButtons;
 	sf::RenderWindow& window;
 	sf::Text pausedText;
 

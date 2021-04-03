@@ -3,14 +3,17 @@
 #include "Physical/Specified/Worm/Weapons/Bullet.h"
 
 #include "../utils.h"
+#include "../GUI/Button.h"
 #include "Physical/Specified/Worm/Weapons/Hitbox.h"
 
 GameplayManager::GameplayManager(b2World& _physicalWorld, TextureManager& _textures, FontManager& _fonts,
-                                 sf::RenderWindow& _window) :
+	sf::RenderWindow& _window) :
 	physicalWorld(_physicalWorld),
 	textures(_textures),
 	fonts(_fonts),
-	window(_window)
+	window(_window),
+	testFixedContainer(window),
+	testContainer(window)
 {
 	// Set up the round timer
 	roundTimeText.setFont(fonts.getResourceReference(Fonts_ID::ArialNarrow));
@@ -20,6 +23,18 @@ GameplayManager::GameplayManager(b2World& _physicalWorld, TextureManager& _textu
 	// Set up the message below timer
 	gameMessageText.setFont(fonts.getResourceReference(Fonts_ID::ArialNarrow));
 	gameMessageText.setOutlineThickness(1.f);
+
+	auto testButton = std::make_unique<GUI::Button>(textures, fonts);
+	testButton->setPosition(50, 50);
+	testButton->setText("Do not click me");
+	testButton->matchSizeToText(10.f);
+	testContainer.store(std::move(testButton));
+
+	auto testButtonFixed = std::make_unique<GUI::Button>(textures, fonts);
+	testButtonFixed->setPosition(100, 50);
+	testButtonFixed->setText("Do not click me");
+	testButtonFixed->matchSizeToText(10.f);
+	testFixedContainer.store(std::move(testButtonFixed));
 }
 
 void GameplayManager::addWorm(const std::string& name, sf::Color teamColor, sf::Vector2f position)
@@ -44,6 +59,9 @@ void GameplayManager::drawThis(sf::RenderTarget& target, sf::RenderStates states
 	//	(*beg)->draw(target, states);
 	wormQueue.draw(target, states);
 
+	testContainer.draw(target, states);
+	testFixedContainer.draw(target, states);
+
 	target.draw(roundTimeText);
 	target.draw(gameMessageText);
 }
@@ -53,6 +71,9 @@ void GameplayManager::updateThis(sf::Time deltaTime)
 	//for (const auto& worm : wormQueue)
 	//	worm->update(deltaTime);
 	wormQueue.update(deltaTime);
+
+	testContainer.update();
+	testFixedContainer.update();
 
 	checkIfHasEnded();
 	checkTurnTime();

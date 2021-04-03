@@ -49,11 +49,10 @@ void GUI::Button::setSize(int width, int height)
 	centerOrigin(sprite);
 }
 
-GUI::Button::Button(const TextureManager& textures, const FontManager& fonts, sf::RenderWindow& window):
+GUI::Button::Button(const TextureManager& textures, const FontManager& fonts):
 normalTexture(textures.getResourceReference(Textures_ID::Paper)),
 selectedTexture(textures.getResourceReference(Textures_ID::Paper)),
-text("", fonts.getResourceReference(Fonts_ID::ArialNarrow), 20),
-window(window)
+text("", fonts.getResourceReference(Fonts_ID::ArialNarrow), 20)
 {
 	text.setFillColor(sf::Color::White);
 	text.setOutlineColor(sf::Color(47, 60, 76, 255));
@@ -81,11 +80,12 @@ void GUI::Button::setText(const std::string& _text)
 
 sf::FloatRect GUI::Button::getGlobalBounds() const
 {
-	auto windowScale = sf::Vector2f(window.getView().getSize().x / window.getDefaultView().getSize().x,
-		window.getView().getSize().y / window.getDefaultView().getSize().y);
+	const auto rectLeft = getPosition().x - sprite.getOrigin().x * getScale().x;
+	const auto rectTop = getPosition().y - sprite.getOrigin().y * getScale().y;
+	const auto rectWidth = sprite.getLocalBounds().width * sprite.getScale().x * getScale().x;
+	const auto rectHeight = sprite.getLocalBounds().height * sprite.getScale().y * getScale().y;
 	
-	return sf::FloatRect(getPosition().x - sprite.getOrigin().x * windowScale.x, getPosition().y - sprite.getOrigin().y * windowScale.y,
-		sprite.getLocalBounds().width * sprite.getScale().x * windowScale.x, sprite.getLocalBounds().height * sprite.getScale().y * windowScale.y);
+	return sf::FloatRect(rectLeft, rectTop, rectWidth, rectHeight);
 }
 
 sf::FloatRect GUI::Button::getLocalBounds() const
@@ -111,17 +111,16 @@ void GUI::Button::handleEvents(const sf::Event& event)
 		if (event.key.code == sf::Mouse::Right)
 			deactivate();
 	}
-	
 }
 
-void GUI::Button::update()
+void GUI::Button::update(sf::Vector2f mousePosition)
 {
 	// If mouse has left the button
-	if (isSelected() && !getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
+	if (isSelected() && !getGlobalBounds().contains(mousePosition))
 		onLeave();
 
 	// If mouse has entered the button
-	if(!isSelected() && getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
+	if (!isSelected() && getGlobalBounds().contains(mousePosition))
 		onEnter();
 }
 
