@@ -17,6 +17,7 @@ namespace GUI
 	public:
 
 		Container(const sf::RenderWindow& window);
+		
 		/**
 		 * \brief Adds a component to the container
 		 * \param component Component to add

@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "States/States.h"
+#include "States/Application_States/EditorState.h"
 #include "States/Application_States/GameState.h"
 #include "States/Application_States/TitleState.h"
 #include "States/Application_States/MenuState.h"
@@ -18,6 +19,7 @@ Game::Game():
 	appStack.saveState<MenuState>(State_ID::MenuState, fonts, gameWindow, wormAmount, numberOfTeams);
 	appStack.saveState<GameState>(State_ID::GameState, gameWindow, wormAmount, numberOfTeams);
 	appStack.saveState<PauseState>(State_ID::PauseState, gameWindow, fonts);
+	appStack.saveState<EditorState>(State_ID::EditorState, gameWindow, fonts);
 
 
 	// load resources

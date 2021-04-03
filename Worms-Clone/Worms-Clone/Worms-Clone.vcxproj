@@ -151,6 +151,8 @@
     <ClCompile Include="GUI\Component.cpp" />
     <ClCompile Include="GUI\Container.cpp" />
     <ClCompile Include="GUI\FixedContainer.cpp" />
+    <ClCompile Include="Level Editor\Editor.cpp" />
+    <ClCompile Include="Level Editor\NodeEditorObject.cpp" />
     <ClCompile Include="Nodes\NodeScene.cpp" />
     <ClCompile Include="Nodes\NodeSprite.cpp" />
     <ClCompile Include="Nodes\NodeText.cpp" />
@@ -175,6 +177,7 @@
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormPlayState.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormQueue.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormWaitState.cpp" />
+    <ClCompile Include="States\Application_States\EditorState.cpp" />
     <ClCompile Include="States\Application_States\GameState.cpp" />
     <ClCompile Include="States\Application_States\MenuState.cpp" />
     <ClCompile Include="States\Application_States\PauseState.cpp" />
@@ -193,6 +196,8 @@
     <ClInclude Include="GUI\Component.h" />
     <ClInclude Include="GUI\Container.h" />
     <ClInclude Include="GUI\FixedContainer.h" />
+    <ClInclude Include="Level Editor\Editor.h" />
+    <ClInclude Include="Level Editor\NodeEditorObject.h" />
     <ClInclude Include="Nodes\NodeScene.h" />
     <ClInclude Include="Nodes\NodeSprite.h" />
     <ClInclude Include="Nodes\NodeText.h" />
@@ -220,6 +225,7 @@
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormWaitState.h" />
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Resources\Resources.h" />
+    <ClInclude Include="States\Application_States\EditorState.h" />
     <ClInclude Include="States\Application_States\GameState.h" />
     <ClInclude Include="States\Application_States\MenuState.h" />
     <ClInclude Include="States\Application_States\PauseState.h" />

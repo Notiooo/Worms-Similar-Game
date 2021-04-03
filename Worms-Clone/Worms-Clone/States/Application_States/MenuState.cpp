@@ -32,7 +32,7 @@ MenuState::MenuState(StateStack& stack, const FontManager& fonts, sf::RenderWind
 
 
 	
-	sf::Vector2f titlePosition(window.getSize().x / 4.f, window.getSize().y / 4.f);
+	sf::Vector2f titlePosition(window.getSize().x / 4.f, window.getSize().y / 6.f);
 
 	createBackgroundWorld(sf::Vector2f(window.getSize().x / 1.5f, 0.f));
 	centerOrigin(gameName);
@@ -219,9 +219,21 @@ void MenuState::createButtons(sf::RenderWindow& window, sf::Vector2f position)
 			}
 		});
 
+	// Level editor
+	auto levelEditor = std::make_unique<GUI::Button>(textures, fonts);
+	levelEditor->setText("Level Editor");
+	levelEditor->matchSizeToText(40.f);
+	levelEditor->setPositionBelow(*noOfTeams, 50.f);
+	levelEditor->setActiveFunction([this](GUI::Button& self)
+		{
+			requestPop();
+			requestPush(State_ID::EditorState);
+		});
+	
 	buttons.store(std::move(play_button));
 	buttons.store(std::move(noWormsPerTeam));
 	buttons.store(std::move(noOfTeams));
+	buttons.store(std::move(levelEditor));
 	buttons.store(std::move(exitButton));
 }
 

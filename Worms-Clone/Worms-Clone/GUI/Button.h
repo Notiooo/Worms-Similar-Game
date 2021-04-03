@@ -82,6 +82,12 @@ namespace GUI
          */
         void matchSizeToText(float padding = 0.f);
 
+        /**
+    	 * \brief Sets button under another object
+    	 * \tparam T Type of object on the basis of which we set the button
+    	 * \param object The object on the basis of which we set the button
+    	 * \param padding Additional distance between reference point and button
+    	 */
     	template <typename T>
         void setPositionBelow(const T& object, float padding = 0.f);
     	

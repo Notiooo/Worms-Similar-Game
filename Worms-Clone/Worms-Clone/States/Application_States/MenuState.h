@@ -9,7 +9,7 @@
 #include "../State.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "../../Resources/Resources.h"
-#include "../../GUI/Container.h"
+#include "../../GUI/FixedContainer.h"
 #include "../../Nodes/NodeScene.h"
 
 class StateStack;
@@ -41,7 +41,7 @@ private:
 	TextureManager textures;
 
 	// === Front Menu === //
-	GUI::Container buttons; //!< Includes all buttons inside the menu
+	GUI::FixedContainer buttons; //!< Includes all buttons inside the menu
 	sf::Text gameName; //!< Textual representation of the game title
 	sf::Text author; //!< Textual representation of the author of the game
 	sf::Text amountText; //!< Text representation of a selected number of worms per team inside the game

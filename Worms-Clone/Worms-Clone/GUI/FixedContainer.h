@@ -10,12 +10,17 @@ namespace GUI
 {
 	
 	/**
-	 * \brief A container for storing all kinds of interactive elements such as button
+	 * \brief A container in which interface elements are permanently attached to the game window
 	 */
 	class FixedContainer : public Container
 	{
 	public:
 		FixedContainer(sf::RenderWindow& window);
+
+		/**
+		 * \brief Adds a component to the container
+		 * \param component Component to add
+		 */
 		void store(std::unique_ptr<Component> component) override;
 
 		void update();

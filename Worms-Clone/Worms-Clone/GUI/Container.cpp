@@ -12,6 +12,7 @@ void GUI::Container::store(std::unique_ptr<Component> component)
 	pinnedComponents.push_back(std::move(component));
 }
 
+
 void GUI::Container::handleEvents(const sf::Event& event)
 {
 	for (auto& pinnedComponent : pinnedComponents)

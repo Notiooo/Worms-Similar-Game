@@ -70,6 +70,12 @@
     <Filter Include="Source Files\GUI">
       <UniqueIdentifier>{95634c88-5ff5-45a0-9da7-618de7a76c4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Level Editor">
+      <UniqueIdentifier>{536c870c-f822-4616-851e-683e53f8cb9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Level Editor">
+      <UniqueIdentifier>{4c38dc11-b571-4e6e-ac77-96881f4b7f87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Worms-Clone.cpp">
@@ -191,6 +197,15 @@
     </ClCompile>
     <ClCompile Include="GUI\FixedContainer.cpp">
       <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="States\Application_States\EditorState.cpp">
+      <Filter>Source Files\States\Application_States</Filter>
+    </ClCompile>
+    <ClCompile Include="Level Editor\Editor.cpp">
+      <Filter>Source Files\Level Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Level Editor\NodeEditorObject.cpp">
+      <Filter>Source Files\Level Editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -322,6 +337,15 @@
     </ClInclude>
     <ClInclude Include="GUI\FixedContainer.h">
       <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="States\Application_States\EditorState.h">
+      <Filter>Header Files\States\Application_States</Filter>
+    </ClInclude>
+    <ClInclude Include="Level Editor\Editor.h">
+      <Filter>Header Files\Level Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Level Editor\NodeEditorObject.h">
+      <Filter>Header Files\Level Editor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

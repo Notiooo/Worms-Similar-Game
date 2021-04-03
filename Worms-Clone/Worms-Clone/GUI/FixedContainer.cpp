@@ -22,7 +22,7 @@ void GUI::FixedContainer::update()
 	
 	sf::Vector2f leftUppercorner = window.mapPixelToCoords({ 0, 0 });
 	setPosition(leftUppercorner);
-
+	
 	windowScale.x = window.getView().getSize().x / window.getDefaultView().getSize().x;
 	windowScale.y = window.getView().getSize().y / window.getDefaultView().getSize().y;
 	setScale(windowScale);
@@ -34,10 +34,5 @@ void GUI::FixedContainer::draw(sf::RenderTarget& target, sf::RenderStates states
 
 	for (const auto& pinnedComponent : pinnedComponents)
 		target.draw(*pinnedComponent, states);
-}
-
-sf::Vector2f GUI::FixedContainer::getWindowScale()
-{
-	return windowScale;
 }
 
