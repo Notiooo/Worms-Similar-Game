@@ -24,9 +24,14 @@ namespace GUI
 		 */
 		virtual void store(std::unique_ptr<Component> component);
 
+		bool isEmpty();
+		Component& front();
+		Component& back();
+
 		void handleEvents(const sf::Event& event);
 		void update();
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+		void requestClear();
 
 		using sf::Transformable::setOrigin;
 		using sf::Transformable::setPosition;
@@ -35,6 +40,8 @@ namespace GUI
 	protected:
 		std::vector<std::unique_ptr<Component>> pinnedComponents;
 		const sf::RenderWindow& window;
+
+		bool clearRequest = false;
 	};
 	
 }

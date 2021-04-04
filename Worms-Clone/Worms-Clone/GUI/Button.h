@@ -68,13 +68,13 @@ namespace GUI
          * \brief Get the global bounding rectangle of the button
          * \return The global bounds of the button
          */
-        sf::FloatRect getGlobalBounds() const;
+        sf::FloatRect getGlobalBounds() const override;
 
         /**
          * \brief Get the local bounding rectangle of the button
          * \return The local bounds of the button
          */
-        sf::FloatRect getLocalBounds() const;
+        sf::FloatRect getLocalBounds() const override;
 
         /**
          * \brief Resizes the button to fit the text it contains

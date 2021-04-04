@@ -49,6 +49,20 @@ namespace GUI
 		 * (for example pressed with other button).
 		 */
 		virtual void deactivate();
+
+		/**
+		 * \brief Get the global bounding rectangle of the button
+		 * \return The global bounds of the button
+		 */
+		virtual sf::FloatRect getGlobalBounds() const = 0;
+
+		/**
+		 * \brief Get the local bounding rectangle of the button
+		 * \return The local bounds of the button
+		 */
+		virtual sf::FloatRect getLocalBounds() const = 0;
+
+		virtual void setPositionBelow(const Component& object, float padding = 0.f);
 		
 		virtual void handleEvents(const sf::Event& event) = 0;
 		virtual void update(sf::Vector2f mousePosition) = 0;

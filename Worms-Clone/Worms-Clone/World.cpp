@@ -19,13 +19,7 @@ World::World(sf::RenderWindow& window, int _wormAmount, int _numberOfTeams) :
 {
 	// Tells the physical world what to draw
 	b2_World.SetDebugDraw(&debugDraw);
-
-#ifdef _DEBUG
-	// set flag to draw the debug shapes
-	debugDraw.SetFlags(b2Draw::e_shapeBit);
-#endif
-
-
+	
 	loadResources();
 	createWorld();
 
@@ -184,7 +178,6 @@ void World::createWorld()
 
 	std::unique_ptr<GameplayManager> gameManager = std::make_unique<GameplayManager>(b2_World, worldTextures, worldFonts, worldWindow);
 	worldGameManager = gameManager.get();
-	//worldLayers[static_cast<unsigned>(WorldLayers::Foreground)]->pinNode(std::move(gameManager));
 	worldLayers[static_cast<unsigned>(WorldLayers::Foreground)]->pinNode(std::move(gameManager));
 
 	

@@ -6,7 +6,8 @@
 
 NodeEditorObject::NodeEditorObject(const TextureManager& textures, const FontManager& fonts):
 	nodeSprite(textures.getResourceReference(Textures_ID::Paper)),
-	nodeName("Unnamed", fonts.getResourceReference(Fonts_ID::ArialNarrow), 18)
+	nodeName("Unnamed", fonts.getResourceReference(Fonts_ID::ArialNarrow), 18),
+	objectId(0)
 {
 	nodeName.setOutlineColor(sf::Color::Black);
 	nodeName.setOutlineThickness(1.f);
@@ -126,6 +127,16 @@ void NodeEditorObject::deactivate()
 	nodeSprite.setColor(sf::Color::White);
 }
 
+void NodeEditorObject::setId(unsigned id)
+{
+	objectId = id;
+}
+
+unsigned NodeEditorObject::getId()
+{
+	return objectId;
+}
+
 void NodeEditorObject::setName(const std::string& name)
 {
 	nodeName.setString(name);
@@ -141,6 +152,16 @@ void NodeEditorObject::setSize(float width, float height)
 sf::Vector2f NodeEditorObject::getSize()
 {
 	return sf::Vector2f(nodeSprite.getTextureRect().width, nodeSprite.getTextureRect().height);
+}
+
+void NodeEditorObject::setDestroyed()
+{
+	_isDestroyed = true;
+}
+
+bool NodeEditorObject::isDestroyed() const
+{
+	return _isDestroyed;
 }
 
 void NodeEditorObject::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -165,5 +186,11 @@ void NodeEditorObject::handleEvent(const sf::Event event)
 			if (isActivated())
 				deactivate();
 		}
+	}
+
+	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Delete)
+	{
+		if(_isActivated)
+			setDestroyed();
 	}
 }

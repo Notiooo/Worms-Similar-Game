@@ -123,8 +123,6 @@ private:
 	bool gameFinished = false;
 
 	sf::Time leaveGameTime = sf::seconds(5);
-	GUI::Container testContainer;
-	GUI::FixedContainer testFixedContainer;
 };
 
 

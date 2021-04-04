@@ -25,11 +25,21 @@ bool EditorState::update(sf::Time deltaTime)
 {
 	levelEditor.update(deltaTime);
 
+	levelEditor.removeDestroyed();
+
 	return false;
 }
 
 bool EditorState::handleEvent(const sf::Event& event)
 {
 	levelEditor.handleEvent(event);
+
+	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+	{
+		levelEditor.saveWorld();
+		requestPop();
+		requestPush(State_ID::MenuState);
+	}
+	
 	return false;
 }

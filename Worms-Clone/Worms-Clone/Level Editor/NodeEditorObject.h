@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics/Text.hpp>
 
+
 #include "../Nodes/NodeScene.h"
 #include "SFML/Graphics/Sprite.hpp"
 #include "../Resources/Resources.h"
@@ -33,9 +34,15 @@ public:
 
 	void deactivate();
 
+	void setId(unsigned id);
+	unsigned getId();
+
 	void setName(const std::string& name);
 	void setSize(float width, float height);
 	sf::Vector2f getSize();
+
+	void setDestroyed();
+	bool isDestroyed() const;
 
 private:
 
@@ -48,6 +55,10 @@ private:
 	float movingSpeed = 100.f;
 	float rotationSpeed = 50.f;
 	float sizeChangeSpeed = 100.f;
+
+	unsigned objectId;
+
+	bool _isDestroyed = false;
 
 };
 

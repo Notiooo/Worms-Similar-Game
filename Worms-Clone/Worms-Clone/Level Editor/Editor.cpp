@@ -1,23 +1,31 @@
 #include "Editor.h"
 #include <fstream>
 #include <sstream>
+#include <iostream>
+
+#include "../GUI/Button.h"
 
 Editor::Editor(sf::RenderWindow& window, const FontManager& fonts):
 	editorWindow(window),
 	editorView(window.getDefaultView()),
-	fonts(fonts)
+	fonts(fonts),
+	creationMenu(window)
 {
 	loadResources();
+	loadInGameObjects();
 
 	backgroundSprite.setTexture(textures.getResourceReference(Textures_ID::WorldBackground));
 	backgroundSprite.setTextureRect(sf::IntRect(0, 0, window.getView().getSize().x, window.getView().getSize().y));
 	loadWorld();
+
 }
 
 void Editor::update(sf::Time deltaTime)
 {
 	for (auto& object : createdObjects)
 		object.update(deltaTime);
+
+	creationMenu.update();
 
 	updateMouse();
 	moveScreenWithMouse();
@@ -27,6 +35,18 @@ void Editor::handleEvent(const sf::Event& event)
 {
 	for (auto& object : createdObjects)
 		object.handleEvent(event);
+
+	creationMenu.handleEvents(event);
+
+	if(event.type == sf::Event::MouseButtonPressed)
+	{
+		if(event.key.code == sf::Mouse::Right && creationMenu.isEmpty())
+			createCreationMenu(mousePosition);
+		
+		if (event.key.code == sf::Mouse::Left)
+			creationMenu.requestClear();
+	}
+	
 	
 	// Zoom in & zoom out the view
 	if (event.type == sf::Event::MouseWheelScrolled)
@@ -92,7 +112,7 @@ void Editor::moveScreenWithMouse()
 
 void Editor::updateMouse()
 {
-	sf::Vector2f mousePosition = editorWindow.mapPixelToCoords(sf::Mouse::getPosition(editorWindow));
+	mousePosition = editorWindow.mapPixelToCoords(sf::Mouse::getPosition(editorWindow));
 
 	for (auto& object : createdObjects)
 		object.updateMouse(mousePosition);
@@ -102,6 +122,8 @@ void Editor::draw() const
 {
 	editorWindow.draw(backgroundSprite);
 
+	editorWindow.draw(creationMenu);
+	
 	for(const auto& object : createdObjects)
 		editorWindow.draw(object);
 }
@@ -117,14 +139,6 @@ void Editor::loadResources()
 
 void Editor::loadWorld()
 {
-	// Object that the world can create
-	enum class WorldObjects
-	{
-		WormSpawnPoint,
-		StaticPaperBlock,
-		DynamicPaperBlock,
-	};
-
 	// Code that reads from the file particular commands and generates the world
 	std::ifstream worldMap("Resources/Maps/main_world.txt");
 	std::string line;
@@ -141,6 +155,7 @@ void Editor::loadWorld()
 		createdObjects.emplace_back(textures, fonts);
 
 		NodeEditorObject& newlyCreatedObject = createdObjects.back();
+		newlyCreatedObject.setId(objectId);
 
 		switch (objectId)
 		{
@@ -181,4 +196,86 @@ void Editor::loadWorld()
 			break;
 		}
 	}
+	worldMap.close();
+}
+
+void Editor::loadInGameObjects()
+{
+	inGameObjects.insert({ static_cast<unsigned>(WorldObjects::WormSpawnPoint), "Worm Spawn Point" });
+	inGameObjects.insert({ static_cast<unsigned>(WorldObjects::StaticPaperBlock), "Static Paper Block" });
+	inGameObjects.insert({ static_cast<unsigned>(WorldObjects::DynamicPaperBlock), "Dynamic Paper Block" });
+}
+
+void Editor::createCreationMenu(const sf::Vector2f& mousePosition)
+{
+	//for(unsigned i = 0; i != static_cast<unsigned>(WorldObjects::Counter); ++i)
+	for(auto& object : inGameObjects)
+	{
+		auto button = std::make_unique<GUI::Button>(textures, fonts);
+		button->setText(object.second);
+		button->matchSizeToText(10.f);
+		
+		if (creationMenu.isEmpty())
+			button->setPosition(mousePosition);
+		else
+			button->setPositionBelow(creationMenu.back(), 20.f);
+
+		button->setActiveFunction([this, mousePosition, object](GUI::Button& button)
+			{
+				createObject(object.first, mousePosition);
+				creationMenu.requestClear();
+			});
+
+		creationMenu.store(std::move(button));
+	}
+}
+
+void Editor::createObject(unsigned objectId, const sf::Vector2f& mousePosition)
+{
+
+	createdObjects.emplace_back(textures, fonts);
+
+	NodeEditorObject& newlyCreatedObject = createdObjects.back();
+	newlyCreatedObject.setId(objectId);
+	newlyCreatedObject.setPosition(mousePosition.x, mousePosition.y);
+	newlyCreatedObject.setName(inGameObjects.find(objectId)->second);
+}
+
+void Editor::saveWorld()
+{
+	std::ofstream worldMap("Resources/Maps/main_world.txt");
+
+	for (auto& object : createdObjects)
+	{
+		switch (object.getId())
+		{
+			case static_cast<unsigned>(WorldObjects::WormSpawnPoint) :
+			{
+				worldMap << object.getId() << " " << object.getPosition().x << " " << object.getPosition().y;
+			}
+			break;
+
+			case static_cast<unsigned>(WorldObjects::StaticPaperBlock) :
+			{
+				worldMap << object.getId() << " " << object.getPosition().x << " " << object.getPosition().y << " "
+					<< object.getSize().x << " " << object.getSize().y << " " << object.getRotation();
+			}
+			break;
+
+			case static_cast<unsigned>(WorldObjects::DynamicPaperBlock) :
+			{
+				worldMap << object.getId() << " " << object.getPosition().x << " " << object.getPosition().y << " "
+					<< object.getSize().x << " " << object.getSize().y << " " << object.getRotation();
+			}
+			break;
+		}
+		worldMap << std::endl;
+	}
+	worldMap.close();
+}
+
+void Editor::removeDestroyed()
+{
+	auto removal_mark = std::remove_if(createdObjects.begin(), createdObjects.end(), std::mem_fn(&NodeEditorObject::isDestroyed));
+	createdObjects.erase(removal_mark, createdObjects.end());
 }
