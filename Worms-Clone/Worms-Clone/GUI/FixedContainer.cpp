@@ -14,9 +14,9 @@ void GUI::FixedContainer::store(std::unique_ptr<Component> component)
 }
 
 void GUI::FixedContainer::update()
-{
+{	
 	sf::Vector2f mousePosition = sf::Vector2f(sf::Mouse::getPosition(window));
-
+	
 	for (auto& pinnedComponent : pinnedComponents)
 		pinnedComponent->update(mousePosition);
 	

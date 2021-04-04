@@ -9,7 +9,7 @@
 const sf::Time Game::TIME_PER_FRAME = sf::seconds(1.f / 60.f);
 
 Game::Game():
-	gameWindow(sf::VideoMode(1280, 720), "Worms Clone")
+	gameWindow(sf::VideoMode(1280, 720), "Worms Clone", sf::Style::Titlebar | sf::Style::Close)
 {
 	// Limit the framerate to 60 frames per second
 	gameWindow.setFramerateLimit(60);

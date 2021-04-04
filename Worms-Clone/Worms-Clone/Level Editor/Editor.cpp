@@ -165,7 +165,7 @@ void Editor::loadWorld()
 				ss >> positionX >> positionY;
 
 				newlyCreatedObject.setPosition(positionX, positionY);
-				newlyCreatedObject.setName("Worm Spawn Point");
+				newlyCreatedObject.setName(inGameObjects[objectId]);
 			}
 			break;
 
@@ -177,7 +177,7 @@ void Editor::loadWorld()
 				newlyCreatedObject.setPosition(positionX, positionY);
 				newlyCreatedObject.setSize(width, height);
 				newlyCreatedObject.setRotation(rotation);
-				newlyCreatedObject.setName("Static Paper Block");
+				newlyCreatedObject.setName(inGameObjects[objectId]);
 					
 			}
 			break;
@@ -190,7 +190,7 @@ void Editor::loadWorld()
 				newlyCreatedObject.setPosition(positionX, positionY);
 				newlyCreatedObject.setSize(width, height);
 				newlyCreatedObject.setRotation(rotation);
-				newlyCreatedObject.setName("Dynamic Paper Block");
+				newlyCreatedObject.setName(inGameObjects[objectId]);
 					
 			}
 			break;

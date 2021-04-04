@@ -7,7 +7,8 @@
 NodeEditorObject::NodeEditorObject(const TextureManager& textures, const FontManager& fonts):
 	nodeSprite(textures.getResourceReference(Textures_ID::Paper)),
 	nodeName("Unnamed", fonts.getResourceReference(Fonts_ID::ArialNarrow), 18),
-	objectId(0)
+	objectId(0),
+	size(nodeSprite.getTextureRect().width, nodeSprite.getTextureRect().height)
 {
 	nodeName.setOutlineColor(sf::Color::Black);
 	nodeName.setOutlineThickness(1.f);
@@ -27,9 +28,10 @@ sf::FloatRect NodeEditorObject::getGlobalBounds() const
 
 void NodeEditorObject::updateMouse(const sf::Vector2f& mousePosition)
 {
-	if (getGlobalBounds().contains(mousePosition))
+	if (!isSelected() && getGlobalBounds().contains(mousePosition))
 		select();
-	else
+	
+	if (isSelected() && !getGlobalBounds().contains(mousePosition))
 		unselect();
 
 	// Moving with mouse
@@ -145,13 +147,15 @@ void NodeEditorObject::setName(const std::string& name)
 
 void NodeEditorObject::setSize(float width, float height)
 {
+	size.x = width;
+	size.y = height;
 	nodeSprite.setTextureRect(sf::IntRect(0, 0, width, height));
 	centerOrigin(nodeSprite);
 }
 
-sf::Vector2f NodeEditorObject::getSize()
+sf::Vector2f NodeEditorObject::getSize() const
 {
-	return sf::Vector2f(nodeSprite.getTextureRect().width, nodeSprite.getTextureRect().height);
+	return size;
 }
 
 void NodeEditorObject::setDestroyed()

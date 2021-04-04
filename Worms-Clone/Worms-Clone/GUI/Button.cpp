@@ -79,13 +79,19 @@ void GUI::Button::setText(const std::string& _text)
 }
 
 sf::FloatRect GUI::Button::getGlobalBounds() const
-{
-	const auto rectLeft = getPosition().x - sprite.getOrigin().x * getScale().x;
-	const auto rectTop = getPosition().y - sprite.getOrigin().y * getScale().y;
-	const auto rectWidth = sprite.getLocalBounds().width * sprite.getScale().x * getScale().x;
-	const auto rectHeight = sprite.getLocalBounds().height * sprite.getScale().y * getScale().y;
-	
-	return sf::FloatRect(rectLeft, rectTop, rectWidth, rectHeight);
+{	
+	//const auto rectLeft = getPosition().x - sprite.getOrigin().x * getScale().x;
+	//const auto rectTop = getPosition().y - sprite.getOrigin().y * getScale().y;
+	//const auto rectWidth = sprite.getLocalBounds().width * sprite.getScale().x * getScale().x;
+	//const auto rectHeight = sprite.getLocalBounds().height * sprite.getScale().y * getScale().y;
+	//
+	//return sf::FloatRect(rectLeft, rectTop, rectWidth, rectHeight);
+
+	auto globalBounds = sprite.getGlobalBounds();
+	globalBounds.left += getPosition().x;
+	globalBounds.top += getPosition().y;
+
+	return globalBounds;
 }
 
 sf::FloatRect GUI::Button::getLocalBounds() const
@@ -116,8 +122,10 @@ void GUI::Button::handleEvents(const sf::Event& event)
 void GUI::Button::update(sf::Vector2f mousePosition)
 {
 	// If mouse has left the button
+	//if (isSelected() && !getGlobalBounds().contains(mousePosition))
+	//	onLeave();
 	if (isSelected() && !getGlobalBounds().contains(mousePosition))
-		onLeave();
+	onLeave();
 
 	// If mouse has entered the button
 	if (!isSelected() && getGlobalBounds().contains(mousePosition))

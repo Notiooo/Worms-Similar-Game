@@ -26,8 +26,6 @@ namespace GUI
 		void update();
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-		sf::Vector2f getWindowScale();
-
 	private:
 		sf::Vector2f windowScale;
 	};
