@@ -105,13 +105,13 @@ public:
 
 private:
 	// === Button Mechanics === //
+	sf::Sprite nodeSprite; //!< Graphic visualization of the object
+	sf::Text nodeName; //!< Name of the object (displayed on the editor screen).
 	sf::Vector2f size;	//!< Size of the object
 						//!< Must be tracked because TextureRect stores values
 						//!< in ints which can lead to no value being added when
 						//!< multiplied by deltaTime (they're smaller than zero).
 	
-	sf::Sprite nodeSprite; //!< Graphic visualization of the object
-	sf::Text nodeName; //!< Name of the object (displayed on the editor screen).
 	bool _isSelected = false; //!< Flag indicating whether the user hovered over the object
 	bool _isActivated = false; //!< A flag indicating whether the user has hovered over and clicked (activated) the object.
 

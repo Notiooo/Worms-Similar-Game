@@ -7,6 +7,8 @@
 #include <sstream>
 #include <random>
 
+#include "WorldObjects.h"
+
 
 World::World(sf::RenderWindow& window, int _wormAmount, int _numberOfTeams) :
 	worldWindow(window),
@@ -132,6 +134,7 @@ void World::loadResources()
 {
 
 	// ==== Weapons ==== //
+
 	// Bazooka
 	worldTextures.storeResource(Textures_ID::Bazooka, "Resources/Textures/Weapons/bazooka.png");
 	worldTextures.storeResource(Textures_ID::BazookaThumbnail, "Resources/Textures/Weapons/bazooka_thumbnail.png");
@@ -146,23 +149,25 @@ void World::loadResources()
 	worldTextures.storeResource(Textures_ID::Grenade, "Resources/Textures/Weapons/grenade.png");
 	worldTextures.storeResource(Textures_ID::GrenadeThumbnail, "Resources/Textures/Weapons/grenade_thumbnail.png");
 	worldTextures.storeResource(Textures_ID::GrenadeBullet, "Resources/Textures/Weapons/grenade_bullet.png");
-	
-	worldTextures.storeResource(Textures_ID::WorldBackground, "Resources/Textures/World/background_texture.png");
-	worldTextures.getResourceReference(Textures_ID::WorldBackground).setRepeated(true);
-	worldTextures.storeResource(Textures_ID::Paper, "Resources/Textures/World/paper_texture.png");
-	worldTextures.getResourceReference(Textures_ID::Paper).setRepeated(true);
 
-	// will load some later
+	// === Worm === //
 	worldTextures.storeResource(Textures_ID::AnExemplaryWorm, "Resources/Textures/An_example_worm.png");
 	worldTextures.storeResource(Textures_ID::HitWorm, "Resources/Textures/Worm_Hit.png");
 	worldTextures.storeResource(Textures_ID::DeadWorm, "Resources/Textures/Dead_Worm.png");
-	worldTextures.storeResource(Textures_ID::Rope, "Resources/Textures/World/rope.png");
-	worldTextures.getResourceReference(Textures_ID::Rope).setRepeated(true);
-
 	worldTextures.storeResource(Textures_ID::Inventory, "Resources/Textures/Weapons/Inventory/background.png");
 
 
+	// === World === //
+	worldTextures.storeResource(Textures_ID::WorldBackground, "Resources/Textures/World/background_texture.png");
+	worldTextures.getResourceReference(Textures_ID::WorldBackground).setRepeated(true);
+	
+	worldTextures.storeResource(Textures_ID::Paper, "Resources/Textures/World/paper_texture.png");
+	worldTextures.getResourceReference(Textures_ID::Paper).setRepeated(true);
+	
+	worldTextures.storeResource(Textures_ID::Rope, "Resources/Textures/World/rope.png");
+	worldTextures.getResourceReference(Textures_ID::Rope).setRepeated(true);
 
+	// === Fonts ===//
 	worldFonts.storeResource(Fonts_ID::ArialNarrow, "Resources/Fonts/arial_narrow.ttf");
 }
 
@@ -176,19 +181,10 @@ void World::createWorld()
 		rootScene.pinNode(std::move(newLayer));
 	}
 
+	// Setup the GameplayManager
 	std::unique_ptr<GameplayManager> gameManager = std::make_unique<GameplayManager>(b2_World, worldTextures, worldFonts, worldWindow);
 	worldGameManager = gameManager.get();
 	worldLayers[static_cast<unsigned>(WorldLayers::Foreground)]->pinNode(std::move(gameManager));
-
-	
-
-	// Object that the world can create
-	enum class WorldObjects
-	{
-		WormSpawnPoint,
-		StaticPaperBlock,
-		DynamicPaperBlock,
-	};
 
 	std::vector<sf::Vector2f> wormSpawnPoints;
 

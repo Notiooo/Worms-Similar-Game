@@ -8,7 +8,10 @@
 #include "SFML/System/NonCopyable.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "DebugBox2D.h"
+
+#pragma warning(push, 0)
 #include "box2d/box2d.h"
+#pragma warning(pop)
 
 #include "Resources/Resources.h"
 #include "Nodes/NodeScene.h"

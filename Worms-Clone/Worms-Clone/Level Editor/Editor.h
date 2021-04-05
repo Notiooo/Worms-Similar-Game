@@ -16,17 +16,6 @@
 class Editor
 {
 public:
-	/**
-	 * \brief Objects that the world can create
-	 */
-	enum class WorldObjects
-	{
-		WormSpawnPoint,
-		StaticPaperBlock,
-		DynamicPaperBlock,
-		Counter,
-	};
-
 	Editor(sf::RenderWindow& window, const FontManager& fonts);
 
 	void update(sf::Time deltaTime);
@@ -64,7 +53,7 @@ private:
 	/**
 	 * \brief Creates a map of identifiers to their text (std::string) equivalents (names).
 	 */
-	void loadInGameObjects();
+	void registerInGameObjects();
 
 	/**
 	 * \brief Creates a menu for selecting an object to create
@@ -78,7 +67,7 @@ private:
 	 * \param objectId Identifier of the object to create
 	 * \param mousePosition Coordinates in which the object should be created
 	 */
-	void createObject(unsigned objectId, const sf::Vector2f& mousePosition);
+	void createObject(unsigned objectId, const sf::Vector2f& position);
 
 	// === Managers === //
 	const FontManager& fonts; //!< Contains the necessary fonts for the editor

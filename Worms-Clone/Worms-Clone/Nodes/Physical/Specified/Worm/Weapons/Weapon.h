@@ -2,7 +2,11 @@
 #define WEAPON_H
 
 #include "SFML/Graphics/Sprite.hpp"
+
+#pragma warning(push, 0)
 #include "box2d/box2d.h"
+#pragma warning(pop)
+
 #include "../../../../NodeScene.h"
 #include "../../../../../Resources/Resources.h"
 

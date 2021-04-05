@@ -48,10 +48,9 @@ void NodeEditorObject::update(sf::Time deltaTime)
 
 	if(isActivated())
 	{
-
 		// Faster moving
 		float additionalSpeed;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R))
 			additionalSpeed = 150.f;
 		else
 			additionalSpeed = 0.f;

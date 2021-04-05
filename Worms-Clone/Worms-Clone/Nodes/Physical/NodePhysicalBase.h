@@ -2,7 +2,9 @@
 #define NODEPHYSICALBASE_H
 
 #include "../NodeScene.h"
+#pragma warning(push, 0)
 #include "box2d/box2d.h"
+#pragma warning(pop)
 
 /**
  * \brief An abstract class of physical object.

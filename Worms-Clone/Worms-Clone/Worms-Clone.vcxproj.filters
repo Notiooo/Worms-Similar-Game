@@ -347,5 +347,8 @@
     <ClInclude Include="Level Editor\NodeEditorObject.h">
       <Filter>Header Files\Level Editor</Filter>
     </ClInclude>
+    <ClInclude Include="WorldObjects.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

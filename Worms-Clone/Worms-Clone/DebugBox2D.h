@@ -1,6 +1,9 @@
 #pragma once
 
+#pragma warning(push, 0)
 #include "box2d/box2d.h"
+#pragma warning(pop)
+
 #include "SFML/Graphics/RenderWindow.hpp"
 
 

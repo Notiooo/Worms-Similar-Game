@@ -1,7 +1,10 @@
 #ifndef HITBOX_H
 #define HITBOX_H
 
+#pragma warning(push, 0)
 #include "box2d/box2d.h"
+#pragma warning(pop)
+
 #include "../../../NodePhysicalBody.h"
 
 class Hitbox : public NodePhysicalBody
