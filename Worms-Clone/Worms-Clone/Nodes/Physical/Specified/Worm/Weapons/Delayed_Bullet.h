@@ -9,13 +9,26 @@
 #include "Bullet.h"
 
 
+/**
+ * \brief A bullet that does not explode on impact but after a sufficient amount of time has passed.
+ */
 struct Delayed_Bullet : public Bullet
 {
 	Delayed_Bullet(b2World& world, const FontManager& fonts, sf::Vector2f position, sf::Texture& texture, float force, float range, sf::Time timeToDestroy);
 
+	/**
+	 * \brief A function that updates the projectile status and checks
+	 * if enough time has passed for the bullet to explode.
+	 * \param deltaTime Time passed since the last frame
+	 */
 	void updateThis(sf::Time deltaTime) override;
+
+	
 	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+	/**
+	 * \brief An empty function specifying that nothing happens at the time of the collision.
+	 */
 	void collision() override;
 
 

@@ -36,6 +36,7 @@ enum class Textures_ID
 	Grenade,
 	GrenadeBullet,
 	GrenadeThumbnail,
+	
 	// === Inventory ===/
 	Inventory,
 };

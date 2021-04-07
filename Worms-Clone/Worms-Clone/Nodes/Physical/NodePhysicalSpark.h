@@ -20,7 +20,20 @@ public:
 	NodePhysicalSpark(b2World& world, sf::Vector2f position, sf::Color color = sf::Color::White);
 	~NodePhysicalSpark() override;
 
+	/**
+	 * \brief Draws all particles to the passed target
+	 * \param target where it should be drawn to
+	 * \param states provides information about rendering process (transform, shader, blend mode)
+	 */
 	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	
+	/**
+	 * \brief Updates the current state of particles
+	 * \param deltaTime Time passed since the last frame
+	 *
+	 * It controls where particles should to disappear.
+	 */
 	void updateThis(sf::Time deltaTime) override;
 	
 	/**

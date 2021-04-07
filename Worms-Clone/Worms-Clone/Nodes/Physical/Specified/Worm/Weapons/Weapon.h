@@ -17,8 +17,18 @@ class Weapon : public NodeScene
 public:
 	Weapon(b2World& world, sf::Texture& weapon, sf::Texture& thumbnail, sf::Texture& bullet);
 
+	/**
+	 * \brief The firing function of a weapon that will be executed when the shooting bar is loaded.
+	 * \param rootNode A node that will serve as the parent of a bullet created and added to the game world.
+	 * \param position The position at which the bullet will form.
+	 * \param force The force with which the bullet will be fired
+	 */
 	virtual void shoot(NodeScene* rootNode, sf::Vector2f position, sf::Vector2f force);
 
+	/**
+	 * \brief Activates the weapon. Used when a weapon does not shoot with usage of shooting bar but can be activated instantly.
+	 * \param worm A worm that uses a particular weapon.
+	 */
 	virtual void activation(Worm& worm);
 
 	// === Setters === //
@@ -56,11 +66,21 @@ public:
 	 */
 	virtual bool isRoundEnding() = 0;
 
+	/**
+	 * \brief Returns a sprite which is a graphical representation of the weapon thumbnail in the inventory
+	 * \return A thumbnail that is a graphical representation of a weapon in an inventory.
+	 */
+	sf::Sprite& getThumbnailSprite();
+	
+	/**
+	 * \brief Adjusts the weapon to a given angle
+	 * \param angle Angle at which the weapon should be positioned
+	 */
+	void rotateWeapon(float angle);
+	
 	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void updateThis(sf::Time deltaTime) override;
 
-	void rotateWeapon(float angle);
-	sf::Sprite& getThumbnailSprite();
 
 
 protected:

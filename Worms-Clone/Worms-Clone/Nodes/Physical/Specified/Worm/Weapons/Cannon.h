@@ -5,6 +5,9 @@
 
 #include "../../../../../Resources/Resources.h"
 
+/**
+ * \brief A weapon with a short range of fire but high damage.
+ */
 class Cannon : public Weapon
 {
 public:

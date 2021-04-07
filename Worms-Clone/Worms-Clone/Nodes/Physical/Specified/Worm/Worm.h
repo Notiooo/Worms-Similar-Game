@@ -86,10 +86,28 @@ public:
 	 */
 	void setDamage(int dmg);
 
-	void setName(const std::string& name);
+	/**
+	 * \brief Sets a new name for the worm.
+	 * \param name New name of the worm
+	 */
+	auto setName(const std::string& name) -> void;
+	
+	/**
+	 * \brief Returns the name of the worm.
+	 * \return String with name of the worm.
+	 */
 	std::string getName();
+	
+	/**
+	 * \brief A function that returns the color of the team the worm is in.
+	 * \return Color of the team of the worm
+	 */
 	sf::Color getTeam() const;
 
+	/**
+	 * \brief Sets a new team for the worm
+	 * \param teamColor Color of the new team of the worm
+	 */
 	void setTeam(sf::Color teamColor);
 
 	/**

@@ -61,6 +61,7 @@ void WorldListener::BeginContact(b2Contact* contact)
 				force_vector.y = (distance_from_explosion.y) ? (range_of_hitbox - distance_from_explosion.y) : -(range_of_hitbox + distance_from_explosion.y);
 
 				float distance = std::sqrt(distance_from_explosion.x * distance_from_explosion.x + distance_from_explosion.y * distance_from_explosion.y);
+
 				// The force has to be negative to push AWAY from the explosion
 				worm->applyForce(force_vector * 300.f);
 				worm->setDamage(hitbox->maxDmg * (hitbox->areaOfRange - distance) / hitbox->areaOfRange);

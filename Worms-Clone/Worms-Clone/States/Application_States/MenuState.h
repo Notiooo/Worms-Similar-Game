@@ -23,9 +23,19 @@ class StateStack;
 class MenuState : public State
 {
 public:
-	void createBackgroundWorld(sf::Vector2f pos);
-	void createGrenades(sf::Vector2f pos);
 	MenuState(StateStack& stack, const FontManager& fonts, sf::RenderWindow& window, int& wormAmount, int& numberOfTeams);
+	
+	/**
+	 * \brief Creates a live background for the menu
+	 * \param pos The position on which the live background is to be created
+	 */
+	void createBackgroundWorld(sf::Vector2f pos);
+	
+	/**
+	 * \brief Creates a point (spawner) that creates falling grenades.
+	 * \param pos The position on which grenades are to spawn.
+	 */
+	void createGrenades(sf::Vector2f pos);
 
 	void draw() const override;
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
@@ -34,6 +44,11 @@ public:
 
 
 private:
+	/**
+	 * \brief Creates main menu buttons
+	 * \param window The window on which the buttons are to be displayed
+	 * \param position The position on which the buttons are to be displayed
+	 */
 	void createButtons(sf::RenderWindow& window, sf::Vector2f position);
 	void loadResources();
 	const FontManager& fonts;

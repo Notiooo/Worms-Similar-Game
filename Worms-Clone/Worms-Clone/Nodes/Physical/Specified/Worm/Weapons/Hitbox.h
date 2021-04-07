@@ -7,21 +7,23 @@
 
 #include "../../../NodePhysicalBody.h"
 
+/**
+ * \brief An object that reports a collision within its boundary. Used to find worm hit by an explosion.
+ * Removes itself in the next iteration of the game.
+ */
 class Hitbox : public NodePhysicalBody
 {
 public:
-	friend class WorldListener;
+	friend class WorldListener; //!< Class that handles collisions inside the game
+	
 	Hitbox(b2World& world, sf::Vector2f position, float area_of_range,float max_dmg);
 
 	void updateThis(sf::Time deltaTime) override;
 	
 
 private:
-	// How big area it affects
-	float areaOfRange;
-
-	// How much damage it takes
-	float maxDmg;
+	float areaOfRange; //!< How large an area will the hitbox cover. Size measured in pixels as radius.
+	float maxDmg; //!< How much damage it should do to the worm
 
 };
 

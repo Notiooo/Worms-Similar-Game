@@ -18,6 +18,7 @@ WormInventoryState::WormInventoryState(StateStack& stack, Worm& worm, TextureMan
 	// Set origin to center-bottom
 	menuSprite.setOrigin(menuSprite.getLocalBounds().width / 2.f, menuSprite.getLocalBounds().height);
 	menuSprite.setPosition(worm.getAbsolutePosition().x + menuSprite.getLocalBounds().width, (window.mapPixelToCoords({0, 0}).y - menuSprite.getLocalBounds().height));
+
 	// Set origin to the bottom of the rope
 	ropeSprite.setTextureRect(sf::IntRect(0, 0, ropeSprite.getTextureRect().width, 1000));
 	ropeSprite.setOrigin(ropeSprite.getLocalBounds().width / 2.f, ropeSprite.getLocalBounds().height);

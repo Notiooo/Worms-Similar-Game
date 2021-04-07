@@ -1,4 +1,6 @@
 #include "NodeText.h"
+
+#include "../utils.h"
 #include "SFML/Graphics/RenderTarget.hpp"
 
 NodeText::NodeText(const FontManager& fonts, unsigned int size=12, bool outline=true):
@@ -29,6 +31,7 @@ NodeText::NodeText(const sf::Font& font, const std::string& text = "", unsigned 
 void NodeText::setString(const std::string& text)
 {
 	nodeText.setString(text);
+	centerOrigin(nodeText);
 }
 
 void NodeText::setOutline(float thickness, sf::Color color)

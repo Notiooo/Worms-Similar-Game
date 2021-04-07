@@ -1,8 +1,6 @@
 #ifndef BAZOOKA_H
 #define BAZOOKA_H
 
-#include "SFML/Window/Event.hpp"
-#include "SFML/Graphics/Sprite.hpp"
 #include "Weapon.h"
 #include "Bullet.h"
 

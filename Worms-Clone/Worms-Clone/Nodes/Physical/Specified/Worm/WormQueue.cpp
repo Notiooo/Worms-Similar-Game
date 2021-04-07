@@ -38,10 +38,6 @@ Worm& WormQueue::getNextWorm()
 
 bool WormQueue::isEmpty() const
 {
-	//return std::all_of(wormQueue.cbegin(), wormQueue.cend(), [](const Team& team)
-	//	{
-	//		return team.worms.empty();
-	//	});
 	return wormQueue.empty();
 }
 

@@ -45,11 +45,16 @@ MenuState::MenuState(StateStack& stack, const FontManager& fonts, sf::RenderWind
 
 void MenuState::createBackgroundWorld(sf::Vector2f pos)
 {
+	// Properties of the ramps
 	float width = 200.f;
 	float height = 30.f;
-	float padding_x = 200.f;
-	float padding_y = 100.f;
+	float paddingX = 200.f;
+	float paddingY = 100.f;
 	float rotation = 30.f;
+
+	// Properties of the ground
+	float groundY = 100;
+	
 	// Kinda hardcoded as it is just a menu
 	for (int i = 0; i < 3; ++i)
 	{
@@ -59,17 +64,19 @@ void MenuState::createBackgroundWorld(sf::Vector2f pos)
 			sf::Vector2f{ width, height });
 		staticPaperBlock->setRotation(rotation);
 
-		pos.y += std::sinf(NodePhysicalBase::angleToRadians(rotation)) * width + height + padding_y;
+		pos.y += std::sinf(NodePhysicalBase::angleToRadians(rotation)) * width + height + paddingY;
 		rotation = 180 - rotation;
-		pos.x += padding_x;
-		padding_x = -padding_x;
+		pos.x += paddingX;
+		paddingX = -paddingX;
 		rootScene.pinNode(std::move(staticPaperBlock));
 	}
 
+
+	// Create the main ground of the Menu
 	std::unique_ptr<NodePhysicalSprite> ground = std::make_unique<NodePhysicalSprite>(
 		World, NodePhysicalBody::Physical_Types::Static_Type,
 		textures.getResourceReference(Textures_ID::Paper), pos,
-		sf::Vector2f{ 3000, 100 });
+		sf::Vector2f{ 3000, groundY });
 	rootScene.pinNode(std::move(ground));
 
 	std::unique_ptr<NodePhysicalSprite> worm = std::make_unique<NodePhysicalSprite>(
@@ -86,19 +93,19 @@ void MenuState::createGrenades(sf::Vector2f pos)
 	static std::random_device r;
 
 	static std::default_random_engine e(r());
-	static std::uniform_int_distribution<int> g(-50, 200); // random x position
-	static std::uniform_int_distribution<int> t(3,6); // time per grenade spawn
-	static std::uniform_int_distribution<int> te(4, 9); // time for explosion timer
+	static std::uniform_int_distribution<int> offsetX(-50, 200); // random x position
+	static std::uniform_int_distribution<int> timePerSpawn(3,6); // time per grenade spawn
+	static std::uniform_int_distribution<int> timeExplosion(4, 9); // time for explosion timer
 
 
 	if(clock.getElapsedTime() > timePerGrenade)
 	{
 		clock.restart();
 
-		std::unique_ptr<Delayed_Bullet> bullet = std::make_unique<Delayed_Bullet>(World, fonts, sf::Vector2f(pos.x + g(e), pos.y), textures.getResourceReference(Textures_ID::GrenadeBullet), 0, 0, sf::seconds(te(e)));
+		std::unique_ptr<Delayed_Bullet> bullet = std::make_unique<Delayed_Bullet>(World, fonts, sf::Vector2f(pos.x + offsetX(e), pos.y), textures.getResourceReference(Textures_ID::GrenadeBullet), 0, 0, sf::seconds(timeExplosion(e)));
 		bullet->setSparkColor(sf::Color::Cyan);
 		rootScene.pinNode(std::move(bullet));
-		timePerGrenade = sf::seconds(t(e));
+		timePerGrenade = sf::seconds(timePerSpawn(e));
 	}
 	
 }
@@ -109,14 +116,17 @@ void MenuState::draw() const
 
 void MenuState::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	// First it draws background
 	target.draw(backgroundTexture);
+
+	// Then the live background
 	rootScene.draw(target, states);
+
+	// At the end the whole GUI
 	target.draw(gameName, states);
 	target.draw(author, states);
 	target.draw(amountText);
 	target.draw(amountTeams);
-
-	
 	buttons.draw(target, states);
 
 }
@@ -127,8 +137,10 @@ bool MenuState::update(sf::Time deltaTime)
 
 	rootScene.update(deltaTime);
 
+	// Removes nodes to be removed (mainly grenades).
 	rootScene.removeDestroyed();
 
+	// Creates grenades in the background
 	createGrenades(sf::Vector2f(window.getSize().x / 1.5f, -100.f));
 
 	// Update the physical world

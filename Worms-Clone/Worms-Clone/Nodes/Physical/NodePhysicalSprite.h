@@ -14,8 +14,15 @@ public:
 	NodePhysicalSprite(b2World& world, Physical_Types physical_type, sf::Texture& texture, sf::Vector2f position);
 	NodePhysicalSprite(b2World& world, Physical_Types physical_type, sf::Texture& texture, sf::Vector2f position, const sf::IntRect& rect);
 	NodePhysicalSprite(b2World& world, Physical_Types physical_type, sf::Texture& texture, sf::Vector2f position, const sf::Vector2f& size);
-	
+
+
+	/**
+	 * \brief Draws only this node to the passed target
+	 * \param target where it should be drawn to
+	 * \param states provides information about rendering process (transform, shader, blend mode)
+	 */
 	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
+	
 	void updateThis(sf::Time deltaTime) override;
 
 	/**
