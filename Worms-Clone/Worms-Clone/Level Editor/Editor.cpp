@@ -192,6 +192,18 @@ void Editor::loadWorld()
 				newlyCreatedObject.setName(inGameObjects[objectId]);
 			}
 			break;
+
+		case static_cast<unsigned>(WorldObjects::Water) :
+		{
+			float positionX, positionY, width, height, rotation;
+			ss >> positionX >> positionY >> width >> height >> rotation;
+
+			newlyCreatedObject.setPosition(positionX, positionY);
+			newlyCreatedObject.setSize(width, height);
+			newlyCreatedObject.setRotation(rotation);
+			newlyCreatedObject.setName(inGameObjects[objectId]);
+		}
+		break;
 		}
 	}
 	worldMap.close();
@@ -201,7 +213,8 @@ void Editor::registerInGameObjects()
 {
 	inGameObjects.insert({static_cast<unsigned>(WorldObjects::WormSpawnPoint), "Worm Spawn Point"});
 	inGameObjects.insert({static_cast<unsigned>(WorldObjects::StaticPaperBlock), "Static Paper Block"});
-	inGameObjects.insert({static_cast<unsigned>(WorldObjects::DynamicPaperBlock), "Dynamic Paper Block"});
+	inGameObjects.insert({static_cast<unsigned>(WorldObjects::DynamicPaperBlock), "Dynamic Paper Block" });
+	inGameObjects.insert({static_cast<unsigned>(WorldObjects::Water), "Water"});
 }
 
 void Editor::createCreationMenu(const sf::Vector2f& mousePosition)
@@ -270,6 +283,11 @@ void Editor::saveWorld()
 		case static_cast<unsigned>(WorldObjects::DynamicPaperBlock):
 			printLine(worldMap, object.getId(), object.getPosition().x, object.getPosition().y,
 			          object.getSize().x, object.getSize().y, object.getRotation());
+			break;
+
+		case static_cast<unsigned>(WorldObjects::Water) :
+			printLine(worldMap, object.getId(), object.getPosition().x, object.getPosition().y,
+				object.getSize().x, object.getSize().y, object.getRotation());
 			break;
 		}
 	}

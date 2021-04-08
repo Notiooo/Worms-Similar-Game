@@ -1,5 +1,7 @@
 #include "WorldListener.h"
 
+#include <iostream>
+#include "Nodes/NodeWater.h"
 #include "Nodes/Physical/CollideTypes.h"
 #include "Nodes/Physical/Specified/Worm/Worm.h"
 #include "Nodes/Physical/Specified/Worm/Weapons/Bullet.h"
@@ -31,7 +33,16 @@ void WorldListener::BeginContact(b2Contact* contact)
 				++(worm->footCollisions);
 			break;
 		}
-
+			
+		case CollideTypes::Water:
+		{
+			if (node1 == nullptr || node2 == nullptr)
+				break;
+				
+			Collision* toDelete = (node1->type != CollideTypes::Water) ? node1 : node2;
+			toDelete->object->setDestroyed();
+		}
+			
 		case CollideTypes::Bullet:
 		{
 			if (Bullet* bullet = dynamic_cast<Bullet*>(node->object))

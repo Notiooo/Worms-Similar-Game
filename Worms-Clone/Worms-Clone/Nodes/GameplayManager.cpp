@@ -157,8 +157,8 @@ void GameplayManager::checkTurnTime()
 		// The game should allow to play another worm if
 		// a) The time has passed
 		// b) The current worm shoot, and now is in the HideState
-		if (!hideState && ((timeElapsed > timePerTurn + additionalTime) || (wormQueue.front().getCurrentState() ==
-			State_ID::WormHideState)))
+		if (!hideState && ((timeElapsed > timePerTurn + additionalTime) || 
+			(wormQueue.front().getCurrentState() == State_ID::WormHideState)))
 		{
 			hideState = true;
 			additionalTime = sf::Time::Zero;

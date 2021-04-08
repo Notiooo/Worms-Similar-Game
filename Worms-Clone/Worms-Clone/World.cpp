@@ -8,6 +8,7 @@
 #include <random>
 
 #include "WorldObjects.h"
+#include "Nodes/NodeWater.h"
 
 
 World::World(sf::RenderWindow& window, int _wormAmount, int _numberOfTeams) :
@@ -167,6 +168,9 @@ void World::loadResources()
 	worldTextures.storeResource(Textures_ID::Rope, "Resources/Textures/World/rope.png");
 	worldTextures.getResourceReference(Textures_ID::Rope).setRepeated(true);
 
+	worldTextures.storeResource(Textures_ID::Water, "Resources/Textures/World/water.png");
+	worldTextures.getResourceReference(Textures_ID::Water).setRepeated(true);
+
 	// === Fonts ===//
 	worldFonts.storeResource(Fonts_ID::ArialNarrow, "Resources/Fonts/arial_narrow.ttf");
 }
@@ -241,6 +245,19 @@ void World::createWorld()
 				if (rotation)
 					dynamicPaperBlock->setRotation(rotation);
 				worldLayers[static_cast<unsigned>(WorldLayers::Middle)]->pinNode(std::move(dynamicPaperBlock));
+			}
+			break;
+
+			case static_cast<unsigned>(WorldObjects::Water) :
+			{
+				float positionX, positionY, width, height, rotation;
+				ss >> positionX >> positionY >> width >> height >> rotation;
+
+				std::unique_ptr<NodeWater> water = std::make_unique<NodeWater>(b2_World, worldTextures.getResourceReference(Textures_ID::Water));
+				water->setSize(width, height);
+				water->setPosition(positionX, positionY);
+
+				worldLayers[static_cast<unsigned>(WorldLayers::Background)]->pinNode(std::move(water));
 			}
 			break;
 		}

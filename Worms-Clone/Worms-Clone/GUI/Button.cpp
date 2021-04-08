@@ -8,6 +8,7 @@ void GUI::Button::onEnter()
 	GUI::Component::onEnter();
 
 	sprite.setTexture(selectedTexture);
+	
 	centerOrigin(sprite);
 	sprite.setScale(1.2, 1.2);
 
@@ -20,6 +21,7 @@ void GUI::Button::onLeave()
 	GUI::Component::onLeave();
 
 	sprite.setTexture(normalTexture);
+	
 	centerOrigin(sprite);
 	sprite.setScale(1, 1);
 

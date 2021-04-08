@@ -212,7 +212,8 @@ bool Worm::isDestroyed()
 		getRootNode()->pinNode(std::move(dead_body));
 		return true;
 	}
-	return false;
+	
+	return NodeScene::isDestroyed();
 }
 
 sf::Vector2f Worm::getWormSize() const

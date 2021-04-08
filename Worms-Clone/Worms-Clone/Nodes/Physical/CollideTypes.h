@@ -8,6 +8,9 @@
  */
 enum class CollideTypes
 {
+	// World
+	Water,
+	
 	// Worm related
 	WormFoot,
 	WormBody,

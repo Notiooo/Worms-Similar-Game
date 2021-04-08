@@ -207,6 +207,9 @@
     <ClCompile Include="Level Editor\NodeEditorObject.cpp">
       <Filter>Source Files\Level Editor</Filter>
     </ClCompile>
+    <ClCompile Include="Nodes\NodeWater.cpp">
+      <Filter>Source Files\Nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -349,6 +352,9 @@
     </ClInclude>
     <ClInclude Include="WorldObjects.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\NodeWater.h">
+      <Filter>Header Files\Nodes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

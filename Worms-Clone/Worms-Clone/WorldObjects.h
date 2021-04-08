@@ -10,7 +10,8 @@ enum class WorldObjects
 	WormSpawnPoint,
 	StaticPaperBlock,
 	DynamicPaperBlock,
-
+	Water,
+	
 	Counter,
 };
 
