@@ -67,6 +67,9 @@ private:
 	 */
 	static const sf::Time TIME_PER_FRAME;
 
+	static const float SCREEN_WIDTH;
+	static const float SCREEN_HEIGHT;
+
 	
 	/**
 	 * \brief The window to which the game image should be drawn.

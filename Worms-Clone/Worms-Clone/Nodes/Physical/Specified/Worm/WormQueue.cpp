@@ -1,5 +1,4 @@
 #include "WormQueue.h"
-#include <iostream>
 
 void WormQueue::addWorm(std::unique_ptr<Worm>& worm)
 {
@@ -60,7 +59,9 @@ void WormQueue::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	// For now the most important thing is that
 	// the current worm should be drawn last
-
+	if (wormQueue.empty())
+		return;
+	
 	std::list<Team>::const_iterator team = currentTeam;
 	++team;
 	
@@ -99,7 +100,10 @@ Worm& WormQueue::front()
 
 void WormQueue::removeDestroyed()
 {
-	for(auto team = wormQueue.begin(), end = wormQueue.end(); team != end; ++team)
+	if (wormQueue.empty())
+		return;
+	
+	for(auto team = wormQueue.begin(), end = wormQueue.end(); team != end;)
 	{
 		// I start with removal of the worms from the teams
 		auto marked_remove = std::remove_if(team->worms.begin(), team->worms.end(), std::mem_fn(&NodeScene::isDestroyed));
@@ -122,10 +126,10 @@ void WormQueue::removeDestroyed()
 			{
 				team = wormQueue.erase(std::find(wormQueue.begin(), wormQueue.end(), *team));
 			}
-			
-			if(team == end)
-				--team;
-
 		}
+		else if (team != end)
+			++team;
 	}
+	if (wormQueue.empty())
+		currentTeam = wormQueue.end();
 }

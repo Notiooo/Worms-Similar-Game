@@ -122,7 +122,7 @@ private:
 	sf::Time additionalTime = sf::Time::Zero;
 	bool gameFinished = false;
 
-	sf::Time leaveGameTime = sf::seconds(5);
+	sf::Time leaveGameTime = sf::seconds(5); //!< Time after which player (after win) will be redirected to main menu
 };
 
 

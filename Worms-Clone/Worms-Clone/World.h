@@ -74,6 +74,8 @@ private:
 	 */
 	void createWorld();
 
+	void calculateWorldBoundaries(sf::Vector2f position, sf::Vector2f dimensions);
+
 	/**
 	 * \brief Allows to move the camera inside the game with the mouse.
 	 */
@@ -95,6 +97,11 @@ private:
 	WorldListener worldListener; //!< It carries all collisions inside the world
 	const int wormAmount;
 	const int numberOfTeams;
+	float mostPositionedX = worldWindow.getSize().x;
+	float mostPositionedY = worldWindow.getSize().y;
+	float lessPositionedX = 0.f;
+	float lessPositionedY = 0.f;
+
 
 	/**
 	 * \brief Defines individual layers on which the image will be drawn

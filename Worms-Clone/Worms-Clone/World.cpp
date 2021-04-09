@@ -6,6 +6,8 @@
 #include <fstream>
 #include <sstream>
 #include <random>
+#include <iostream>
+
 
 #include "WorldObjects.h"
 #include "Nodes/NodeWater.h"
@@ -81,6 +83,7 @@ void World::processEvents(const sf::Event& event)
 		auto maximum_zoom = worldWindow.getDefaultView().getSize().x * maxZoomFactor;
 		auto minimum_zoom = worldWindow.getDefaultView().getSize().x / maxZoomFactor;
 
+
 		// Zooming in
 		if (event.mouseWheelScroll.delta > 0)
 		{
@@ -92,6 +95,22 @@ void World::processEvents(const sf::Event& event)
 		{
 			if (current_zoom < maximum_zoom)
 				worldView.zoom(1.1f);
+
+
+			// This check if player do not scroll outside world boundaries
+
+			// First I create a boundary of the screen
+			auto viewTopLeft = worldWindow.mapPixelToCoords({ 0, 0 });
+			sf::RectangleShape viewBorder(sf::Vector2f(worldView.getSize()));
+			viewBorder.setPosition(viewTopLeft);
+
+			// And a proper parameters
+			auto viewBottomRight = sf::Vector2f(viewBorder.getPosition().x + viewBorder.getGlobalBounds().width, viewBorder.getPosition().y + viewBorder.getGlobalBounds().height);
+			
+			// Check if player do not zoom outside the world boundary
+			// If so, then zoom back again
+			if (viewBottomRight.x > mostPositionedX || viewBottomRight.y > mostPositionedY || viewTopLeft.x < lessPositionedX || viewTopLeft.y < lessPositionedY)
+				worldView.zoom(1.f / 1.1f);
 		}
 
 		// Sets the new view to the window
@@ -205,21 +224,24 @@ void World::createWorld()
 		unsigned objectId;
 		ss >> objectId;
 
+		float positionX, positionY;
+		ss >> positionX >> positionY;
+
+		calculateWorldBoundaries({ positionX, positionY }, { 0, 0 });
+		
 		switch (objectId)
 		{
 		case static_cast<unsigned>(WorldObjects::WormSpawnPoint):
 			{
-				float positionX, positionY;
-				ss >> positionX >> positionY;
-
 				wormSpawnPoints.emplace_back(positionX, positionY);
 			}
 			break;
 
 		case static_cast<unsigned>(WorldObjects::StaticPaperBlock):
 			{
-				float positionX, positionY, width, height, rotation;
-				ss >> positionX >> positionY >> width >> height >> rotation;
+				float width, height, rotation;
+				ss >> width >> height >> rotation;
+				calculateWorldBoundaries({ positionX, positionY }, { width/2.f, height/2.f });
 				
 				std::unique_ptr<NodePhysicalSprite> staticPaperBlock = std::make_unique<NodePhysicalSprite>(
 					b2_World, NodePhysicalBody::Physical_Types::Static_Type,
@@ -234,8 +256,11 @@ void World::createWorld()
 
 		case static_cast<unsigned>(WorldObjects::DynamicPaperBlock):
 			{
-				float positionX, positionY, width, height, rotation;
-				ss >> positionX >> positionY >> width >> height >> rotation;
+				float width, height, rotation;
+				ss >> width >> height >> rotation;
+
+				calculateWorldBoundaries({ positionX, positionY }, { width/2.f, height/2.f });
+
 				
 				std::unique_ptr<NodePhysicalSprite> dynamicPaperBlock = std::make_unique<NodePhysicalSprite>(
 					b2_World, NodePhysicalBody::Physical_Types::Dynamic_Type,
@@ -250,9 +275,11 @@ void World::createWorld()
 
 			case static_cast<unsigned>(WorldObjects::Water) :
 			{
-				float positionX, positionY, width, height, rotation;
-				ss >> positionX >> positionY >> width >> height >> rotation;
+				float width, height, rotation;
+				ss >> width >> height >> rotation;
+				calculateWorldBoundaries({ positionX, positionY }, { width/2.f, height/2.f });
 
+					
 				std::unique_ptr<NodeWater> water = std::make_unique<NodeWater>(b2_World, worldTextures.getResourceReference(Textures_ID::Water));
 				water->setSize(width, height);
 				water->setPosition(positionX, positionY);
@@ -265,39 +292,53 @@ void World::createWorld()
 
 	// Spawn Worms
 
-	std::random_device r;
-	std::default_random_engine e(r());
-	std::shuffle(wormSpawnPoints.begin(), wormSpawnPoints.end(), e);
-
-	static std::array<std::string, 8> wormNames{ "Steve", "John", "Patrick", "Caroline", "Julia", "Richard", "David", "Robert" };
-	static std::array<sf::Color, 5> wormColors{ sf::Color::Blue, sf::Color::Green, sf::Color::Yellow, sf::Color::Magenta, sf::Color::Red };
-
-	if (wormColors.size() < numberOfTeams)
-		throw std::runtime_error("Not enough color teams!");
-	
-	auto wormNameIter = wormNames.cbegin();
-	auto wormColorsIter = wormColors.cbegin();
-	auto wormSpawnPointIter = wormSpawnPoints.cbegin();
-
-	// For testing purposes they are hardcoded here
-	for(int i = 0; i < numberOfTeams; ++i)
+	if (!wormSpawnPoints.empty())
 	{
-		for (int j = 0; j < wormAmount; ++j)
-		{
-			if (wormNameIter == wormNames.cend())
-				wormNameIter = wormNames.cbegin();
+		std::random_device r;
+		std::default_random_engine e(r());
+		std::shuffle(wormSpawnPoints.begin(), wormSpawnPoints.end(), e);
 
-			if (wormSpawnPointIter == wormSpawnPoints.cend())
+		static std::array<std::string, 8> wormNames{ "Steve", "John", "Patrick", "Caroline", "Julia", "Richard", "David", "Robert" };
+		static std::array<sf::Color, 5> wormColors{ sf::Color::Blue, sf::Color::Green, sf::Color::Yellow, sf::Color::Magenta, sf::Color::Red };
+
+		if (wormColors.size() < numberOfTeams)
+			throw std::runtime_error("Not enough color teams!");
+
+		auto wormNameIter = wormNames.cbegin();
+		auto wormColorsIter = wormColors.cbegin();
+		auto wormSpawnPointIter = wormSpawnPoints.cbegin();
+
+		// For testing purposes they are hardcoded here
+		for (int i = 0; i < numberOfTeams; ++i)
+		{
+			for (int j = 0; j < wormAmount; ++j)
 			{
-				for (auto& spawnPoint : wormSpawnPoints)
-					spawnPoint.y -= 100;
-				wormSpawnPointIter = wormSpawnPoints.cbegin();
+				if (wormNameIter == wormNames.cend())
+					wormNameIter = wormNames.cbegin();
+
+				if (wormSpawnPointIter == wormSpawnPoints.cend())
+				{
+					for (auto& spawnPoint : wormSpawnPoints)
+						spawnPoint.y -= 100;
+					wormSpawnPointIter = wormSpawnPoints.cbegin();
+				}
+
+				worldGameManager->addWorm(std::string(*wormNameIter++ + " The Worm"), *wormColorsIter, *wormSpawnPointIter++);
 			}
-			
-			worldGameManager->addWorm(std::string(*wormNameIter++ + " The Worm"), *wormColorsIter, *wormSpawnPointIter++);
+			++wormColorsIter;
 		}
-		++wormColorsIter;
 	}
+}
+
+void World::calculateWorldBoundaries(sf::Vector2f position, sf::Vector2f dimensions = {0, 0})
+{
+	// Calculate the maximum position of any object
+	mostPositionedX = (position.x + dimensions.x > mostPositionedX) ? position.x + dimensions.x : mostPositionedX;
+	mostPositionedY = (position.y + dimensions.y > mostPositionedY) ? position.y + dimensions.y : mostPositionedY;
+
+	// Calculate the minimum position of any object
+	lessPositionedX = (position.x - dimensions.x < lessPositionedX) ? position.x - dimensions.x : lessPositionedX;
+	lessPositionedY = (position.y - dimensions.y < lessPositionedY) ? position.y - dimensions.y : lessPositionedY;
 }
 
 void World::moveScreenWithMouse()
@@ -308,6 +349,31 @@ void World::moveScreenWithMouse()
 		sf::Vector2i newMouseCoordinates = sf::Mouse::getPosition();
 		worldView.move(
 			worldWindow.mapPixelToCoords(oldMouseCoordinates) - worldWindow.mapPixelToCoords(newMouseCoordinates));
+
+		worldWindow.setView(worldView);
+
+
+		// Check if player do not scroll outside the world boundaries
+
+		// I create a boundary of the sceen
+		auto viewTopLeft = worldWindow.mapPixelToCoords({0, 0});
+		sf::RectangleShape viewBorder(sf::Vector2f(worldView.getSize()));
+		viewBorder.setPosition(viewTopLeft);
+
+		// And a proper points
+		auto viewBottomRight = sf::Vector2f(viewBorder.getPosition().x + viewBorder.getGlobalBounds().width, viewBorder.getPosition().y + viewBorder.getGlobalBounds().height);
+
+		// Now I check for boundaries and correct them
+		if (viewBottomRight.x > mostPositionedX)
+			worldView.move(-sf::Vector2f{ viewBottomRight.x - mostPositionedX, 0 });
+		if(viewBottomRight.y > mostPositionedY)
+			worldView.move(-sf::Vector2f{ 0, viewBottomRight.y - mostPositionedY });
+
+		if (viewTopLeft.x < lessPositionedX)
+			worldView.move(-sf::Vector2f{ viewTopLeft.x - lessPositionedX, 0 });
+		if (viewTopLeft.y < lessPositionedY)
+			worldView.move(-sf::Vector2f{ 0, viewTopLeft.y - lessPositionedY });
+		
 		worldWindow.setView(worldView);
 
 		// Fixes the background

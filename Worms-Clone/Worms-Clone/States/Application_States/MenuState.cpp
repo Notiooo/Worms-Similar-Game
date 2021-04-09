@@ -21,10 +21,16 @@ MenuState::MenuState(StateStack& stack, const FontManager& fonts, sf::RenderWind
 	amountTeams("How many teams?", fonts.getResourceReference(Fonts_ID::ArialNarrow), 21),
 	wormsPerTeam(_wormAmount),
 	numberOfTeams(_numberOfTeams),
-	buttons(window)
+	buttons(window),
+	availableResolutions{ sf::Vector2u(1024,768), {1280, 720}, {1366, 768}, {1680, 1050}, {1920,1080} }
 {
 	// It makes sure that the view is at proper place
 	window.setView(window.getDefaultView());
+
+	auto currentResolution = window.getSize();
+	selectedResolution = std::find(availableResolutions.cbegin(), availableResolutions.cend(), currentResolution);
+	if (selectedResolution == availableResolutions.cend())
+		selectedResolution = availableResolutions.cbegin();
 	
 	loadResources();
 	backgroundTexture.setTexture(textures.getResourceReference(Textures_ID::WorldBackground));
@@ -51,12 +57,9 @@ void MenuState::createBackgroundWorld(sf::Vector2f pos)
 	float paddingX = 200.f;
 	float paddingY = 100.f;
 	float rotation = 30.f;
-
-	// Properties of the ground
-	float groundY = 100;
 	
 	// Kinda hardcoded as it is just a menu
-	for (int i = 0; i < 3; ++i)
+	while(pos.y + std::sinf(NodePhysicalBase::angleToRadians(rotation)) * width + height + paddingY < window.getSize().y)
 	{
 		std::unique_ptr<NodePhysicalSprite> staticPaperBlock = std::make_unique<NodePhysicalSprite>(
 			World, NodePhysicalBody::Physical_Types::Static_Type,
@@ -73,9 +76,15 @@ void MenuState::createBackgroundWorld(sf::Vector2f pos)
 
 
 	// Create the main ground of the Menu
+
+	// NodePhysicalSprite's are centered origin, so I need to calculate their position properly
+
+	// Properties of the ground
+	float groundY = window.getSize().y - pos.y;
+	
 	std::unique_ptr<NodePhysicalSprite> ground = std::make_unique<NodePhysicalSprite>(
 		World, NodePhysicalBody::Physical_Types::Static_Type,
-		textures.getResourceReference(Textures_ID::Paper), pos,
+		textures.getResourceReference(Textures_ID::Paper), sf::Vector2f(pos.x, pos.y + groundY / 2.f ),
 		sf::Vector2f{ 3000, groundY });
 	rootScene.pinNode(std::move(ground));
 
@@ -169,11 +178,22 @@ void MenuState::createButtons(sf::RenderWindow& window, sf::Vector2f position)
 			requestPush(State_ID::GameState);
 		});
 
+	// Level editor
+	auto levelEditor = std::make_unique<GUI::Button>(textures, fonts);
+	levelEditor->setText("Level Editor");
+	levelEditor->setSize(play_button->getGlobalBounds().width, play_button->getGlobalBounds().height);
+	levelEditor->setPositionBelow(*play_button, 10.f);
+	levelEditor->setActiveFunction([this](GUI::Button& self)
+		{
+			requestPop();
+			requestPush(State_ID::EditorState);
+		});
+	
 	// Exit button
 	auto exitButton = std::make_unique<GUI::Button>(textures, fonts);
 	exitButton->setText("Exit the game");
-	exitButton->matchSizeToText(20.f);
-	exitButton->setPositionBelow(*play_button, 10.f);
+	exitButton->setSize(play_button->getGlobalBounds().width, play_button->getGlobalBounds().height);
+	exitButton->setPositionBelow(*levelEditor, 10.f);
 	exitButton->setActiveFunction([&window](GUI::Button& self)
 		{
 			window.close();
@@ -187,7 +207,7 @@ void MenuState::createButtons(sf::RenderWindow& window, sf::Vector2f position)
 	auto noWormsPerTeam = std::make_unique<GUI::Button>(textures, fonts);
 	noWormsPerTeam->setText(std::to_string(wormsPerTeam) + " worms per team");
 	noWormsPerTeam->matchSizeToText(20.f);
-	noWormsPerTeam->setPositionBelow(amountText, 20.f);
+	noWormsPerTeam->setPositionBelow(amountText, 10.f);
 	noWormsPerTeam->setActiveFunction([this](GUI::Button& self)
 		{
 			if (wormsPerTeam < maxWormAmount)
@@ -213,7 +233,7 @@ void MenuState::createButtons(sf::RenderWindow& window, sf::Vector2f position)
 	auto noOfTeams = std::make_unique<GUI::Button>(textures, fonts);
 	noOfTeams->setText(std::to_string(numberOfTeams) + " teams");
 	noOfTeams->matchSizeToText(20.f);
-	noOfTeams->setPositionBelow(amountTeams, 20.f);
+	noOfTeams->setPositionBelow(amountTeams, 10.f);
 	noOfTeams->setActiveFunction([this](GUI::Button& self)
 		{
 			if (numberOfTeams < maxTeamsAmount)
@@ -231,17 +251,48 @@ void MenuState::createButtons(sf::RenderWindow& window, sf::Vector2f position)
 			}
 		});
 
-	// Level editor
-	auto levelEditor = std::make_unique<GUI::Button>(textures, fonts);
-	levelEditor->setText("Level Editor");
-	levelEditor->matchSizeToText(40.f);
-	levelEditor->setPositionBelow(*noOfTeams, 50.f);
-	levelEditor->setActiveFunction([this](GUI::Button& self)
+	// Changing Resolution
+	auto resolution = std::make_unique<GUI::Button>(textures, fonts);
+	resolution->setText("Resolution: " + std::to_string(selectedResolution->x) + "x" + std::to_string(selectedResolution->y));
+	resolution->matchSizeToText(20.f);
+	resolution->setPositionBelow(*noOfTeams, 30.f);
+	resolution->setActiveFunction([this, &window](GUI::Button& self)
 		{
+			if (selectedResolution == availableResolutions.cend()-1)
+				selectedResolution = availableResolutions.cbegin();
+			else
+				++selectedResolution;
+		
+			window.create(sf::VideoMode(selectedResolution->x, selectedResolution->y), "Worms Clone", sf::Style::Titlebar | sf::Style::Close | fullScreen);
 			requestPop();
-			requestPush(State_ID::EditorState);
+			requestPush(State_ID::MenuState);
 		});
-	
+	resolution->setDeactiveFunction([this, &window](GUI::Button& self)
+		{
+			if (selectedResolution == availableResolutions.cbegin())
+				selectedResolution = availableResolutions.cend() - 1;
+			else
+				--selectedResolution;
+
+			window.create(sf::VideoMode(selectedResolution->x, selectedResolution->y), "Worms Clone", sf::Style::Titlebar | sf::Style::Close | fullScreen);
+			requestPop();
+			requestPush(State_ID::MenuState);
+		});
+
+	// Set Fullscreen
+	auto fullScreenButton = std::make_unique<GUI::Button>(textures, fonts);
+	fullScreenButton->setText("Fullscreen: " + (fullScreen ? std::string("yes") : std::string("no")));
+	fullScreenButton->matchSizeToText(20.f);
+	fullScreenButton->setPositionBelow(*resolution, 10.f);
+	fullScreenButton->setActiveFunction([this, &window](GUI::Button& self)
+		{
+			fullScreen = (fullScreen) ? 0 : sf::Style::Fullscreen;
+			self.setText("Fullscreen: " + (fullScreen ? std::string("yes") : std::string("no")));
+			window.create(sf::VideoMode(selectedResolution->x, selectedResolution->y), "Worms Clone", sf::Style::Titlebar | sf::Style::Close | fullScreen);
+		});
+
+	buttons.store(std::move(fullScreenButton));
+	buttons.store(std::move(resolution));
 	buttons.store(std::move(play_button));
 	buttons.store(std::move(noWormsPerTeam));
 	buttons.store(std::move(noOfTeams));

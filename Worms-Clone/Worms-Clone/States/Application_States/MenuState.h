@@ -1,6 +1,7 @@
 #ifndef MENUSTATE_H
 #define MENUSTATE_H
 
+#include <array>
 #include <box2d/box2d.h>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -54,6 +55,9 @@ private:
 	const FontManager& fonts;
 	sf::RenderWindow& window;
 	TextureManager textures;
+	std::array<sf::Vector2u, 5> availableResolutions;
+	std::array<sf::Vector2u, 5>::const_iterator selectedResolution;
+	unsigned fullScreen = 0;
 
 	// === Front Menu === //
 	GUI::FixedContainer buttons; //!< Includes all buttons inside the menu

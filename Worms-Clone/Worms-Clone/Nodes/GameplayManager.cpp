@@ -51,8 +51,6 @@ void GameplayManager::drawThis(sf::RenderTarget& target, sf::RenderStates states
 
 void GameplayManager::updateThis(sf::Time deltaTime)
 {
-	//for (const auto& worm : wormQueue)
-	//	worm->update(deltaTime);
 	wormQueue.update(deltaTime);
 
 	checkIfHasEnded();
@@ -97,12 +95,10 @@ void GameplayManager::removeDestroyed()
 {
 	NodeScene::removeDestroyed();
 
-	//auto removal_mark = std::remove_if(wormQueue.begin(), wormQueue.end(), std::mem_fn(&NodeScene::isDestroyed));
-	//wormQueue.erase(removal_mark, wormQueue.end());
 	wormQueue.removeDestroyed();
 
-	for (const auto& worm : pinnedNodes)
-		worm->removeDestroyed();
+	//for (const auto& worm : pinnedNodes)
+	//	worm->removeDestroyed();
 }
 
 void GameplayManager::setWorldMessage(const std::string& text, sf::Color color, sf::Time time)
@@ -224,18 +220,6 @@ void GameplayManager::checkIfHasEnded()
 	if (isGameFinished())
 		return;
 	
-	if(wormQueue.isEmpty())
-	{
-		setGameFinished();
-		setWorldMessage("The game ended in a draw!");
-	}
-
-	//sf::Color teamColor = wormQueue.front().getTeam();
-	//bool anyDifferentTeam = std::any_of(wormQueue.cbegin(), wormQueue.cend(), [&teamColor](Worm& worm)
-	//{
-	//		return teamColor != worm.getTeam();
-	//});
-
 	int numberOfAliveTeams = wormQueue.aliveTeams();
 
 	if(numberOfAliveTeams == 0)
@@ -243,8 +227,7 @@ void GameplayManager::checkIfHasEnded()
 		setGameFinished();
 		setWorldMessage("The game ended in a draw!");
 	}
-
-	if(numberOfAliveTeams == 1)
+	else if(numberOfAliveTeams == 1)
 	{
 		setGameFinished();
 		std::string winner;
