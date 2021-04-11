@@ -84,6 +84,15 @@ void TestDestructibleNode::addHole(std::vector<ClipperLib::IntPoint>& figure)
 	// After differentiation change current values of the triangle
 	for (int i = 0; i < polyline.size(); ++i)
 		delete polyline[i];
+	polyline.clear();
+
+
+	// If there are no points it means it got completely destroyed
+	if(solution.empty())
+	{
+		setDestroyed();
+		return;
+	}
 
 	polyline.resize(solution[0].size());
 	for (size_t i = 0; i < solution[0].size(); ++i)

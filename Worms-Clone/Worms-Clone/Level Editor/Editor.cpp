@@ -124,7 +124,7 @@ void Editor::draw() const
 
 	for (const auto& object : createdObjects)
 		editorWindow.draw(object);
-	
+
 	editorWindow.draw(creationMenu);
 }
 
