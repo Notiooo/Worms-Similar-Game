@@ -210,10 +210,6 @@ void World::createWorld()
 	worldGameManager = gameManager.get();
 	worldLayers[static_cast<unsigned>(WorldLayers::Foreground)]->pinNode(std::move(gameManager));
 
-	// For test purposes
-	std::unique_ptr<TestDestructibleNode> destructibleNode = std::make_unique<TestDestructibleNode>(worldTextures.getResourceReference(Textures_ID::Paper));
-	worldLayers[static_cast<unsigned>(WorldLayers::Foreground)]->pinNode(std::move(destructibleNode));
-
 	std::vector<sf::Vector2f> wormSpawnPoints;
 
 	// Code that reads from the file particular commands and generates the world
@@ -290,6 +286,21 @@ void World::createWorld()
 				water->setPosition(positionX, positionY);
 
 				worldLayers[static_cast<unsigned>(WorldLayers::Background)]->pinNode(std::move(water));
+			}
+			break;
+			
+			case static_cast<unsigned>(WorldObjects::DestructableBlock) :
+			{
+				float width, height, rotation;
+				ss >> width >> height >> rotation;
+				calculateWorldBoundaries({ positionX, positionY }, { width / 2.f, height / 2.f });
+
+
+				std::unique_ptr<TestDestructibleNode> destructibleNode = std::make_unique<TestDestructibleNode>(b2_World, 
+					NodePhysicalBody::Physical_Types::Dynamic_Type, sf::Vector2f(positionX, positionY), sf::Vector2f(width, height));
+				if (rotation)
+					destructibleNode->setRotation(rotation);
+				worldLayers[static_cast<unsigned>(WorldLayers::Middle)]->pinNode(std::move(destructibleNode));
 			}
 			break;
 		}

@@ -10,6 +10,7 @@ enum class CollideTypes
 {
 	// World
 	Water,
+	DestructibleGround,
 	
 	// Worm related
 	WormFoot,

@@ -91,7 +91,13 @@ void DebugBox2D::DrawSolidCircle(const b2Vec2& center, float radius, const b2Vec
 
 void DebugBox2D::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
 {
-	// Do it later
+	sf::Vertex line[] =
+	{
+		sf::Vertex(b2VecConvert(p1), b2ColorConvert(color)),
+		sf::Vertex(b2VecConvert(p2), b2ColorConvert(color))
+	};
+
+	window->draw(line, 2, sf::Lines);
 }
 
 void DebugBox2D::DrawTransform(const b2Transform& xf)

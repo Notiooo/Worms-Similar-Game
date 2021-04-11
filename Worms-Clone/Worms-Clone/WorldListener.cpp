@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "Nodes/NodeWater.h"
+#include "Nodes/TestDestructibleNode.h"
 #include "Nodes/Physical/CollideTypes.h"
 #include "Nodes/Physical/Specified/Worm/Worm.h"
 #include "Nodes/Physical/Specified/Worm/Weapons/Bullet.h"
@@ -41,6 +42,7 @@ void WorldListener::BeginContact(b2Contact* contact)
 				
 			Collision* toDelete = (node1->type != CollideTypes::Water) ? node1 : node2;
 			toDelete->object->setDestroyed();
+			break;
 		}
 			
 		case CollideTypes::Bullet:
@@ -55,6 +57,7 @@ void WorldListener::BeginContact(b2Contact* contact)
 			if (node1 == nullptr || node2 == nullptr)
 				break;
 
+			// Hitbox with worm collision
 			Collision* worm_collision = (node1->type == CollideTypes::WormBody) ? node1 : node2;
 			Hitbox* hitbox = dynamic_cast<Hitbox*>(node->object);
 			if (Worm* worm = dynamic_cast<Worm*>(worm_collision->object))
@@ -76,8 +79,21 @@ void WorldListener::BeginContact(b2Contact* contact)
 				// The force has to be negative to push AWAY from the explosion
 				worm->applyForce(force_vector * 300.f);
 				worm->setDamage(hitbox->maxDmg * (hitbox->areaOfRange - distance) / hitbox->areaOfRange);
+				break;
 			}
 
+			// Hitbox with destructible node collision
+			Collision* groundCollision = (node1->type == CollideTypes::DestructibleGround) ? node1 : node2;
+			if (TestDestructibleNode* destructibleNode = dynamic_cast<TestDestructibleNode*>(groundCollision->object))
+			{
+
+				std::vector<ClipperLib::IntPoint> figureCollision;
+				for (double angle = 0; angle <= 2 * 3.14159; angle += 0.1)
+					figureCollision.emplace_back(ClipperLib::IntPoint(hitbox->getPosition().x + hitbox->areaOfRange /2.f * std::cos(angle), hitbox->getPosition().y + hitbox->areaOfRange / 2.f * std::sin(angle)));
+
+				destructibleNode->addHole(figureCollision);
+				break;
+			}
 			break;
 		}
 		}
