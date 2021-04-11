@@ -1,9 +1,7 @@
 #include "WorldListener.h"
 
-#include <iostream>
-#include "Nodes/NodeWater.h"
-#include "Nodes/TestDestructibleNode.h"
 #include "Nodes/Physical/CollideTypes.h"
+#include "Nodes/Physical/NodeDestructibleRectangle.h"
 #include "Nodes/Physical/Specified/Worm/Worm.h"
 #include "Nodes/Physical/Specified/Worm/Weapons/Bullet.h"
 #include "Nodes/Physical/Specified/Worm/Weapons/Hitbox.h"
@@ -84,12 +82,12 @@ void WorldListener::BeginContact(b2Contact* contact)
 
 			// Hitbox with destructible node collision
 			Collision* groundCollision = (node1->type == CollideTypes::DestructibleGround) ? node1 : node2;
-			if (TestDestructibleNode* destructibleNode = dynamic_cast<TestDestructibleNode*>(groundCollision->object))
+			if (NodeDestructibleRectangle* destructibleNode = dynamic_cast<NodeDestructibleRectangle*>(groundCollision->object))
 			{
 
 				std::vector<ClipperLib::IntPoint> figureCollision;
 				for (double angle = 0; angle <= 2 * 3.14159; angle += 0.1)
-					figureCollision.emplace_back(ClipperLib::IntPoint(hitbox->getPosition().x + hitbox->areaOfRange /2.f * std::cos(angle), hitbox->getPosition().y + hitbox->areaOfRange / 2.f * std::sin(angle)));
+					figureCollision.emplace_back(ClipperLib::IntPoint(hitbox->getAbsolutePosition().x + hitbox->areaOfRange /2.f * std::cos(angle), hitbox->getAbsolutePosition().y + hitbox->areaOfRange / 2.f * std::sin(angle)));
 
 				destructibleNode->addHole(figureCollision);
 				break;

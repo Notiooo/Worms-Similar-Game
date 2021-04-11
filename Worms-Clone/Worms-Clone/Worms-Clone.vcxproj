@@ -165,12 +165,13 @@
     <ClCompile Include="Nodes\NodeSprite.cpp" />
     <ClCompile Include="Nodes\NodeText.cpp" />
     <ClCompile Include="Nodes\GameplayManager.cpp" />
-    <ClCompile Include="Nodes\NodeWater.cpp" />
+    <ClCompile Include="Nodes\Physical\NodeDestructibleRectangle.cpp" />
     <ClCompile Include="Nodes\Physical\NodePhysicalBody.cpp" />
     <ClCompile Include="Nodes\Physical\NodePhysicalBase.cpp" />
     <ClCompile Include="Nodes\Physical\NodePhysicalSpark.cpp" />
     <ClCompile Include="Nodes\Physical\NodePhysicalSprite.cpp" />
     <ClCompile Include="Nodes\Physical\NodeRectangularPhysical.cpp" />
+    <ClCompile Include="Nodes\Physical\NodeWater.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Bazooka.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Bullet.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\Weapons\Cannon.cpp" />
@@ -186,7 +187,6 @@
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormPlayState.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormQueue.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormWaitState.cpp" />
-    <ClCompile Include="Nodes\TestDestructibleNode.cpp" />
     <ClCompile Include="States\Application_States\EditorState.cpp" />
     <ClCompile Include="States\Application_States\GameState.cpp" />
     <ClCompile Include="States\Application_States\MenuState.cpp" />
@@ -212,13 +212,14 @@
     <ClInclude Include="Nodes\NodeSprite.h" />
     <ClInclude Include="Nodes\NodeText.h" />
     <ClInclude Include="Nodes\GameplayManager.h" />
-    <ClInclude Include="Nodes\NodeWater.h" />
     <ClInclude Include="Nodes\Physical\CollideTypes.h" />
+    <ClInclude Include="Nodes\Physical\NodeDestructibleRectangle.h" />
     <ClInclude Include="Nodes\Physical\NodePhysicalBody.h" />
     <ClInclude Include="Nodes\Physical\NodePhysicalBase.h" />
     <ClInclude Include="Nodes\Physical\NodePhysicalSpark.h" />
     <ClInclude Include="Nodes\Physical\NodePhysicalSprite.h" />
     <ClInclude Include="Nodes\Physical\NodeRectangularPhysical.h" />
+    <ClInclude Include="Nodes\Physical\NodeWater.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Bazooka.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Bullet.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\Weapons\Cannon.h" />
@@ -234,7 +235,6 @@
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormPlayState.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormQueue.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormWaitState.h" />
-    <ClInclude Include="Nodes\TestDestructibleNode.h" />
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Resources\Resources.h" />
     <ClInclude Include="States\Application_States\EditorState.h" />

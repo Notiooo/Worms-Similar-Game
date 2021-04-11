@@ -216,12 +216,6 @@
     <ClCompile Include="Level Editor\NodeEditorObject.cpp">
       <Filter>Source Files\Level Editor</Filter>
     </ClCompile>
-    <ClCompile Include="Nodes\NodeWater.cpp">
-      <Filter>Source Files\Nodes</Filter>
-    </ClCompile>
-    <ClCompile Include="Nodes\TestDestructibleNode.cpp">
-      <Filter>Source Files\Nodes\Physical</Filter>
-    </ClCompile>
     <ClCompile Include="..\External Libraries\Poly2Tri\include\common\shapes.cc">
       <Filter>Source Files\Externals\Poly2Tri</Filter>
     </ClCompile>
@@ -239,6 +233,12 @@
     </ClCompile>
     <ClCompile Include="..\External Libraries\Clipper\include\clipper.cpp">
       <Filter>Source Files\Externals\Clipper</Filter>
+    </ClCompile>
+    <ClCompile Include="Nodes\Physical\NodeDestructibleRectangle.cpp">
+      <Filter>Source Files\Nodes\Physical</Filter>
+    </ClCompile>
+    <ClCompile Include="Nodes\Physical\NodeWater.cpp">
+      <Filter>Source Files\Nodes\Physical</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -383,10 +383,10 @@
     <ClInclude Include="WorldObjects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Nodes\NodeWater.h">
-      <Filter>Header Files\Nodes</Filter>
+    <ClInclude Include="Nodes\Physical\NodeDestructibleRectangle.h">
+      <Filter>Header Files\Nodes\Physical</Filter>
     </ClInclude>
-    <ClInclude Include="Nodes\TestDestructibleNode.h">
+    <ClInclude Include="Nodes\Physical\NodeWater.h">
       <Filter>Header Files\Nodes\Physical</Filter>
     </ClInclude>
   </ItemGroup>
