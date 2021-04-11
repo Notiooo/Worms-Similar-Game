@@ -11,6 +11,7 @@
 
 #include "WorldObjects.h"
 #include "Nodes/NodeWater.h"
+#include "Nodes/TestDestructibleNode.h"
 
 
 World::World(sf::RenderWindow& window, int _wormAmount, int _numberOfTeams) :
@@ -208,6 +209,10 @@ void World::createWorld()
 	std::unique_ptr<GameplayManager> gameManager = std::make_unique<GameplayManager>(b2_World, worldTextures, worldFonts, worldWindow);
 	worldGameManager = gameManager.get();
 	worldLayers[static_cast<unsigned>(WorldLayers::Foreground)]->pinNode(std::move(gameManager));
+
+	// For test purposes
+	std::unique_ptr<TestDestructibleNode> destructibleNode = std::make_unique<TestDestructibleNode>(worldTextures.getResourceReference(Textures_ID::Paper));
+	worldLayers[static_cast<unsigned>(WorldLayers::Foreground)]->pinNode(std::move(destructibleNode));
 
 	std::vector<sf::Vector2f> wormSpawnPoints;
 

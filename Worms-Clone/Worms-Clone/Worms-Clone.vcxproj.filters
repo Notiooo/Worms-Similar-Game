@@ -76,6 +76,15 @@
     <Filter Include="Source Files\Level Editor">
       <UniqueIdentifier>{4c38dc11-b571-4e6e-ac77-96881f4b7f87}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Externals">
+      <UniqueIdentifier>{1c7e6c19-aa98-435d-9c0d-ada193547db8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Externals\Poly2Tri">
+      <UniqueIdentifier>{88360d44-c165-496c-adf4-b9c5563dfe3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Externals\Clipper">
+      <UniqueIdentifier>{815eee19-784a-4c3a-9c8c-fa28a0640cc6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Worms-Clone.cpp">
@@ -209,6 +218,27 @@
     </ClCompile>
     <ClCompile Include="Nodes\NodeWater.cpp">
       <Filter>Source Files\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Nodes\TestDestructibleNode.cpp">
+      <Filter>Source Files\Nodes\Physical</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External Libraries\Poly2Tri\include\common\shapes.cc">
+      <Filter>Source Files\Externals\Poly2Tri</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External Libraries\Poly2Tri\include\sweep\advancing_front.cc">
+      <Filter>Source Files\Externals\Poly2Tri</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External Libraries\Poly2Tri\include\sweep\cdt.cc">
+      <Filter>Source Files\Externals\Poly2Tri</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External Libraries\Poly2Tri\include\sweep\sweep.cc">
+      <Filter>Source Files\Externals\Poly2Tri</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External Libraries\Poly2Tri\include\sweep\sweep_context.cc">
+      <Filter>Source Files\Externals\Poly2Tri</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External Libraries\Clipper\include\clipper.cpp">
+      <Filter>Source Files\Externals\Clipper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -355,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="Nodes\NodeWater.h">
       <Filter>Header Files\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\TestDestructibleNode.h">
+      <Filter>Header Files\Nodes\Physical</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

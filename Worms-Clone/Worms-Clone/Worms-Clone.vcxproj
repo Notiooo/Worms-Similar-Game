@@ -119,7 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>SFML_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)External Libraries\box2d\include;$(SolutionDir)External Libraries\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)External Libraries\box2d\include;$(SolutionDir)External Libraries\SFML\include;$(SolutionDir)External Libraries\Clipper\include;$(SolutionDir)External Libraries\Poly2Tri\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -147,6 +147,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\External Libraries\Clipper\include\clipper.cpp" />
+    <ClCompile Include="..\External Libraries\Poly2Tri\include\common\shapes.cc" />
+    <ClCompile Include="..\External Libraries\Poly2Tri\include\sweep\advancing_front.cc" />
+    <ClCompile Include="..\External Libraries\Poly2Tri\include\sweep\cdt.cc" />
+    <ClCompile Include="..\External Libraries\Poly2Tri\include\sweep\sweep.cc" />
+    <ClCompile Include="..\External Libraries\Poly2Tri\include\sweep\sweep_context.cc" />
     <ClCompile Include="DebugBox2D.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GUI\Button.cpp" />
@@ -180,6 +186,7 @@
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormPlayState.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormQueue.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormWaitState.cpp" />
+    <ClCompile Include="Nodes\TestDestructibleNode.cpp" />
     <ClCompile Include="States\Application_States\EditorState.cpp" />
     <ClCompile Include="States\Application_States\GameState.cpp" />
     <ClCompile Include="States\Application_States\MenuState.cpp" />
@@ -227,6 +234,7 @@
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormPlayState.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormQueue.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormWaitState.h" />
+    <ClInclude Include="Nodes\TestDestructibleNode.h" />
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Resources\Resources.h" />
     <ClInclude Include="States\Application_States\EditorState.h" />
