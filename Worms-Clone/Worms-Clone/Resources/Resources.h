@@ -13,7 +13,7 @@
  */
 enum class Textures_ID
 {
-	// === ?? === //
+	// === Others === //
 	WorldBackground,
 	Water,
 	Paper,

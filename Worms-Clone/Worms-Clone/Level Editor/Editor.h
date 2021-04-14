@@ -18,10 +18,27 @@ class Editor
 public:
 	Editor(sf::RenderWindow& window, const FontManager& fonts);
 
+	/**
+	 * \brief Updates the status/logic of the editor
+	 * \param deltaTime the time that has passed since the last frame.
+	 */
 	void update(sf::Time deltaTime);
+
+	/**
+	 * \brief Updates editor logic and status related to the mouse
+	 */
 	void updateMouse();
 
+	/**
+	 * \brief It takes input (event) from the user and interprets it
+	 * \param event user input
+	 */
 	void handleEvent(const sf::Event& event);
+
+	
+	/**
+	 * \brief Draws the editor and all its contents into the application window
+	 */
 	void draw() const;
 	
 	/**
@@ -65,7 +82,7 @@ private:
 	/**
 	 * \brief Creates an object with the given identifier on the given coordinates.
 	 * \param objectId Identifier of the object to create
-	 * \param mousePosition Coordinates in which the object should be created
+	 * \param position Coordinates in which the object should be created
 	 */
 	void createObject(unsigned objectId, const sf::Vector2f& position);
 
@@ -84,8 +101,6 @@ private:
 	GUI::Container creationMenu; //!< Menu containing buttons that create an object specified for them
 	sf::Vector2f mousePosition; //!< Current position of the mouse in relation to the game world
 	std::list<NodeEditorObject> createdObjects; //!< A list containing all objects in the game world
-
-
 };
 
 

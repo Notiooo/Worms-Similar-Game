@@ -30,20 +30,20 @@ public:
 
 	/**
 	 * \brief Draws worms and other pinned nodes
-	 * \param target 
-	 * \param states 
+	 * \param target where it should be drawn to
+	 * \param states provides information about rendering process (transform, shader, blend mode)
 	 */
 	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	/**
 	 * \brief Updates worms and other pinned nodes
-	 * \param deltaTime 
+	 * \param deltaTime Time passed since the last frame
 	 */
 	void updateThis(sf::Time deltaTime) override;
 
 	/**
 	 * \brief Passes on to worms and other pinned nodes the individual inputs made by the player
-	 * \param event 
+	 * \param event user input
 	 */
 	void handleThisEvents(const sf::Event& event) override;
 
@@ -84,6 +84,10 @@ public:
 	 */
 	const NodeScene* getRootNode() const override;
 
+	/**
+	 * \brief Checks whether the game has already finished 
+	 * \return True if the game has finished, false otherwise
+	 */
 	bool isGameFinished() const;
 
 private:
@@ -91,18 +95,23 @@ private:
 	 * \brief It controls a turn-based game system.
 	 * Responsible for adhering to the rules of the game and its flow.
 	 */
-	void checkTurnTime();
+	void updateTurn();
 
-	void checkIfHasEnded();
+	/**
+	 * \brief Checks whether the game should end already
+	 */
+	void updateGameResult();
 
+	/**
+	 * \brief Sets the game state as finished
+	 */
 	void setGameFinished();
 
 
-	// Useful
-	b2World& physicalWorld;
-	TextureManager& textures;
-	FontManager& fonts;
-	sf::RenderWindow& window;
+	b2World& physicalWorld; //!< Physical simulation of the world
+	TextureManager& textures; //!< Manager with loaded textures
+	FontManager& fonts; //!< Manager with loaded fonts
+	sf::RenderWindow& window; //!< Window to which the game is displayed
 	
 	// Variables used to control the turn-based game system.
 
@@ -119,8 +128,8 @@ private:
 
 	
 	WormQueue wormQueue; //!< Order in which particular worms can play
-	sf::Time additionalTime = sf::Time::Zero;
-	bool gameFinished = false;
+	sf::Time additionalTime = sf::Time::Zero; //!< Additional time until the end of the current turn
+	bool gameFinished = false; //!< Flag indicating whether the game has ended
 
 	sf::Time leaveGameTime = sf::seconds(5); //!< Time after which player (after win) will be redirected to main menu
 };

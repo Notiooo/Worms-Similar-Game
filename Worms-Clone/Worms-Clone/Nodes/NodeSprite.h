@@ -3,25 +3,41 @@
 
 #include "NodeScene.h"
 #include "SFML/Graphics/Sprite.hpp"
-#include "../Resources/Resources.h"
 
+/**
+ * \brief Node containing and displaying a sprite in addition
+ */
 class NodeSprite : public NodeScene
 {
 public:
-	// Takes TextureManager to search for a texture
-	explicit NodeSprite(const TextureManager&);
+	/**
+	 * \brief Texture to be displayed
+	 * \param texture Creates a sprite with given texture
+	 */
+	explicit NodeSprite(const sf::Texture& texture);
+	
+	/**
+	 * \brief Creates a sprite with given texture and given boundaries
+	 * \param texture Texture to be displayed
+	 * \param rect boundaries to display only given part of the Texture
+	 */
+	NodeSprite(const sf::Texture& texture, const sf::IntRect& rect);
 
-	// Takes TextureManager to search for a texture and uses given IntRect boundaries
-	// to display only this part of the Texture
-	NodeSprite(const sf::Texture&, const sf::IntRect&);
-
+	/**
+	 * \brief Calculates and returns the dimensions of the sprite
+	 * \return Dimensions of the sprite
+	 */
 	sf::Vector2f getSpriteSize() const;
 
 private:
-	// Typically draw graphical object onto the screen using dynamic-linking
-	void drawThis(sf::RenderTarget&, sf::RenderStates) const override;
+	/**
+	 * \brief Draws only this sprite to the passed target
+	 * \param target where it should be drawn to
+	 * \param states provides information about rendering process (transform, shader, blend mode)
+	 */
+	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-	sf::Sprite nodeSprite;
+	sf::Sprite nodeSprite; //!< Sprite representing the given texture
 };
 
 #endif

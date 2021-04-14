@@ -7,11 +7,11 @@
 enum class State_ID
 {
 	// === Application flow states === //
-	TitleState,
-	GameState,
-	MenuState,
-	PauseState,
-	EditorState,
+	TitleState, //!< Title page with pre-game information
+	GameState, //!< A state that is a game in which the player can actively participate
+	MenuState, //!< The main menu state in which the player can change the game settings and start the editor or the game, or close the game
+	PauseState, //!< Pause state in which the player can pause the game for a while or return to the main menu, or even close the game
+	EditorState, //!< The state in which the player can edit/create the current game world map
 
 
 	// === Inside-game objects flow states === //

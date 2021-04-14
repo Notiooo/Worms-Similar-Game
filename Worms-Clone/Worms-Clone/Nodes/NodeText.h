@@ -13,10 +13,22 @@
 class NodeText : public NodeScene
 {
 public:
-	// Takes TextureManager to search for a texture
-	explicit NodeText(const FontManager& fonts, unsigned int size, bool outline);
+	
+	/**
+	 * \brief Creates a node representing text with given parameters
+	 * \param font The font to be used when displaying the text
+	 * \param size Size in pixels to be used when displaying the text
+	 * \param outline True if the text should have an outline, false otherwise
+	 */
+	NodeText(const sf::Font& font, unsigned int size, bool outline);
 
-	// This allows us to specify a Font and a text
+	/**
+	 * \brief Creates a node representing text with given parameters
+	 * \param text Text that should be displayed
+	 * \param font The font to be used when displaying the text
+	 * \param size Size in pixels to be used when displaying the text
+	 * \param outline True if the text should have an outline, false otherwise
+	 */
 	NodeText(const sf::Font& font, const std::string& text, unsigned int size, bool outline);
 
 	// === Setters === //
@@ -57,7 +69,7 @@ private:
 	 */
 	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-	sf::Text nodeText;
+	sf::Text nodeText; //!< Graphic representation of text to be displayed on screen
 };
 
 #endif

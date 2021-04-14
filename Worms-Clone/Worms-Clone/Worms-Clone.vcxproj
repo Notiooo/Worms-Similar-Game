@@ -235,6 +235,7 @@
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormPlayState.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormQueue.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormWaitState.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Resources\Resources.h" />
     <ClInclude Include="States\Application_States\EditorState.h" />
@@ -249,6 +250,16 @@
     <ClInclude Include="World.h" />
     <ClInclude Include="WorldListener.h" />
     <ClInclude Include="WorldObjects.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Worms-Clone.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Icon.png" />
+    <Image Include="Icon.ico" />
+    <Image Include="Icon.png" />
+    <Image Include="icon1.ico" />
+    <Image Include="icon2.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

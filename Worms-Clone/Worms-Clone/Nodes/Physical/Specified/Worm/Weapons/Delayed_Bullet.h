@@ -23,7 +23,11 @@ struct Delayed_Bullet : public Bullet
 	 */
 	void updateThis(sf::Time deltaTime) override;
 
-	
+	/**
+	 * \brief Draws only this Bullet to the passed target
+	 * \param target where it should be drawn to
+	 * \param states provides information about rendering process (transform, shader, blend mode)
+	 */
 	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	/**
@@ -41,4 +45,4 @@ private:
 
 };
 
-#endif // !BAZOOKA_H
+#endif // !DELAYED_BULLET_H

@@ -45,13 +45,8 @@ void StateStack::update(sf::Time deltaTime)
         // This allow some states to pause states under it.
         // Like pause for example
         if (!(*beg)->update(deltaTime))
-        {
-            //applyChanges();
             return;
-        }
     }
-
-    //applyChanges();
 }
 
 void StateStack::draw() const
@@ -82,13 +77,8 @@ void StateStack::handleEvent(const sf::Event& event)
         // This allow some states to pause states under it.
         // Like pause for example
         if (!(*beg)->handleEvent(event))
-        {
-            //applyChanges();
             return;
-        }
     }
-
-    //applyChanges();
 }
 
 

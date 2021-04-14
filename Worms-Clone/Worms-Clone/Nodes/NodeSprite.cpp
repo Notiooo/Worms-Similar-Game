@@ -1,7 +1,11 @@
 #include "NodeSprite.h"
+
+#include <SFML/Graphics/Texture.hpp>
+
 #include "SFML/Graphics/RenderTarget.hpp"
 
-NodeSprite::NodeSprite(const TextureManager&)
+NodeSprite::NodeSprite(const sf::Texture& texture) :
+	nodeSprite(texture)
 {
 }
 

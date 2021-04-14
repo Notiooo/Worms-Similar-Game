@@ -1,7 +1,6 @@
 #ifndef GRENADE_H
 #define GRENADE_H
 
-#include "SFML/Window/Event.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 #include "Weapon.h"
 #include "Bullet.h"
@@ -25,11 +24,21 @@ public:
 	 */
 	void shoot(NodeScene* rootNode, sf::Vector2f position, sf::Vector2f force) override;
 	
+	/**
+	 * \brief Is the grenade an activated weapon or a loaded weapon (via the shooting bar).
+	 * \return True if it is activated weapon, false if it need to be loaded
+	 */
 	bool isActivation() override;
+
+
+	/**
+	 * \brief Does using the Grenade end the round
+	 * \return True usage of grenade ends the round, false otherwise
+	 */
 	bool isRoundEnding() override;
 
 private:
-	const FontManager& fonts;
+	const FontManager& fonts; //!< Needed to load a font displaying the time to explosion
 };
 
-#endif // !BAZOOKA_H
+#endif // !GRENADE_H

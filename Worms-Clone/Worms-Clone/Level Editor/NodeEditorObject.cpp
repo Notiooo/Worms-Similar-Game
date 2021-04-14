@@ -28,13 +28,15 @@ sf::FloatRect NodeEditorObject::getGlobalBounds() const
 
 void NodeEditorObject::updateMouse(const sf::Vector2f& mousePosition)
 {
+	// After hovering with the mouse (executes once)
 	if (!isSelected() && getGlobalBounds().contains(mousePosition))
 		select();
-	
+
+	// After leaving with the mouse (executes once)
 	if (isSelected() && !getGlobalBounds().contains(mousePosition))
 		unselect();
 
-	// Moving with mouse
+	// Allows to move an object with the mouse when activated
 	if(isActivated())
 	{
 		if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -44,8 +46,10 @@ void NodeEditorObject::updateMouse(const sf::Vector2f& mousePosition)
 
 void NodeEditorObject::update(sf::Time deltaTime)
 {
+	// Synchronises the position of the text on the object with the object
 	nodeName.setPosition(getPosition());
 
+	// Allows to move and edit the activated object
 	if(isActivated())
 	{
 		// Faster moving
@@ -58,7 +62,7 @@ void NodeEditorObject::update(sf::Time deltaTime)
 		float movingSpeed = this->movingSpeed + additionalSpeed;
 		movingSpeed *= deltaTime.asSeconds();
 		
-		// Standard moving
+		// Standard moving the object with keyboard
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
 			move(0, -movingSpeed);
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
@@ -71,7 +75,7 @@ void NodeEditorObject::update(sf::Time deltaTime)
 		float rotationSpeed = this->rotationSpeed + additionalSpeed;
 		rotationSpeed *= deltaTime.asSeconds();
 		
-		// Rotation
+		// Rotation of the object with keyboard
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E))
 			setRotation(getRotation() + rotationSpeed);
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q))
@@ -80,13 +84,13 @@ void NodeEditorObject::update(sf::Time deltaTime)
 		float sizeChangeSpeed = this->sizeChangeSpeed + additionalSpeed;
 		sizeChangeSpeed *= deltaTime.asSeconds();
 		
-		// Changing height
+		// Changing height of the object
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
 			setSize(getSize().x, getSize().y - sizeChangeSpeed);
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
 			setSize(getSize().x, getSize().y + sizeChangeSpeed);
 
-		// Changing width
+		// Changing width of the object
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
 			setSize(getSize().x + sizeChangeSpeed, getSize().y);
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
@@ -175,7 +179,7 @@ void NodeEditorObject::draw(sf::RenderTarget& target, sf::RenderStates states) c
 	target.draw(nodeName);
 }
 
-void NodeEditorObject::handleEvent(const sf::Event event)
+void NodeEditorObject::handleEvent(const sf::Event& event)
 {
 	if(event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Left)
 	{

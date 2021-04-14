@@ -23,12 +23,12 @@ public:
 	friend class WorldListener;
 
 	// States of this worm
-	friend class WormHideState;
-	friend class WormPlayState;
-	friend class WormWaitState;
-	friend class WormHitState;
+	friend class WormHideState; //!< Player have ... seconds to hide
+	friend class WormPlayState; //!< Player can play his turn
+	friend class WormWaitState; //!< Player can't move with this worm
+	friend class WormHitState; //!< State after getting hit by other player
 	friend class WormMoveableState;
-	friend class WormInventoryState;
+	friend class WormInventoryState; //!< State in which player can choose a weapon
 
 	/**
 	 * \brief Creates a worm 
@@ -128,15 +128,15 @@ private:
 	// the worm, instead of its name
 	
 	// === Graphical variables === //
-	sf::Sprite wormSprite;
-	sf::Sprite ropeSprite;
-	sf::Texture& deadWorm;
-	sf::Text wormName;
-	sf::Color teamColor;
+	sf::Sprite wormSprite; //!< Sprite being the visual representation of the worm
+	sf::Sprite ropeSprite; //!< Sprite being the visual representation of the rope holding the worm
+	sf::Texture& deadWorm; //!< A texture that is a visual representation of a dead worm
+	sf::Text wormName; //!< Name of the worm displayed above its head
+	sf::Color teamColor; //!< Team colour of this worm
 	
-	sf::RectangleShape healthBar;
-	float healthBarWidth = 60.f;
-	float healthBarHeight = 10.f;
+	sf::RectangleShape healthBar; //!< Visual representation of the life bar above the worm's head
+	float healthBarWidth = 60.f; //!< Length of the life bar over the head of the worm
+	float healthBarHeight = 10.f; //!< Height of the life bar over the head of the worm
 	
 
 	// === Game flow variables === //
@@ -153,17 +153,17 @@ private:
 	// === Worm properties === //
 
 	// Stats
-	float jumpStrength = 300.f;
-	float movingSpeed = 2.f;
+	float jumpStrength = 300.f; //!< The force with which the worm jumps
+	float movingSpeed = 2.f; //!< The speed at which the worm moves around the map
 
 	// Weapons
-	using slot = std::pair<unsigned, std::unique_ptr<Weapon>>;
-	std::vector<slot> inventory;
-	slot* selectedWeapon;
+	using slot = std::pair<unsigned, std::unique_ptr<Weapon>>; //!< One place in the worm's inventory which consists of the weapon and the number of possible uses
+	std::vector<slot> inventory; //!< A collection of slots that together form a grid of such items called inventory
+	slot* selectedWeapon; //!< The worm's current weapon of choice
 
 	// Health
-	int health = 100;
-	int maxHealth = 100;
+	int health = 100; //!< Current worm life points
+	int maxHealth = 100; //!< Maximum worm life points
 };
 
 #endif

@@ -8,7 +8,8 @@
 #include "../../../NodePhysicalBody.h"
 
 /**
- * \brief An object that reports a collision within its boundary. Used to find worm hit by an explosion.
+ * \brief An object that reports a collision within its boundary.
+ * Used to find worm hit by an explosion.
  * Removes itself in the next iteration of the game.
  */
 class Hitbox : public NodePhysicalBody
@@ -18,6 +19,11 @@ public:
 	
 	Hitbox(b2World& world, sf::Vector2f position, float area_of_range,float max_dmg);
 
+	/**
+	 * \brief This function removes the object from the map as
+	 * quickly as possible, so it only takes one iteration
+	 * \param deltaTime Time passed since the last frame
+	 */
 	void updateThis(sf::Time deltaTime) override;
 	
 

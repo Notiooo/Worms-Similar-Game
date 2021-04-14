@@ -62,19 +62,12 @@ private:
 	 */
 	void loadResources();
 
-	/**
-	 * \brief The time it takes for one game frame to be generated.
-	 */
-	static const sf::Time TIME_PER_FRAME;
+	static const sf::Time TIME_PER_FRAME; //!< The time it takes for one game frame to be generated.
 
-	static const float SCREEN_WIDTH;
-	static const float SCREEN_HEIGHT;
+	static const float SCREEN_WIDTH; //!< Default game window width
+	static const float SCREEN_HEIGHT; //!< Default game window height
 
-	
-	/**
-	 * \brief The window to which the game image should be drawn.
-	 */
-	sf::RenderWindow gameWindow;
+	sf::RenderWindow gameWindow; //!< The window to which the game image should be drawn.
 
 	/**
 	 * \brief An object that holds loaded fonts that can be used inside the game.
@@ -93,8 +86,8 @@ private:
 	 */
 	StateStack appStack;
 
-	int wormAmount = 4;
-	int numberOfTeams = 2;
+	int wormAmount = 4; //!< The default number of worms per team
+	int numberOfTeams = 2; //!< The default number of teams in the game
 };
 
 

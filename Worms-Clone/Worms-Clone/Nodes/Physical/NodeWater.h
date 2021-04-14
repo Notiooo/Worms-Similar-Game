@@ -67,8 +67,7 @@ private:
 	WaterLayer waterMiddleLayer;
 	WaterLayer waterBottomLayer;
 
-	// Not used yet
-	sf::Sprite backgroundWater;
+	sf::Sprite backgroundWater; // Not used yet
 
 	b2Fixture* fixture; //!< Attaches a shape to a body
 

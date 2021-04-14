@@ -1,7 +1,6 @@
 #ifndef BULLET_H
 #define BULLET_H
 
-#include "SFML/Graphics/Sprite.hpp"
 #include "../../../../Physical/NodePhysicalSprite.h"
 
 
@@ -31,13 +30,14 @@ struct Bullet : public NodePhysicalSprite
 	 */
 	void setSparkColor(const sf::Color& color);
 
+protected:
 	/**
 	 * \brief A function that checks if an object is marked as ready for deletion.
+	 * Additionally, it applies visual effects where the object is removable.
 	 * \return True if it is ready to be removed, false otherwise.
 	 */
 	bool isDestroyed() override;
-
-protected:
+	
 	float force; //!< The force with which the bullet will strike (the power of the damage inflicted).
 	float range; //!< The range that the bullet will cover after the explosion
 

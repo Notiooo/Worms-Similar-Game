@@ -17,10 +17,29 @@ protected:
 
 public:
 
-	virtual void draw() const = 0;
-	virtual void draw(sf::RenderTarget&, sf::RenderStates) const = 0;
-	bool update(sf::Time) override = 0;
-	virtual bool handleEvent(const sf::Event& event) = 0;
+	/**
+	 * \brief Draws only this state.
+	 */
+	void draw() const override = 0;
+
+	/**
+	 * \brief Draws only this state (current state of the worm) to the passed target
+	 * \param target where it should be drawn to
+	 * \param states provides information about rendering process (transform, shader, blend mode)
+	 */
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override = 0;
+
+	/**
+	 * \brief Updates the status of the worm
+	 * \param deltaTime the time that has passed since the last frame.
+	 */
+	bool update(sf::Time deltaTime) override = 0;
+
+	/**
+	 * \brief It takes input (event) from the user and interprets it
+	 * \param event user input
+	 */
+	bool handleEvent(const sf::Event& event) override = 0;
 
 	/**
 	 * \brief Checks whether the worm's face turns to the right

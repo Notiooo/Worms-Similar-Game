@@ -12,6 +12,10 @@
 
 class Worm;
 
+/**
+ * \brief An abstract class of weapon that can be activated or
+ * fired with an earlier shooting bar charge.
+ */
 class Weapon : public NodeScene
 {
 public:
@@ -77,25 +81,33 @@ public:
 	 * \param angle Angle at which the weapon should be positioned
 	 */
 	void rotateWeapon(float angle);
-	
+
+	/**
+	 * \brief Draws only this Weapon to the passed target
+	 * \param target where it should be drawn to
+	 * \param states provides information about rendering process (transform, shader, blend mode)
+	 */
 	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	/**
+	 * \brief Updates the logic of the weapon.
+	 * \param deltaTime the time that has passed since the game was last updated
+	 */
 	void updateThis(sf::Time deltaTime) override;
-
-
 
 protected:
 	// === Graphical === //
-	sf::Sprite weaponSprite;
-	sf::Sprite thumbnailSprite;
-	sf::Texture& bulletTexture;
-	sf::Color bulletSparksColor = sf::Color::White;
+	sf::Sprite weaponSprite; //!< Sprite which is a visual representation of the weapon in the game
+	sf::Sprite thumbnailSprite; //!< Sprite which is a visual representation of the weapon in the inventory
+	sf::Texture& bulletTexture; //!< Sprite which is a visual representation of the bullet in the game
+	sf::Color bulletSparksColor = sf::Color::White; //!< Colour of the explosion after the projectile explosion
 
 
 	// === Parameters === //
-	float attackDmg = 0.f;
-	float range = 0.f;
+	float attackDmg = 0.f; //!< Maximum damage this weapon can deal
+	float range = 0.f; //!< Weapon striking range
 	
-	b2World& physicalWorld;
+	b2World& physicalWorld; //!< Physical simulation of the game world
 };
 
 #endif // !WEAPON_H

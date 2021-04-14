@@ -12,6 +12,9 @@
 
 namespace GUI
 {
+	/**
+     * \brief A button that can be pressed in two ways depending on the settings (right and left mouse button).
+     */
     class Button : public Component
     {
     public:
@@ -90,10 +93,24 @@ namespace GUI
     	 */
     	template <typename T>
         void setPositionBelow(const T& object, float padding = 0.f);
-    	
-    	
+
+        /**
+         * \brief It takes input (event) from the user and interprets it
+         * \param event user input
+         */
     	void handleEvents(const sf::Event& event) override;
+
+        /**
+         * \brief Updates the status/logic of the button
+         * \param mousePosition Current mouse position
+         */
     	void update(sf::Vector2f mousePosition) override;
+
+        /**
+		 * \brief Draws only this state to the passed target
+		 * \param target where it should be drawn to
+		 * \param states provides information about rendering process (transform, shader, blend mode)
+		 */
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:
@@ -110,6 +127,12 @@ namespace GUI
         std::function<void(Button&)> deactivateFunction; //!< A function that is performed when a button is pressed with alternative key (deactivated)
     };
 
+	/**
+     * \brief Function to place a button under another object
+     * \tparam T Other object type
+     * \param object The object under which the button should be placed
+     * \param padding Additional spacing that the button should maintain
+     */
     template <typename T>
     void Button::setPositionBelow(const T& object, float padding)
     {

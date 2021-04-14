@@ -1,7 +1,6 @@
 #ifndef UTILS_H
 #define UTILS_H
 #include <SFML/Graphics/Rect.hpp>
-#include <iostream>
 
 /**
  * \brief Sets the origin to the centre of the drawing object.
@@ -16,6 +15,14 @@ void centerOrigin(T& drawable_obj)
 		rect.top + rect.height / 2.f);
 }
 
+/**
+ * \brief Sets an object under another object
+ * \tparam T1 Type of the first object
+ * \tparam T2 Type of the second object
+ * \param object Object to be set
+ * \param reference_object The object relative to which the object is to be positioned
+ * \param padding Additional distance to be maintained
+ */
 template <typename T1, typename T2>
 void setPositionBelow(T1& object, const T2& reference_object, float padding=0.f)
 {
@@ -26,6 +33,12 @@ void setPositionBelow(T1& object, const T2& reference_object, float padding=0.f)
 	object.setPosition(position + heightFromPosition + thisHeightFromPosition);
 }
 
+/**
+ * \brief Calculates and finds the position just below another object
+ * \tparam T 
+ * \param reference_object The object whose positions should be calculated
+ * \return Position under the passed object
+ */
 template <typename T>
 sf::Vector2f getPositionBelow(const T& reference_object)
 {

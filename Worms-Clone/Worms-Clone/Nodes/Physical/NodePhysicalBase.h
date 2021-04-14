@@ -62,10 +62,7 @@ public:
 	static float radiansToAngle(const float& radians);
 
 protected:
-	/**
-	 * \brief Simulation of the physical world
-	 */
-	b2World* World;
+	b2World* World; //!< Simulation of the physical world
 };
 
 

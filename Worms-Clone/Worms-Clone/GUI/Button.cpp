@@ -7,8 +7,10 @@ void GUI::Button::onEnter()
 {
 	GUI::Component::onEnter();
 
+	// Changes the texture to a different one (set) when hovering
 	sprite.setTexture(selectedTexture);
-	
+
+	// Increases the button size accordingly when hovered over
 	centerOrigin(sprite);
 	sprite.setScale(1.2, 1.2);
 
@@ -21,7 +23,8 @@ void GUI::Button::onLeave()
 	GUI::Component::onLeave();
 
 	sprite.setTexture(normalTexture);
-	
+
+	// Decreases the button size (to the default scale) after leaving
 	centerOrigin(sprite);
 	sprite.setScale(1, 1);
 
@@ -82,13 +85,6 @@ void GUI::Button::setText(const std::string& _text)
 
 sf::FloatRect GUI::Button::getGlobalBounds() const
 {	
-	//const auto rectLeft = getPosition().x - sprite.getOrigin().x * getScale().x;
-	//const auto rectTop = getPosition().y - sprite.getOrigin().y * getScale().y;
-	//const auto rectWidth = sprite.getLocalBounds().width * sprite.getScale().x * getScale().x;
-	//const auto rectHeight = sprite.getLocalBounds().height * sprite.getScale().y * getScale().y;
-	//
-	//return sf::FloatRect(rectLeft, rectTop, rectWidth, rectHeight);
-
 	auto globalBounds = sprite.getGlobalBounds();
 	globalBounds.left += getPosition().x;
 	globalBounds.top += getPosition().y;

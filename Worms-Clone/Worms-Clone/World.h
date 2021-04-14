@@ -74,7 +74,16 @@ private:
 	 */
 	void createWorld();
 
-	void calculateWorldBoundaries(sf::Vector2f position, sf::Vector2f dimensions);
+	/**
+	 * \brief A function that updates the dimensions of the world based
+	 * on the given dimensions and position of the new object.
+	 * \param position Position of the object
+	 * \param dimensions Object dimensions
+	 *
+	 * The world dimensions then serve to block the player
+	 * from escaping beyond the screen of the created game world
+	 */
+	void updateWorldBoundaries(sf::Vector2f position, sf::Vector2f dimensions);
 
 	/**
 	 * \brief Allows to move the camera inside the game with the mouse.
@@ -82,26 +91,29 @@ private:
 	void moveScreenWithMouse();
 
 
-	// Managers & Windows
+	// === Managers & Windows === //
 	sf::RenderWindow& worldWindow; //!< Window to which game world objects are displayed
-	sf::View worldView;
-	float maxZoomFactor = 3.f;
-	TextureManager worldTextures;
-	FontManager worldFonts;
-	GameplayManager* worldGameManager;
+	sf::View worldView; //!< Current view of the screen
+	float maxZoomFactor = 3.f; //!< Maximum zoom in/out ratio
+	TextureManager worldTextures; //!< Manager containing textures used inside the game world
+	FontManager worldFonts; //!< Manager containing fonts used inside the game world
+	GameplayManager* worldGameManager; //!< Manager taking care of maintaining and running the game inside the game world
 
-	// Scene-related objects
+	// === Scene-related objects === //
 	b2World b2_World; //!< Physical simulation of the game world
 	DebugBox2D debugDraw; //!< Object for displaying hitboxes
 	NodeScene rootScene; //!< Main stage of the game
 	WorldListener worldListener; //!< It carries all collisions inside the world
-	const int wormAmount;
-	const int numberOfTeams;
-	float mostPositionedX = worldWindow.getSize().x;
-	float mostPositionedY = worldWindow.getSize().y;
-	float lessPositionedX = 0.f;
-	float lessPositionedY = 0.f;
 
+	// === Properties of the game world === //
+	sf::Sprite backgroundSprite; //!< Game background
+	const int wormAmount; //!< Number of worms to be created per team
+	const int numberOfTeams; //!< Number of teams to be created at beginning of the game
+	
+	float mostPositionedX = worldWindow.getSize().x; //!< The furthest object at the X axis position
+	float mostPositionedY = worldWindow.getSize().y; //!< The furthest object at the Y axis position
+	float lessPositionedX = 0.f; //!< Closest object at X axis position
+	float lessPositionedY = 0.f; //!< Closest object at Y axis position
 
 	/**
 	 * \brief Defines individual layers on which the image will be drawn
@@ -113,24 +125,7 @@ private:
 		Foreground,
 		Counter, //!< After cast it is used to check size of the enum
 	};
-
-	std::array<NodeScene*, static_cast<unsigned>(WorldLayers::Counter)> worldLayers; //<! It helps to maintain displaying in proper order
-	
-	// Background
-	sf::Sprite backgroundSprite; //!< Game background
-
-
-	/**
-	 * \brief The most commonly used variables that are passed to game objects
-	 */
-	struct Essentials
-	{
-		b2World* worldPhysical;
-		sf::RenderWindow* worldWindow;
-		TextureManager* worldTextures;
-		FontManager* worldFonts;
-	};
-	Essentials essentials;
+	std::array<NodeScene*, static_cast<unsigned>(WorldLayers::Counter)> worldLayers; //<! It maintain displaying in proper order
 };
 
 #endif

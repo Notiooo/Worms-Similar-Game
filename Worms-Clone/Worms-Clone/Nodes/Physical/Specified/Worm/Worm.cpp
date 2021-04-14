@@ -87,7 +87,7 @@ Worm::Worm(b2World& world, TextureManager& textures, const FontManager& fonts, s
 	// It will register all collisions to we can
 	// know when the worm can jump, and when it is
 	// in the air.
-	Shape.SetAsBox((getWormSize().x /2.5f) / B2_SCALAR, (10 / 2.f) / B2_SCALAR, 
+	Shape.SetAsBox((getWormSize().x /2.1f) / B2_SCALAR, (10 / 2.f) / B2_SCALAR, 
 					b2Vec2(0, (getWormSize().y / 2.f) / B2_SCALAR), 0);
 	FixtureDef.isSensor = true;
 

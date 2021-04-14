@@ -44,7 +44,6 @@ void WormMoveableState::handleMovement(const sf::Event& event)
 			// Anyway notation of 1 as right is useful in vectors
 			// So I can't change it here!
 			worm.wormSprite.setScale(-direction * std::abs(worm.wormSprite.getScale().x), worm.wormSprite.getScale().y);
-			//worm.setScale(-direction * std::abs(worm.getScale().x), worm.getScale().y);
 		}
 
 		// When Worm touches ground we should allow it to make a jump.

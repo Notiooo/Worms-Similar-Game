@@ -20,12 +20,12 @@ void GUI::FixedContainer::update()
 	for (auto& pinnedComponent : pinnedComponents)
 		pinnedComponent->update(mousePosition);
 	
-	sf::Vector2f leftUppercorner = window.mapPixelToCoords({ 0, 0 });
+	const sf::Vector2f leftUppercorner = window.mapPixelToCoords({ 0, 0 });
 	setPosition(leftUppercorner);
 	
-	windowScale.x = window.getView().getSize().x / window.getDefaultView().getSize().x;
-	windowScale.y = window.getView().getSize().y / window.getDefaultView().getSize().y;
-	setScale(windowScale);
+	viewScale.x = window.getView().getSize().x / window.getDefaultView().getSize().x;
+	viewScale.y = window.getView().getSize().y / window.getDefaultView().getSize().y;
+	setScale(viewScale);
 }
 
 void GUI::FixedContainer::draw(sf::RenderTarget& target, sf::RenderStates states) const

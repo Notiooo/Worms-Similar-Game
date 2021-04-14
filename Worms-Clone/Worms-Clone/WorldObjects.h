@@ -7,11 +7,11 @@
  */
 enum class WorldObjects
 {
-	WormSpawnPoint,
-	StaticPaperBlock,
-	DynamicPaperBlock,
-	Water,
-	DestructableBlock,
+	WormSpawnPoint, //!< The point at which the worm may appear/spawn
+	StaticPaperBlock, //!< A paper block that does not move, although it physically interacts with other physical objects
+	DynamicPaperBlock, //!< A paper block that moves, falls, bounce and physically interacts with other physical objects
+	Water, //!< Water that kills and destroys other objects
+	DestructibleBlock, //!< Object that can be destroyed with a weapon
 	
 	Counter,
 };

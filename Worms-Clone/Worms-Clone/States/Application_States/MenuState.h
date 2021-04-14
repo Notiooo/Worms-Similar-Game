@@ -38,9 +38,28 @@ public:
 	 */
 	void createGrenades(sf::Vector2f pos);
 
+	/**
+	 * \brief Draws only this state.
+	 */
 	void draw() const override;
-	void draw(sf::RenderTarget&, sf::RenderStates) const override;
-	bool update(sf::Time) override;
+
+	/**
+	 * \brief Draws only this state to the passed target
+	 * \param target where it should be drawn to
+	 * \param states provides information about rendering process (transform, shader, blend mode)
+	 */
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	/**
+	 * \brief Updates the status/logic of the state
+	 * \param deltaTime the time that has passed since the last frame.
+	 */
+	bool update(sf::Time deltaTime) override;
+
+	/**
+	 * \brief It takes input (event) from the user and interprets it
+	 * \param event user input
+	 */
 	bool handleEvent(const sf::Event& event) override;
 
 
@@ -51,13 +70,17 @@ private:
 	 * \param position The position on which the buttons are to be displayed
 	 */
 	void createButtons(sf::RenderWindow& window, sf::Vector2f position);
+	
+	/**
+	 * \brief Loads all needed resources into the texture manager
+	 */
 	void loadResources();
-	const FontManager& fonts;
-	sf::RenderWindow& window;
-	TextureManager textures;
-	std::array<sf::Vector2u, 5> availableResolutions;
-	std::array<sf::Vector2u, 5>::const_iterator selectedResolution;
-	unsigned fullScreen = 0;
+	const FontManager& fonts; //!< Manager containing loaded and ready to use fonts
+	sf::RenderWindow& window; //!< Window to which this status is displayed
+	TextureManager textures; //!< Manager containing the textures available for use
+	std::array<sf::Vector2u, 5> availableResolutions; //!< An array of selectable screen resolutions
+	std::array<sf::Vector2u, 5>::const_iterator selectedResolution; //!< Currently selected screen resolution
+	unsigned fullScreen = 0; //!< Bit value containing information about whether fullscreen is running
 
 	// === Front Menu === //
 	GUI::FixedContainer buttons; //!< Includes all buttons inside the menu
@@ -76,8 +99,8 @@ private:
 	int minTeamsAmount = 2; //!< Minimum number of teams
 	
 	// === Live Background === //
-	sf::Sprite backgroundTexture;
-	b2World World;
+	sf::Sprite backgroundTexture; //!< Main menu screen background
+	b2World World; //!< Physical simulation of the world
 	NodeScene rootScene; //!< It will be used as the live background
 	
 };

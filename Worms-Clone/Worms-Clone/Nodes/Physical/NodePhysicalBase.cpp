@@ -14,6 +14,8 @@ NodePhysicalBase::NodePhysicalBase(b2World& world):
 void NodePhysicalBase::update(sf::Time deltaTime)
 {
 	NodeScene::update(deltaTime);
+	
+	// Synchronises the object with its physical simulation
 	updatePhysics();
 }
 

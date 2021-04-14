@@ -51,8 +51,8 @@ void GameplayManager::updateThis(sf::Time deltaTime)
 {
 	wormQueue.update(deltaTime);
 
-	checkIfHasEnded();
-	checkTurnTime();
+	updateGameResult();
+	updateTurn();
 
 	// The game time and in-game messages should always be in the middle of the game window, so they are set on the fly.
 	roundTimeText.setPosition(
@@ -137,7 +137,7 @@ bool GameplayManager::isGameFinished() const
 	return gameFinished;
 }
 
-void GameplayManager::checkTurnTime()
+void GameplayManager::updateTurn()
 {
 	// On default the game should stay with PlayState for some worm
 	static bool hideState = false;
@@ -213,7 +213,7 @@ void GameplayManager::checkTurnTime()
 	}
 }
 
-void GameplayManager::checkIfHasEnded()
+void GameplayManager::updateGameResult()
 {
 	if (isGameFinished())
 		return;

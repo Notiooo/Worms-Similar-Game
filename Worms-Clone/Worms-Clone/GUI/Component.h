@@ -14,7 +14,7 @@ namespace GUI
 	{
 	public:
 		Component();
-		~Component() override;
+		~Component() override = default;
 
 		/**
 		 * \brief Checks whether the user moved the mouse over the component
@@ -62,10 +62,25 @@ namespace GUI
 		 */
 		virtual sf::FloatRect getLocalBounds() const = 0;
 
+		/**
+		 * \brief Sets position of a component under another component
+		 * \param object Another component against which we set the new position
+		 * \param padding Additional distance between components
+		 */
 		virtual void setPositionBelow(const Component& object, float padding = 0.f);
 		
+		/**
+		 * \brief It takes input (event) from the user and interprets it
+		 * \param event user input
+		 */
 		virtual void handleEvents(const sf::Event& event) = 0;
+
+		/**
+		 * \brief Updates the status/logic of the component
+		 * \param mousePosition Current mouse position
+		 */
 		virtual void update(sf::Vector2f mousePosition) = 0;
+
 
 	private:
 		bool _isSelected; //!< Flag telling if the component is currently selected

@@ -2,27 +2,46 @@
 #define NODEEDITOROBJECT_H
 
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Window/Event.hpp>
 
 
-#include "../Nodes/NodeScene.h"
+
 #include "SFML/Graphics/Sprite.hpp"
 #include "../Resources/Resources.h"
 
+/**
+ * \brief Editor object that allows to rotate and position on the map.
+ * Contains information needed for the map export to file
+ */
 class NodeEditorObject : public sf::Drawable, public sf::Transformable
 {
 public:
 	NodeEditorObject(const TextureManager& textures, const FontManager& fonts);
 
-	
 	/**
 	 * \brief Updates object states related to mouse position
 	 * \param mousePosition Current mouse coordinates inside the game world
 	 */
 	void updateMouse(const sf::Vector2f& mousePosition);
-	
+
+	/**
+	 * \brief Updates the status/logic of the node
+	 * \param deltaTime the time that has passed since the last frame.
+	 */
 	void update(sf::Time deltaTime);
-	void draw(sf::RenderTarget&, sf::RenderStates) const override;
-	void handleEvent(const sf::Event event);
+
+	/**
+	 * \brief Draws this node to the passed target
+	 * \param target where it should be drawn to
+	 * \param states provides information about rendering process (transform, shader, blend mode)
+	 */
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	
+	/**
+	 * \brief It takes input (event) from the user and interprets it
+	 * \param event user input
+	 */
+	void handleEvent(const sf::Event& event);
 
 	/**
 	 * \brief Sets the object's name (textual representation).

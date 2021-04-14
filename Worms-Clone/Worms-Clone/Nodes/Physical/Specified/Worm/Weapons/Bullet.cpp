@@ -28,11 +28,12 @@ void Bullet::updateThis(sf::Time deltaTime)
 }
 
 
-
 bool Bullet::isDestroyed()
 {
 	if (NodeScene::isDestroyed())
 	{
+		// When destroyed, it forms particles
+		// that emit an explosion
 		explode();
 		return true;
 	}

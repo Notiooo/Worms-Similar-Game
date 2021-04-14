@@ -20,24 +20,28 @@ World::World(sf::RenderWindow& window, int _wormAmount, int _numberOfTeams) :
 	b2_World(b2Vec2(0.f, 9.8f)),
 	debugDraw(window),
 	wormAmount(_wormAmount),
-	essentials({ &b2_World, &worldWindow, &worldTextures, &worldFonts }),
 	numberOfTeams(_numberOfTeams)
 {
 	// Tells the physical world what to draw
 	b2_World.SetDebugDraw(&debugDraw);
-	
+
+	// Loads the resources needed to create
+	// the world and creates the world
 	loadResources();
 	createWorld();
 
+	// Creates and sets the world background
 	backgroundSprite.setTexture(worldTextures.getResourceReference(Textures_ID::WorldBackground));
 	backgroundSprite.setTextureRect(sf::IntRect(0, 0, worldView.getSize().x, worldView.getSize().y));
 
-	
+	// Connects the listener responsible for collision handling inside
+	// the physical game world with the physical game world
 	b2_World.SetContactListener(&worldListener);
 }
 
 void World::update(sf::Time deltaTime)
 {
+	// Allows the player to move the camera around the game world
 	moveScreenWithMouse();
 	
 	// Update the Game World
@@ -228,7 +232,7 @@ void World::createWorld()
 		float positionX, positionY;
 		ss >> positionX >> positionY;
 
-		calculateWorldBoundaries({ positionX, positionY }, { 0, 0 });
+		updateWorldBoundaries({ positionX, positionY }, { 0, 0 });
 		
 		switch (objectId)
 		{
@@ -242,7 +246,7 @@ void World::createWorld()
 			{
 				float width, height, rotation;
 				ss >> width >> height >> rotation;
-				calculateWorldBoundaries({ positionX, positionY }, { width/2.f, height/2.f });
+				updateWorldBoundaries({ positionX, positionY }, { width/2.f, height/2.f });
 				
 				std::unique_ptr<NodePhysicalSprite> staticPaperBlock = std::make_unique<NodePhysicalSprite>(
 					b2_World, NodePhysicalBody::Physical_Types::Static_Type,
@@ -260,7 +264,7 @@ void World::createWorld()
 				float width, height, rotation;
 				ss >> width >> height >> rotation;
 
-				calculateWorldBoundaries({ positionX, positionY }, { width/2.f, height/2.f });
+				updateWorldBoundaries({ positionX, positionY }, { width/2.f, height/2.f });
 
 				
 				std::unique_ptr<NodePhysicalSprite> dynamicPaperBlock = std::make_unique<NodePhysicalSprite>(
@@ -278,7 +282,7 @@ void World::createWorld()
 			{
 				float width, height, rotation;
 				ss >> width >> height >> rotation;
-				calculateWorldBoundaries({ positionX, positionY }, { width/2.f, height/2.f });
+				updateWorldBoundaries({ positionX, positionY }, { width/2.f, height/2.f });
 
 					
 				std::unique_ptr<NodeWater> water = std::make_unique<NodeWater>(b2_World, worldTextures.getResourceReference(Textures_ID::Water));
@@ -289,11 +293,11 @@ void World::createWorld()
 			}
 			break;
 			
-			case static_cast<unsigned>(WorldObjects::DestructableBlock) :
+			case static_cast<unsigned>(WorldObjects::DestructibleBlock) :
 			{
 				float width, height, rotation;
 				ss >> width >> height >> rotation;
-				calculateWorldBoundaries({ positionX, positionY }, { width / 2.f, height / 2.f });
+				updateWorldBoundaries({ positionX, positionY }, { width / 2.f, height / 2.f });
 
 
 				std::unique_ptr<NodeDestructibleRectangle> destructibleNode = std::make_unique<NodeDestructibleRectangle>(b2_World, sf::Vector2f(positionX, positionY), sf::Vector2f(width, height));
@@ -345,7 +349,7 @@ void World::createWorld()
 	}
 }
 
-void World::calculateWorldBoundaries(sf::Vector2f position, sf::Vector2f dimensions = {0, 0})
+void World::updateWorldBoundaries(sf::Vector2f position, sf::Vector2f dimensions = {0, 0})
 {
 	// Calculate the maximum position of any object
 	mostPositionedX = (position.x + dimensions.x > mostPositionedX) ? position.x + dimensions.x : mostPositionedX;

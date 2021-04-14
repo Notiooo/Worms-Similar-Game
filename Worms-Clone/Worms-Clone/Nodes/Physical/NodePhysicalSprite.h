@@ -22,7 +22,13 @@ public:
 	 * \param states provides information about rendering process (transform, shader, blend mode)
 	 */
 	void drawThis(sf::RenderTarget& target, sf::RenderStates states) const override;
-	
+
+	/**
+	 * \brief Updates the current state of the sprite
+	 * \param deltaTime Time passed since the last frame
+	 *
+	 * It synchronizes the sprite with the physics world
+	 */
 	void updateThis(sf::Time deltaTime) override;
 
 	/**

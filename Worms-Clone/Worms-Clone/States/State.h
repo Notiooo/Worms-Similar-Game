@@ -69,10 +69,8 @@ protected:
 	void requestClear();
 
 private:
-	/**
-	 * \brief Pointer to the stack containing this state
-	 */
-	StateStack* stack;
+
+	StateStack* stack; //!< Pointer to the stack containing this state
 };
 
 #endif

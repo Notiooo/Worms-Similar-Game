@@ -16,9 +16,28 @@ class WormInventoryState : public State
 public:
 	WormInventoryState(StateStack&, Worm&, TextureManager& textures, const FontManager& fonts, sf::RenderWindow& window);
 
+	/**
+	 * \brief Draws only this state.
+	 */
 	void draw() const override;
-	void draw(sf::RenderTarget&, sf::RenderStates) const override;
-	bool update(sf::Time) override;
+
+	/**
+	 * \brief Draws only this state (current state of the worm) to the passed target
+	 * \param target where it should be drawn to
+	 * \param states provides information about rendering process (transform, shader, blend mode)
+	 */
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	/**
+	 * \brief Updates the status of the worm
+	 * \param deltaTime the time that has passed since the last frame.
+	 */
+	bool update(sf::Time deltaTime) override;
+
+	/**
+	 * \brief It takes input (event) from the user and interprets it
+	 * \param event user input
+	 */
 	bool handleEvent(const sf::Event& event) override;
 
 private:

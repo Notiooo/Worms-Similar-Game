@@ -1,13 +1,12 @@
 #include "Component.h"
 
 
-GUI::Component::Component()
+GUI::Component::Component():
+_isSelected(false),
+_isActive(false)
 {
 }
 
-GUI::Component::~Component()
-{
-}
 
 bool GUI::Component::isSelected() const
 {

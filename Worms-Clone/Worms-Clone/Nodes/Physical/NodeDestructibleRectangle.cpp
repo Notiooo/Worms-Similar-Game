@@ -2,6 +2,7 @@
 
 
 #include <iostream>
+#include <random>
 #include <SFML/Graphics/RenderTarget.hpp>
 
 #include "clipper.hpp"

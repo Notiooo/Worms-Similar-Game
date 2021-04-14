@@ -204,7 +204,7 @@ void Editor::loadWorld()
 			newlyCreatedObject.setName(inGameObjects[objectId]);
 		}
 		break;
-		case static_cast<unsigned>(WorldObjects::DestructableBlock) :
+		case static_cast<unsigned>(WorldObjects::DestructibleBlock) :
 		{
 			float positionX, positionY, width, height, rotation;
 			ss >> positionX >> positionY >> width >> height >> rotation;
@@ -225,7 +225,7 @@ void Editor::registerInGameObjects()
 	inGameObjects.insert({static_cast<unsigned>(WorldObjects::WormSpawnPoint), "Worm Spawn Point"});
 	inGameObjects.insert({static_cast<unsigned>(WorldObjects::StaticPaperBlock), "Static Paper Block"});
 	inGameObjects.insert({static_cast<unsigned>(WorldObjects::DynamicPaperBlock), "Dynamic Paper Block" });
-	inGameObjects.insert({ static_cast<unsigned>(WorldObjects::DestructableBlock), "Destructable Block" });
+	inGameObjects.insert({ static_cast<unsigned>(WorldObjects::DestructibleBlock), "Destructible Block" });
 	inGameObjects.insert({static_cast<unsigned>(WorldObjects::Water), "Water"});
 }
 
@@ -302,7 +302,7 @@ void Editor::saveWorld()
 				object.getSize().x, object.getSize().y, object.getRotation());
 			break;
 
-		case static_cast<unsigned>(WorldObjects::DestructableBlock) :
+		case static_cast<unsigned>(WorldObjects::DestructibleBlock) :
 			printLine(worldMap, object.getId(), object.getPosition().x, object.getPosition().y,
 				object.getSize().x, object.getSize().y, object.getRotation());
 			break;
