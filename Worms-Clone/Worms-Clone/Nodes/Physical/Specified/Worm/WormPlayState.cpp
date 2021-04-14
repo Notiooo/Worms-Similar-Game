@@ -2,6 +2,8 @@
 #include "../../NodeRectangularPhysical.h"
 #include <memory>
 
+#include "../../../../utils.h"
+
 WormPlayState::WormPlayState(StateStack& stack, Worm& worm) :
 	WormMoveableState(stack, worm),
 	triangularPointer(10.f, 3),
@@ -21,13 +23,12 @@ WormPlayState::WormPlayState(StateStack& stack, Worm& worm) :
 	triangularPointer.setOrigin(triangularPointer.getLocalBounds().width / 2.f,
 	                            triangularPointer.getLocalBounds().height / 2.f);
 
-	shootingBar.setOrigin(shootingBar.getLocalBounds().width / 2.f, shootingBar.getLocalBounds().height / 2.f);
 	shootingBar.setOutlineThickness(1.5f);
 
 	shootingBar.setFillColor(wormTeamColor);
 	shootingBar.setOutlineColor(sf::Color(wormTeamColor.r + 50, wormTeamColor.g + 50, wormTeamColor.b + 50,
 	                                      wormTeamColor.a));
-
+	centerOrigin(shootingBar);
 	shootingBar.setPosition(0, -50.f);
 }
 
@@ -123,12 +124,12 @@ void WormPlayState::updateShooting(sf::Time deltatime)
 			(sf::Keyboard::isKeyPressed(pointLowerKey) && worm.facingRight()))
 		{
 			if (pointerAngle < b2_pi)
-				pointerAngle += pointerSpeed;
+				pointerAngle += pointerSpeed * deltatime.asSeconds();
 		}
 		else
 		{
 			if (pointerAngle > 0)
-				pointerAngle -= pointerSpeed;
+				pointerAngle -= pointerSpeed * deltatime.asSeconds();
 		}
 
 		// Pointer moves in circular path

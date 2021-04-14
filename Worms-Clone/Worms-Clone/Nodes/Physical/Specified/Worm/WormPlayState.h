@@ -79,15 +79,15 @@ private:
 	sf::CircleShape triangularPointer; //!< Graphical class to be drawn representing the pointer
 	sf::Vector2f pointer; //!< Position of the pointer
 	float pointerLength = 100.f; //!< How far away from the worm is the pointer
-	float pointerSpeed = 0.05f; //!< How fast the pointer moves/rotates
+	float pointerSpeed = 2.f; //!< How fast the pointer moves/rotates
 	float pointerAngle = b2_pi / 2.f; //!< Default angle at which the pointer points
 
 	// === The Shooting Bar === //
 
-	sf::RectangleShape shootingBar; //!< Graphical class to be drawn representing the shooting bar
 	float maxShootingForce = 35000.f; //!< The maximum power with which a worm can shoot -- this translates into shooting distance.
 	float currentShootingForce = 0.f; //!< Current firing power used when player is shooting
 	float shootingLoadingSpeed = (maxShootingForce * 1/2); //!< How fast the bar is loading per second.
-	float shootingBarSize = 100.f; //!< Drawing length of the shooting bar
+	float shootingBarSize = 80.f; //!< Drawing length of the shooting bar
+	sf::RectangleShape shootingBar; //!< Graphical class to be drawn representing the shooting bar
 };
 #endif

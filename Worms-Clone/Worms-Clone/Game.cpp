@@ -24,7 +24,6 @@ Game::Game():
 	appStack.saveState<PauseState>(State_ID::PauseState, gameWindow, fonts);
 	appStack.saveState<EditorState>(State_ID::EditorState, gameWindow, fonts);
 
-
 	// load resources
 	loadResources();
 
