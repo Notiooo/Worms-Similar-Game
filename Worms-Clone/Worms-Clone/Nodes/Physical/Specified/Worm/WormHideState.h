@@ -1,0 +1,48 @@
+#ifndef WORMHIDESTATE_H
+#define WORMHIDESTATE_H
+#include "../../../../States/State.h"
+#include "Worm.h"
+#include "WormMoveableState.h"
+
+/**
+ * \brief A state in which the worm has a chance to escape and hide.
+ *
+ * It is a rather short time. When this time elapses, the player
+ * changes state to "WaitState".
+ *
+ * // ==== Attention / Warning!! ==== //
+ * For the moment, this time change is done directly through the
+ * "GameplayManager". It is possible that this will be handled here
+ * in the future.
+ */
+class WormHideState : public WormMoveableState
+{
+public:
+	WormHideState(StateStack&, Worm&);
+
+	/**
+	 * \brief Draws only this state.
+	 */
+	void draw() const override;
+
+	/**
+	 * \brief Draws only this state (current state of the worm) to the passed target
+	 * \param target where it should be drawn to
+	 * \param states provides information about rendering process (transform, shader, blend mode)
+	 */
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	/**
+	 * \brief Updates the status of the worm
+	 * \param deltaTime the time that has passed since the last frame.
+	 */
+	bool update(sf::Time deltaTime) override;
+
+	/**
+	 * \brief It takes input (event) from the user and interprets it
+	 * \param event user input
+	 */
+	bool handleEvent(const sf::Event& event) override;
+};
+
+#endif
