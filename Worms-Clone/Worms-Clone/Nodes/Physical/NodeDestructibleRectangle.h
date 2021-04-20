@@ -48,11 +48,12 @@ private:
 	 */
 	void createBody();
 	
-	b2Fixture* fixture; //!< Attaches a shape to a body
-	std::vector<sf::ConvexShape> drawableTriangles; //!< Graphic triangles building up the whole visual part of the object
-	std::vector<p2t::Point*> polyline; //!< Points that build the contour of the figure one by one
-	std::vector<p2t::Triangle*> triangles; //!< Triangles (consisting of points) building the current figure.
-	b2Vec2* physicalShape = nullptr;
+	std::vector<b2Fixture* > fixtures; //!< Attaches a shape to a body
+	std::vector<std::vector<sf::ConvexShape>> drawableTriangles; //!< Graphic triangles building up the whole visual part of the object
+	std::vector<std::vector<p2t::Point*>> polyline; //!< Points that build the contour of the figure one by one
+	std::vector<std::vector<p2t::Triangle*>> triangles; //!< Triangles (consisting of points) building the current figure.
+	b2Vec2** physicalShape = nullptr;
+	unsigned physicalShapes = 0;
 
 	bool recalculateBody = false; //!< Flag checking if body should be recalculated after hit
 	sf::Vector2f originTransform; //!< Displacement of an object so that the object is positioned relative to the centre

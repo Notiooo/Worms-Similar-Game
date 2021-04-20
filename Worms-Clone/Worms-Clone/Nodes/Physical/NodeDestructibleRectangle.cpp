@@ -21,29 +21,31 @@ NodeDestructibleRectangle::NodeDestructibleRectangle(b2World& world, sf::Vector2
 	// Each point of the rectangle is stored in a vector of points which builds the contour of the figure.
 	// The points are moved in such a way that the object is constructed relative to its centre (the centre
 	// of the object is located at the x and y positions on which the object was to appear)
-	polyline.push_back(new p2t::Point(0 - originTransform.x, 0 - originTransform.y));
-	polyline.push_back(new p2t::Point(size.x - originTransform.x, 0 - originTransform.y));
-	polyline.push_back(new p2t::Point(size.x - originTransform.x, size.y - originTransform.y));
-	polyline.push_back(new p2t::Point(0 - originTransform.x, size.y - originTransform.y));
+	polyline.resize(1);
+	polyline[0].push_back(new p2t::Point(0 - originTransform.x, 0 - originTransform.y));
+	polyline[0].push_back(new p2t::Point(size.x - originTransform.x, 0 - originTransform.y));
+	polyline[0].push_back(new p2t::Point(size.x - originTransform.x, size.y - originTransform.y));
+	polyline[0].push_back(new p2t::Point(0 - originTransform.x, size.y - originTransform.y));
 
 
 	// A triangulation process that transforms the outline/shape of an object into triangles.
-	p2t::CDT cdt(polyline);
+	p2t::CDT cdt(polyline[0]);
 	cdt.Triangulate();
 
 	// The resulting triangles are written in the vector
-	triangles = cdt.GetTriangles();
+	triangles.emplace_back(cdt.GetTriangles());
 
 	// The vector with graphical triangles is equal to their number and each triangle has three points
-	drawableTriangles.resize(triangles.size(), sf::ConvexShape(3));
+	drawableTriangles.resize(1);
+	drawableTriangles[0].resize(triangles[0].size(), sf::ConvexShape(3));
 
 	// Each graphical triangle is assigned the coordinates of the calculated triangles obtained from the triangulation process.
-	for (size_t i = 0; i < triangles.size(); ++i)
+	for (size_t i = 0; i < triangles[0].size(); ++i)
 	{
 		for (int j = 0; j < 3; ++j)
-			drawableTriangles[i].setPoint(j, sf::Vector2f{
-				                              static_cast<float>(triangles[i]->GetPoint(j)->x),
-				                              static_cast<float>(triangles[i]->GetPoint(j)->y)
+			drawableTriangles[0][i].setPoint(j, sf::Vector2f{
+				                              static_cast<float>(triangles[0][i]->GetPoint(j)->x),
+				                              static_cast<float>(triangles[0][i]->GetPoint(j)->y)
 			                              });
 	}
 
@@ -54,11 +56,17 @@ NodeDestructibleRectangle::NodeDestructibleRectangle(b2World& world, sf::Vector2
 NodeDestructibleRectangle::~NodeDestructibleRectangle()
 {
 	// I remove points that build the outline of an object
-	for (auto& point : polyline)
-		delete point;
-
+	for (auto& shape : polyline)
+		for(auto& point : shape)
+			delete point;
+	
 	// I remove the vector that builds the PHYSICAL version of
 	// the object (they are calculated differently).
+	for (size_t shape = 0; shape < physicalShapes; ++shape)
+	{
+		delete[] physicalShape[shape];
+		physicalShape[shape] = nullptr;
+	}
 	delete[] physicalShape;
 	physicalShape = nullptr;
 }
@@ -76,12 +84,17 @@ void NodeDestructibleRectangle::updateThis(sf::Time deltaTime)
 		for (b2Fixture* fix = Body->GetFixtureList(); fix; fix = fix->GetNext())
 			delete reinterpret_cast<Collision*>(fix->GetUserData().pointer);
 
+		for (auto& fixture : fixtures)
+			Body->DestroyFixture(fixture);
+
 		// Then the set of points that build the physical contour of the object must be removed
+		for (size_t shape = 0; shape < physicalShapes; ++shape)
+		{
+			delete[] physicalShape[shape];
+			physicalShape[shape] = nullptr;
+		}
 		delete[] physicalShape;
 		physicalShape = nullptr;
-
-		// You can now remove this outline/contour
-		Body->DestroyFixture(fixture);
 
 		// And create new body
 		createBody();
@@ -93,15 +106,20 @@ void NodeDestructibleRectangle::addHole(std::vector<ClipperLib::IntPoint>& figur
 {
 	// First I will have to transform both figures in such a way that Clipper
 	// can subtract them from each other.
-	ClipperLib::Paths shape(1), clip(1), solution(1);
+	ClipperLib::Paths shape(polyline.size()), clip(1), solution(1);
 
-	for (auto& point : polyline)
+	unsigned shapeNumber = 0;
+	for (auto& shapes : polyline)
 	{
-		// The point building the contour must be transformed in such
-		// a way that its absolute position and rotation match.
-		auto transformedPoint = getTransform().transformPoint(static_cast<float>(point->x),
-		                                                      static_cast<float>(point->y));
-		shape[0].emplace_back(ClipperLib::IntPoint(transformedPoint.x, transformedPoint.y));
+		for (auto& point : shapes)
+		{
+			// The point building the contour must be transformed in such
+			// a way that its absolute position and rotation match.
+			auto transformedPoint = getTransform().transformPoint(static_cast<float>(point->x),
+				static_cast<float>(point->y));
+			shape[shapeNumber].emplace_back(ClipperLib::IntPoint(transformedPoint.x, transformedPoint.y));
+		}
+		++shapeNumber;
 	}
 
 	// The figure should already be processed, so there is no problem with it
@@ -110,13 +128,15 @@ void NodeDestructibleRectangle::addHole(std::vector<ClipperLib::IntPoint>& figur
 
 	// I then carry out the operations to cut the object
 	ClipperLib::Clipper c;
-	c.AddPath(shape[0], ClipperLib::ptSubject, true);
+	for(int i = 0; i < polyline.size(); ++i)
+		c.AddPath(shape[i], ClipperLib::ptSubject, true);
 	c.AddPath(clip[0], ClipperLib::ptClip, true);
 	c.Execute(ClipperLib::ctDifference, solution, ClipperLib::pftNonZero, ClipperLib::pftNonZero);
 
 	// After differentiation I remove current values of the triangle
-	for (int i = 0; i < polyline.size(); ++i)
-		delete polyline[i];
+	for (auto& shape : polyline)
+		for (auto& point : shape)
+			delete point;
 	polyline.clear();
 
 
@@ -131,43 +151,56 @@ void NodeDestructibleRectangle::addHole(std::vector<ClipperLib::IntPoint>& figur
 	// Prepares a vector to a size where it can accommodate all the points
 	// that make up the contour, the number of which is contained in the
 	// result of subtracting the Clipper
-	polyline.resize(solution[0].size());
+	polyline.resize(solution.size());
+	for (size_t i = 0; i < solution.size(); ++i)
+		polyline[i].resize(solution[i].size());
 
 	// Then I process all the points calculated by Clipper
-	for (size_t i = 0; i < solution[0].size(); ++i)
+	shapeNumber = 0;
+	for (auto& shape : solution)
 	{
-		// I process the points obtained so that they are again independent of absolute position
-		// and rotation -- that is, I calculate the relativistic position for that object.
-		auto transformedPoint = getInverseTransform().transformPoint(static_cast<float>(solution[0][i].X),
-		                                                             static_cast<float>(solution[0][i].Y));
-		polyline[i] = new p2t::Point(transformedPoint.x, transformedPoint.y);
+		unsigned pointNumber = 0;
+		for (auto& point : shape)
+		{
+			// I process the points obtained so that they are again independent of absolute position
+			// and rotation -- that is, I calculate the relativistic position for that object.
+			auto transformedPoint = getInverseTransform().transformPoint(static_cast<float>(point.X),
+				static_cast<float>(point.Y));
+			polyline[shapeNumber][pointNumber++] = new p2t::Point(transformedPoint.x, transformedPoint.y);
+		}
+		++shapeNumber;
 	}
 
 	// I can convert the points obtained in the subtraction process
 	// into triangles after processing.
-	p2t::CDT cdt(polyline);
-	cdt.Triangulate();
-
-	// Updates the set of triangles building this object.
-	triangles = cdt.GetTriangles();
-
-	// Again, it prepares a set of drawable triangles whose size
-	// corresponds to the number of resulting triangles consisting
-	// of (no surprise) three points
-	drawableTriangles.resize(triangles.size(), sf::ConvexShape(3));
-
-
-	// Each visual triangle has assigned points equal to those
-	// obtained after the triangulation process.
-	for (size_t i = 0; i < triangles.size(); ++i)
+	drawableTriangles.resize(polyline.size());
+	triangles.resize(polyline.size());
+	for (size_t shape = 0; shape < polyline.size(); ++shape)
 	{
-		for (int j = 0; j < 3; ++j)
-			drawableTriangles[i].setPoint(j, sf::Vector2f{
-				                              static_cast<float>(triangles[i]->GetPoint(j)->x),
-				                              static_cast<float>(triangles[i]->GetPoint(j)->y)
-			                              });
-	}
+		p2t::CDT cdt(polyline[shape]);
+		cdt.Triangulate();
 
+		// Updates the set of triangles building this object.
+		triangles[shape] = cdt.GetTriangles();
+
+		// Again, it prepares a set of drawable triangles whose size
+		// corresponds to the number of resulting triangles consisting
+		// of (no surprise) three points
+		drawableTriangles[shape].resize(triangles[shape].size(), sf::ConvexShape(3));
+
+
+		// Each visual triangle has assigned points equal to those
+		// obtained after the triangulation process.
+		for (size_t i = 0; i < triangles[shape].size(); ++i)
+		{
+			for (int j = 0; j < 3; ++j)
+				drawableTriangles[shape][i].setPoint(j, sf::Vector2f{
+												  static_cast<float>(triangles[shape][i]->GetPoint(j)->x),
+												  static_cast<float>(triangles[shape][i]->GetPoint(j)->y)
+					});
+		}
+	}
+	
 	// Informs the program that the physical form of an object
 	// needs to be recalculated because it has changed.
 	recalculateBody = true;
@@ -177,7 +210,8 @@ void NodeDestructibleRectangle::drawThis(sf::RenderTarget& target, sf::RenderSta
 {
 	// Draws triangulated triangles
 	for (auto& shape : drawableTriangles)
-		target.draw(shape, states);
+		for(auto& triangle : shape)
+			target.draw(triangle, states);
 }
 
 
@@ -186,26 +220,40 @@ void NodeDestructibleRectangle::createBody()
 	// The physical contour of an object differs from its absolute position of the
 	// points inside the game. These must be recalculated. So I create a new vector
 	// of point set size for the current object contour.
-	b2Vec2* vs{new b2Vec2[polyline.size()]};
+
+	b2Vec2** vs{ new b2Vec2*[polyline.size()] };
+	physicalShapes = polyline.size();
+	
+	for(size_t shape = 0; shape < polyline.size(); ++shape)
+	{
+		//for(size_t point = 0; point < polyline[shape].size(); ++point)
+		//{
+			vs[shape] = new b2Vec2[polyline[shape].size()];
+		//}
+	}
+
 	physicalShape = vs;
 
+	fixtures.resize(polyline.size());
+	for (int shape = 0; shape < polyline.size(); ++shape)
+	{
+		// The new physical contour shape
+		b2ChainShape Shape;
 
-	// The new physical contour shape
-	b2ChainShape Shape;
+		// Each of the object's contour points is converted to its physical coordinates matching Box2D.
+		for (int point = 0; point < polyline[shape].size(); ++point)
+			vs[shape][point].Set(polyline[shape][point]->x / B2_SCALAR, polyline[shape][point]->y / B2_SCALAR);
 
-	// Each of the object's contour points is converted to its physical coordinates matching Box2D.
-	for (int i = 0; i < polyline.size(); ++i)
-		vs[i].Set(polyline[i]->x / B2_SCALAR, polyline[i]->y / B2_SCALAR);
+		// I close the last point with the first to form a kind of polygon.
+		Shape.CreateLoop(vs[shape], polyline[shape].size());
 
-	// I close the last point with the first to form a kind of polygon.
-	Shape.CreateLoop(vs, polyline.size());
-
-	// Prepares the physical properties of an object
-	b2FixtureDef FixtureDef;
-	FixtureDef.density = 1.f;
-	FixtureDef.friction = 0.7f;
-	FixtureDef.restitution = 0.2f;
-	FixtureDef.shape = &Shape;
-	FixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(new Collision(CollideTypes::DestructibleGround, *this));
-	fixture = Body->CreateFixture(&FixtureDef);
+		// Prepares the physical properties of an object
+		b2FixtureDef FixtureDef;
+		FixtureDef.density = 1.f;
+		FixtureDef.friction = 0.7f;
+		FixtureDef.restitution = 0.2f;
+		FixtureDef.shape = &Shape;
+		FixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(new Collision(CollideTypes::DestructibleGround, *this));
+		fixtures[shape] = Body->CreateFixture(&FixtureDef);
+	}
 }
