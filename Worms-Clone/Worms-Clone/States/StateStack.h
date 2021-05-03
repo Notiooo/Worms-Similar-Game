@@ -220,7 +220,7 @@ void StateStack::saveState(State_ID stateID, Args&&... args)
 	// might need to use
 	factory[stateID] = [&args..., this]()
 	{
-		return State::Ptr(std::make_unique<State>(*this, args...));
+		return State::Ptr(std::make_unique<State>(*this, std::forward<Args>(args)...));
 	};
 }
 

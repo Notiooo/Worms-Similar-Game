@@ -59,16 +59,6 @@ NodeDestructibleRectangle::~NodeDestructibleRectangle()
 	for (auto& shape : polyline)
 		for(auto& point : shape)
 			delete point;
-	
-	// I remove the vector that builds the PHYSICAL version of
-	// the object (they are calculated differently).
-	for (size_t shape = 0; shape < physicalShapes; ++shape)
-	{
-		delete[] physicalShape[shape];
-		physicalShape[shape] = nullptr;
-	}
-	delete[] physicalShape;
-	physicalShape = nullptr;
 }
 
 void NodeDestructibleRectangle::updateThis(sf::Time deltaTime)
@@ -87,14 +77,7 @@ void NodeDestructibleRectangle::updateThis(sf::Time deltaTime)
 		for (auto& fixture : fixtures)
 			Body->DestroyFixture(fixture);
 
-		// Then the set of points that build the physical contour of the object must be removed
-		for (size_t shape = 0; shape < physicalShapes; ++shape)
-		{
-			delete[] physicalShape[shape];
-			physicalShape[shape] = nullptr;
-		}
-		delete[] physicalShape;
-		physicalShape = nullptr;
+		physicalShape.clear();
 
 		// And create new body
 		createBody();
@@ -220,19 +203,12 @@ void NodeDestructibleRectangle::createBody()
 	// The physical contour of an object differs from its absolute position of the
 	// points inside the game. These must be recalculated. So I create a new vector
 	// of point set size for the current object contour.
-
-	b2Vec2** vs{ new b2Vec2*[polyline.size()] };
-	physicalShapes = polyline.size();
+	physicalShape.resize(polyline.size());
 	
 	for(size_t shape = 0; shape < polyline.size(); ++shape)
 	{
-		//for(size_t point = 0; point < polyline[shape].size(); ++point)
-		//{
-			vs[shape] = new b2Vec2[polyline[shape].size()];
-		//}
+		physicalShape[shape] = std::unique_ptr<b2Vec2[], PhysicalShapeDeleter>(new b2Vec2[polyline[shape].size()], PhysicalShapeDeleter());
 	}
-
-	physicalShape = vs;
 
 	fixtures.resize(polyline.size());
 	for (int shape = 0; shape < polyline.size(); ++shape)
@@ -242,10 +218,10 @@ void NodeDestructibleRectangle::createBody()
 
 		// Each of the object's contour points is converted to its physical coordinates matching Box2D.
 		for (int point = 0; point < polyline[shape].size(); ++point)
-			vs[shape][point].Set(polyline[shape][point]->x / B2_SCALAR, polyline[shape][point]->y / B2_SCALAR);
+			physicalShape[shape][point].Set(polyline[shape][point]->x / B2_SCALAR, polyline[shape][point]->y / B2_SCALAR);
 
 		// I close the last point with the first to form a kind of polygon.
-		Shape.CreateLoop(vs[shape], polyline[shape].size());
+		Shape.CreateLoop(physicalShape[shape].get(), polyline[shape].size());
 
 		// Prepares the physical properties of an object
 		b2FixtureDef FixtureDef;

@@ -8,6 +8,18 @@
 #include "../NodeScene.h"
 #include "../Physical/NodePhysicalBody.h"
 
+
+/**
+ * \brief Deleter for the physical shape.
+ */
+struct PhysicalShapeDeleter
+{
+	void operator()(b2Vec2* ptr) const
+	{
+		delete[] ptr;
+	}
+};
+
 /**
  * \brief A node that has the properties of a static physical object -- it physically
  * interacts with other physical objects and can be damaged inside the game.
@@ -52,8 +64,7 @@ private:
 	std::vector<std::vector<sf::ConvexShape>> drawableTriangles; //!< Graphic triangles building up the whole visual part of the object
 	std::vector<std::vector<p2t::Point*>> polyline; //!< Points that build the contour of the figure one by one
 	std::vector<std::vector<p2t::Triangle*>> triangles; //!< Triangles (consisting of points) building the current figure.
-	b2Vec2** physicalShape = nullptr;
-	unsigned physicalShapes = 0;
+	std::vector<std::unique_ptr<b2Vec2[], PhysicalShapeDeleter>> physicalShape;
 
 	bool recalculateBody = false; //!< Flag checking if body should be recalculated after hit
 	sf::Vector2f originTransform; //!< Displacement of an object so that the object is positioned relative to the centre
