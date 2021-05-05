@@ -42,6 +42,33 @@ enum class Textures_ID
 	Inventory,
 };
 
+
+
+// Todo: sprites should be changed into spritesheets
+//enum class Textures_ID
+//{
+//	// === Backgrounds === //
+//	WorldBackground,
+//	TitleStateBackground,
+//
+//	// === Others === //
+//	Particles,
+//	Water,
+//	Paper,
+//
+//	// === Player === //
+//	Worm,
+//	Rope,
+//
+//	// === Weapons === //
+//	Weapons,
+//	Bullets,
+//	WeaponThumbnails,
+//
+//	// === Inventory ===/
+//	Inventory,
+//};
+
 /**
  * \brief Object storing textures of the game
  */

@@ -4,6 +4,8 @@
 #include <iostream>
 #include <random>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Texture.hpp>
+
 
 #include "clipper.hpp"
 #include "poly2tri.h"
@@ -11,9 +13,12 @@
 #include "../Physical/NodePhysicalSpark.h"
 
 
-NodeDestructibleRectangle::NodeDestructibleRectangle(b2World& world, sf::Vector2f position, const sf::Vector2f& size):
-	NodePhysicalBody(world, Physical_Types::Dynamic_Type, position)
+NodeDestructibleRectangle::NodeDestructibleRectangle(b2World& world, const sf::Texture& texture, sf::Vector2f position, const sf::Vector2f& size):
+	NodePhysicalBody(world, Physical_Types::Dynamic_Type, position),
+	texture(texture)
 {
+	triangles.setPrimitiveType(sf::Triangles);
+	
 	// The centre of the object is calculated
 	originTransform = {size.x / 2.f, size.y / 2.f};
 
@@ -32,21 +37,23 @@ NodeDestructibleRectangle::NodeDestructibleRectangle(b2World& world, sf::Vector2
 	p2t::CDT cdt(polyline[0]);
 	cdt.Triangulate();
 
-	// The resulting triangles are written in the vector
-	triangles.emplace_back(cdt.GetTriangles());
+	// The resulting triangles
+	const auto triangulatedFigure = cdt.GetTriangles();
 
-	// The vector with graphical triangles is equal to their number and each triangle has three points
-	drawableTriangles.resize(1);
-	drawableTriangles[0].resize(triangles[0].size(), sf::ConvexShape(3));
+	// The vector with triangles is equal to their number and each triangle has three points
+	triangles.resize(triangulatedFigure.size() * 3);
 
-	// Each graphical triangle is assigned the coordinates of the calculated triangles obtained from the triangulation process.
-	for (size_t i = 0; i < triangles[0].size(); ++i)
+	// I update my vertex set (which builds the figure using triangles) with a new set of triangles obtained by triangulation.
+	size_t arrayIndex = 0;
+	for (auto* triangulatedTriangle : triangulatedFigure)
 	{
-		for (int j = 0; j < 3; ++j)
-			drawableTriangles[0][i].setPoint(j, sf::Vector2f{
-				                              static_cast<float>(triangles[0][i]->GetPoint(j)->x),
-				                              static_cast<float>(triangles[0][i]->GetPoint(j)->y)
-			                              });
+		for (size_t vertexIndex = 0; vertexIndex < 3; ++vertexIndex)
+		{
+			triangles[arrayIndex] = sf::Vertex(
+				sf::Vector2f(triangulatedTriangle->GetPoint(vertexIndex)->x, triangulatedTriangle->GetPoint(vertexIndex)->y),
+				sf::Vector2f(triangulatedTriangle->GetPoint(vertexIndex)->x, triangulatedTriangle->GetPoint(vertexIndex)->y));
+			++arrayIndex;
+		}
 	}
 
 	// Finally the physical body can be made
@@ -156,31 +163,26 @@ void NodeDestructibleRectangle::addHole(std::vector<ClipperLib::IntPoint>& figur
 
 	// I can convert the points obtained in the subtraction process
 	// into triangles after processing.
-	drawableTriangles.resize(polyline.size());
-	triangles.resize(polyline.size());
-	for (size_t shape = 0; shape < polyline.size(); ++shape)
+	triangles.clear();
+
+	// More than one figure may have been created as a result of the destruction
+	for (auto& shape : polyline)
 	{
-		p2t::CDT cdt(polyline[shape]);
+		p2t::CDT cdt(shape);
 		cdt.Triangulate();
 
-		// Updates the set of triangles building this object.
-		triangles[shape] = cdt.GetTriangles();
+		// I get a new set of triangles for the figure currently being processed
+		auto triangulatedFigure = cdt.GetTriangles();
 
-		// Again, it prepares a set of drawable triangles whose size
-		// corresponds to the number of resulting triangles consisting
-		// of (no surprise) three points
-		drawableTriangles[shape].resize(triangles[shape].size(), sf::ConvexShape(3));
-
-
-		// Each visual triangle has assigned points equal to those
-		// obtained after the triangulation process.
-		for (size_t i = 0; i < triangles[shape].size(); ++i)
+		// I update my vertex set (which builds the figure using triangles) with a new set of triangles obtained by triangulation.
+		for (auto& triangulatedTriangle : triangulatedFigure)
 		{
-			for (int j = 0; j < 3; ++j)
-				drawableTriangles[shape][i].setPoint(j, sf::Vector2f{
-												  static_cast<float>(triangles[shape][i]->GetPoint(j)->x),
-												  static_cast<float>(triangles[shape][i]->GetPoint(j)->y)
-					});
+			for (size_t vertexIndex = 0; vertexIndex < 3; ++vertexIndex)
+			{
+				triangles.append(sf::Vertex(
+					sf::Vector2f(triangulatedTriangle->GetPoint(vertexIndex)->x, triangulatedTriangle->GetPoint(vertexIndex)->y),
+					sf::Vector2f(triangulatedTriangle->GetPoint(vertexIndex)->x, triangulatedTriangle->GetPoint(vertexIndex)->y)));
+			}
 		}
 	}
 	
@@ -192,9 +194,8 @@ void NodeDestructibleRectangle::addHole(std::vector<ClipperLib::IntPoint>& figur
 void NodeDestructibleRectangle::drawThis(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	// Draws triangulated triangles
-	for (auto& shape : drawableTriangles)
-		for(auto& triangle : shape)
-			target.draw(triangle, states);
+	states.texture = &texture;
+	target.draw(triangles, states);
 }
 
 

@@ -30,7 +30,7 @@ struct PhysicalShapeDeleter
 class NodeDestructibleRectangle : public NodePhysicalBody
 {
 public:
-	NodeDestructibleRectangle(b2World& world, sf::Vector2f position, const sf::Vector2f& size);
+	NodeDestructibleRectangle(b2World& world, const sf::Texture& texture, sf::Vector2f position, const sf::Vector2f& size);
 	~NodeDestructibleRectangle() override;
 	
 	/**
@@ -59,12 +59,13 @@ private:
 	 * \brief Creates the physical body of an object
 	 */
 	void createBody();
+
+	const sf::Texture& texture;
 	
 	std::vector<b2Fixture* > fixtures; //!< Attaches a shape to a body
-	std::vector<std::vector<sf::ConvexShape>> drawableTriangles; //!< Graphic triangles building up the whole visual part of the object
-	std::vector<std::vector<p2t::Point*>> polyline; //!< Points that build the contour of the figure one by one
-	std::vector<std::vector<p2t::Triangle*>> triangles; //!< Triangles (consisting of points) building the current figure.
-	std::vector<std::unique_ptr<b2Vec2[], PhysicalShapeDeleter>> physicalShape;
+	sf::VertexArray triangles; //!< Triangles (consisting of vertexes) building the current figure.
+	std::vector<std::vector<p2t::Point*>> polyline; //!< Many sets of points, where each set builds the contour of the figure one by one
+	std::vector<std::unique_ptr<b2Vec2[], PhysicalShapeDeleter>> physicalShape; //!< Physical shape (contour) that builds the shell of the object
 
 	bool recalculateBody = false; //!< Flag checking if body should be recalculated after hit
 	sf::Vector2f originTransform; //!< Displacement of an object so that the object is positioned relative to the centre

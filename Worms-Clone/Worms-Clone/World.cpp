@@ -300,7 +300,7 @@ void World::createWorld()
 				updateWorldBoundaries({ positionX, positionY }, { width / 2.f, height / 2.f });
 
 
-				std::unique_ptr<NodeDestructibleRectangle> destructibleNode = std::make_unique<NodeDestructibleRectangle>(b2_World, sf::Vector2f(positionX, positionY), sf::Vector2f(width, height));
+				std::unique_ptr<NodeDestructibleRectangle> destructibleNode = std::make_unique<NodeDestructibleRectangle>(b2_World, worldTextures.getResourceReference(Textures_ID::Paper), sf::Vector2f(positionX, positionY), sf::Vector2f(width, height));
 				if (rotation)
 					destructibleNode->setRotation(rotation);
 				worldLayers[static_cast<unsigned>(WorldLayers::Middle)]->pinNode(std::move(destructibleNode));
