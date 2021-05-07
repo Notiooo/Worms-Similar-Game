@@ -10,7 +10,6 @@
 #include "SFML/Graphics/Text.hpp"
 #include "Weapons/Weapon.h"
 #include "SFML/Graphics/RectangleShape.hpp"
-#include <deque>
 
 
 /**
@@ -65,7 +64,6 @@ public:
 	 * \param state Identifier of the state the worm should be in
 	 */
 	void activateState(State_ID state);
-
 	
 	/**
 	 * \brief A function that checks what state the worm is currently in

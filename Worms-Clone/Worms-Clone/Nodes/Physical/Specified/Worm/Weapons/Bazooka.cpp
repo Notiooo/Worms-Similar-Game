@@ -7,7 +7,7 @@
 
 
 Bazooka::Bazooka(b2World& world, TextureManager& textures):
-	Weapon(world, textures.getResourceReference(Textures_ID::Bazooka), textures.getResourceReference(Textures_ID::BazookaThumbnail), textures.getResourceReference(Textures_ID::BazookaBullet))
+	Weapon(world, textures.getResourceReference(Textures_ID::Bazooka), textures.getResourceReference(Textures_ID::BazookaThumbnail), textures.getResourceReference(Textures_ID::BazookaBullet), textures)
 {
 	weaponSprite.setPosition(getPosition().x, getPosition().y + 40);
 	setSparkColor(sf::Color::Blue);

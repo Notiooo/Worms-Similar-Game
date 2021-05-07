@@ -123,7 +123,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>sfml-main.lib;sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-audio-s-d.lib;sfml-system-s-d.lib;opengl32.lib;gdi32.lib;winmm.lib;freetype.lib;box2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)External Libraries\box2d\lib;$(SolutionDir)External Libraries\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -165,6 +165,8 @@
     <ClCompile Include="Nodes\NodeSprite.cpp" />
     <ClCompile Include="Nodes\NodeText.cpp" />
     <ClCompile Include="Nodes\GameplayManager.cpp" />
+    <ClCompile Include="Nodes\Particles\NodeEmitter.cpp" />
+    <ClCompile Include="Nodes\Particles\NodeParticle.cpp" />
     <ClCompile Include="Nodes\Physical\NodeDestructibleRectangle.cpp" />
     <ClCompile Include="Nodes\Physical\NodePhysicalBody.cpp" />
     <ClCompile Include="Nodes\Physical\NodePhysicalBase.cpp" />
@@ -212,6 +214,8 @@
     <ClInclude Include="Nodes\NodeSprite.h" />
     <ClInclude Include="Nodes\NodeText.h" />
     <ClInclude Include="Nodes\GameplayManager.h" />
+    <ClInclude Include="Nodes\Particles\NodeEmitter.h" />
+    <ClInclude Include="Nodes\Particles\NodeParticle.h" />
     <ClInclude Include="Nodes\Physical\CollideTypes.h" />
     <ClInclude Include="Nodes\Physical\NodeDestructibleRectangle.h" />
     <ClInclude Include="Nodes\Physical\NodePhysicalBody.h" />
@@ -235,6 +239,7 @@
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormPlayState.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormQueue.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormWaitState.h" />
+    <ClInclude Include="Particles\Particles.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Resources\Resources.h" />

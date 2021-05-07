@@ -111,7 +111,7 @@ void MenuState::createGrenades(sf::Vector2f pos)
 	{
 		clock.restart();
 
-		std::unique_ptr<Delayed_Bullet> bullet = std::make_unique<Delayed_Bullet>(World, fonts, sf::Vector2f(pos.x + offsetX(e), pos.y), textures.getResourceReference(Textures_ID::GrenadeBullet), 0, 0, sf::seconds(timeExplosion(e)));
+		std::unique_ptr<Delayed_Bullet> bullet = std::make_unique<Delayed_Bullet>(World, fonts, sf::Vector2f(pos.x + offsetX(e), pos.y), textures.getResourceReference(Textures_ID::GrenadeBullet), textures, 0, 0, sf::seconds(timeExplosion(e)));
 		bullet->setSparkColor(sf::Color::Cyan);
 		rootScene.pinNode(std::move(bullet));
 		timePerGrenade = sf::seconds(timePerSpawn(e));
@@ -306,6 +306,7 @@ void MenuState::loadResources()
 	textures.storeResource(Textures_ID::WorldBackground, "Resources/Textures/World/background_texture.png");
 	textures.storeResource(Textures_ID::AnExemplaryWorm, "Resources/Textures/An_example_worm.png");
 	textures.storeResource(Textures_ID::GrenadeBullet, "Resources/Textures/Weapons/grenade_bullet.png");
+	textures.storeResource(Textures_ID::SmokeParticle, "Resources/Textures/smokeParticle.png");
 	textures.getResourceReference(Textures_ID::Paper).setRepeated(true);
 	textures.getResourceReference(Textures_ID::WorldBackground).setRepeated(true);
 }

@@ -6,8 +6,8 @@
 #include "../../../NodePhysicalSpark.h"
 
 
-Delayed_Bullet::Delayed_Bullet(b2World& world, const FontManager& fonts, sf::Vector2f position, sf::Texture& texture, float force, float range, sf::Time timeToDestroy):
-	Bullet(world, position, texture, force, range),
+Delayed_Bullet::Delayed_Bullet(b2World& world, const FontManager& fonts, sf::Vector2f position, sf::Texture& bulletTexture, const TextureManager& textures, float force, float range, sf::Time timeToDestroy):
+	Bullet(world, position, bulletTexture, textures, force, range),
 	timeToDestroy(timeToDestroy)
 {
 	counter.setFont(fonts.getResourceReference(Fonts_ID::ArialNarrow));

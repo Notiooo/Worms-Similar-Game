@@ -85,6 +85,12 @@
     <Filter Include="Source Files\Externals\Clipper">
       <UniqueIdentifier>{815eee19-784a-4c3a-9c8c-fa28a0640cc6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Nodes\Particles">
+      <UniqueIdentifier>{915285e4-8b31-49c7-8796-60dc50559d76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Nodes\Particles">
+      <UniqueIdentifier>{0b12d349-ead5-47d0-bf39-620b9d97ec78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Worms-Clone.cpp">
@@ -240,6 +246,12 @@
     <ClCompile Include="Nodes\Physical\NodeWater.cpp">
       <Filter>Source Files\Nodes\Physical</Filter>
     </ClCompile>
+    <ClCompile Include="Nodes\Particles\NodeParticle.cpp">
+      <Filter>Source Files\Nodes\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Nodes\Particles\NodeEmitter.cpp">
+      <Filter>Source Files\Nodes\Particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -391,6 +403,15 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Particles\Particles.h">
+      <Filter>Header Files\Nodes\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Particles\NodeParticle.h">
+      <Filter>Header Files\Nodes\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Nodes\Particles\NodeEmitter.h">
+      <Filter>Header Files\Nodes\Particles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

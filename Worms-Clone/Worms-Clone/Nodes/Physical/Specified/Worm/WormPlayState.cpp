@@ -1,5 +1,4 @@
 #include "WormPlayState.h"
-#include "../../NodeRectangularPhysical.h"
 #include <memory>
 
 #include "../../../../utils.h"

@@ -8,10 +8,11 @@
 #include "../../../NodePhysicalSpark.h"
 
 
-Bullet::Bullet(b2World& world, sf::Vector2f position, sf::Texture& texture, float force, float range):
-	NodePhysicalSprite(world, Physical_Types::Dynamic_Type, texture, position),
+Bullet::Bullet(b2World& world, sf::Vector2f position, sf::Texture& bulletTexture, const TextureManager& textures, float force, float range):
+	NodePhysicalSprite(world, Physical_Types::Dynamic_Type, bulletTexture, position),
 	force(force),
-	range(range)
+	range(range),
+	smokeTexture(textures.getResourceReference(Textures_ID::SmokeParticle))
 {
 	// Potentially risky, 
 	// actually the Body should be created here
@@ -45,7 +46,7 @@ void Bullet::explode()
 	std::unique_ptr<Hitbox> hitbox = std::make_unique<Hitbox>(*World, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()), range, force);
 	this->getRootNode()->pinNode(std::move(hitbox));
 
-	std::unique_ptr<NodePhysicalSpark> spark = std::make_unique<NodePhysicalSpark>(*World, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()), sparkColor);
+	std::unique_ptr<NodePhysicalSpark> spark = std::make_unique<NodePhysicalSpark>(*World, smokeTexture, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()), sparkColor);
 	this->getRootNode()->pinNode(std::move(spark));
 }
 

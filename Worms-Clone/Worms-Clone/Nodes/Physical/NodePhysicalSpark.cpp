@@ -3,10 +3,19 @@
 #include "SFML/Graphics/RenderStates.hpp"
 #include <random>
 
-NodePhysicalSpark::NodePhysicalSpark(b2World& world, sf::Vector2f position, sf::Color color):
+NodePhysicalSpark::NodePhysicalSpark(b2World& world, const sf::Texture& smokeTexture, sf::Vector2f position, sf::Color color) :
 	NodePhysicalBase(world),
-	sparkColor(color)
+	sparkColor(color),
+	smokeParticles(smokeTexture)
 {
+	smokeParticles.setFadingOut(sf::seconds(timeToDelete.asSeconds() / 1.5f));
+	smokeParticles.setDefaultOpacity(0.05f);
+	smokeParticles.setParticleColor(color);
+	//smokeParticles.setParticleLifeTime(sf::seconds(timeToDelete.asSeconds() * 2.f));
+	smokeParticles.setParticleInfiniteLifeTime(true);
+	
+	smokeParticles.setFadingLasts(sf::seconds(timeToDelete.asSeconds()/ 6.f));
+	
 	// It will be used to create randomized-velocity sparks
 	static std::default_random_engine e(time(0));
 	static std::uniform_real_distribution<float> g(0.f, 4.f);
@@ -16,8 +25,8 @@ NodePhysicalSpark::NodePhysicalSpark(b2World& world, sf::Vector2f position, sf::
 	{
 		spark.shape.setFillColor(sparkColor);
 		spark.shape.setSize({10.f, 10.f});
+		spark.smokeEmitter = std::make_unique<NodeEmitter>(smokeParticles);
 	}
-
 
 	// Create physical-side of sparks
 	const int number_of_particles = particles.size();
@@ -54,18 +63,25 @@ NodePhysicalSpark::~NodePhysicalSpark()
 }
 
 void NodePhysicalSpark::drawThis(sf::RenderTarget& target, sf::RenderStates states) const
-{
+{	
 	// Sparks are placed in the world independently
 	// Thats why I'm not using the "states" which also includes
 	// the transform of the Node
 	for (const auto& spark : particles)
 		target.draw(spark.shape);
+
+	target.draw(smokeParticles);
 }
 
 void NodePhysicalSpark::updateThis(sf::Time deltaTime)
 {
 	if (clock.getElapsedTime() > timeToDelete)
 		setDestroyed();
+
+	smokeParticles.update(deltaTime);
+	
+	for (auto& spark : particles)
+		spark.smokeEmitter->update(deltaTime);
 }
 
 void NodePhysicalSpark::updatePhysics()
@@ -78,5 +94,8 @@ void NodePhysicalSpark::updatePhysics()
 		// Fading effect
 		sparkColor.a = 255 - 255 * (clock.getElapsedTime().asSeconds() / timeToDelete.asSeconds());
 		spark.shape.setFillColor(sparkColor);
+
+		// Smoke effect
+		spark.smokeEmitter->setPosition(spark.shape.getPosition());
 	}
 }

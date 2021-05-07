@@ -8,6 +8,10 @@
 #include <array>
 
 
+#include "../Particles/NodeEmitter.h"
+#include "../Particles/NodeParticle.h"
+
+
 /**
  * \brief An object that creates tiny objects that escape all around from the place of this object.
  * The object is removed when they are created.
@@ -17,7 +21,7 @@
 class NodePhysicalSpark : public NodePhysicalBase
 {
 public:
-	NodePhysicalSpark(b2World& world, sf::Vector2f position, sf::Color color = sf::Color::White);
+	NodePhysicalSpark(b2World& world, const sf::Texture& smokeTexture, sf::Vector2f position, sf::Color color = sf::Color::White);
 	~NodePhysicalSpark() override;
 
 	/**
@@ -43,7 +47,6 @@ public:
 
 private:
 
-
 	/**
 	 * \brief A structure describing a single particle.
 	 */
@@ -51,7 +54,10 @@ private:
 	{
 		sf::RectangleShape shape;
 		b2Body* body;
+		std::unique_ptr<NodeEmitter> smokeEmitter;
 	};
+
+	NodeParticle smokeParticles;
 
 	std::array<Sparkle, 40> particles; //!<  It stores all the particles created. Their number is constantly 40.
 	sf::Color sparkColor; //!< Color of the particle

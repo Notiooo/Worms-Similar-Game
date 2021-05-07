@@ -5,18 +5,19 @@
 
 #include "Bullet.h"
 
-Weapon::Weapon(b2World& world, sf::Texture& weapon, sf::Texture& thumbnail, sf::Texture& bullet):
+Weapon::Weapon(b2World& world, sf::Texture& weapon, sf::Texture& thumbnail, sf::Texture& bullet, const TextureManager& textures):
 	weaponSprite(weapon),
 	thumbnailSprite(thumbnail, sf::IntRect(0, 0, 60, 60)),
 	bulletTexture(bullet),
-	physicalWorld(world)
+	physicalWorld(world),
+	textures(textures)
 {
 	
 }
 
 void Weapon::shoot(NodeScene* rootNode, sf::Vector2f position, sf::Vector2f force)
 {
-	std::unique_ptr<Bullet> bullet = std::make_unique<Bullet>(physicalWorld, position, bulletTexture, attackDmg, range);
+	auto bullet = std::make_unique<Bullet>(physicalWorld, position, bulletTexture, textures, attackDmg, range);
 	bullet->setSparkColor(bulletSparksColor);
 	bullet->applyForce(force);
 	rootNode->pinNode(std::move(bullet));

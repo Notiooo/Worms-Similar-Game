@@ -21,6 +21,7 @@ enum class Textures_ID
 	DeadWorm,
 	HitWorm,
 	Rope,
+	SmokeParticle,
 
 	// === TitleState === /
 	TitleStateBackground,

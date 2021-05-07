@@ -159,6 +159,8 @@ void World::loadResources()
 {
 
 	// ==== Weapons ==== //
+	worldTextures.storeResource(Textures_ID::SmokeParticle, "Resources/Textures/smokeParticle.png");
+
 
 	// Bazooka
 	worldTextures.storeResource(Textures_ID::Bazooka, "Resources/Textures/Weapons/bazooka.png");

@@ -7,7 +7,7 @@
 
 
 Grenade::Grenade(b2World& world, TextureManager& textures, const FontManager& fonts):
-	Weapon(world, textures.getResourceReference(Textures_ID::Grenade), textures.getResourceReference(Textures_ID::GrenadeThumbnail), textures.getResourceReference(Textures_ID::GrenadeBullet)),
+	Weapon(world, textures.getResourceReference(Textures_ID::Grenade), textures.getResourceReference(Textures_ID::GrenadeThumbnail), textures.getResourceReference(Textures_ID::GrenadeBullet), textures),
 	fonts(fonts)
 {
 	weaponSprite.setPosition(getPosition().x, getPosition().y + 40);
@@ -18,7 +18,7 @@ Grenade::Grenade(b2World& world, TextureManager& textures, const FontManager& fo
 
 void Grenade::shoot(NodeScene* rootNode, sf::Vector2f position, sf::Vector2f force)
 {
-	std::unique_ptr<Delayed_Bullet> bullet = std::make_unique<Delayed_Bullet>(physicalWorld, fonts, position, bulletTexture, attackDmg, range, sf::seconds(8));
+	std::unique_ptr<Delayed_Bullet> bullet = std::make_unique<Delayed_Bullet>(physicalWorld, fonts, position, bulletTexture, textures, attackDmg, range, sf::seconds(8));
 	bullet->setSparkColor(bulletSparksColor);
 	bullet->applyForce(force);
 	rootNode->pinNode(std::move(bullet));

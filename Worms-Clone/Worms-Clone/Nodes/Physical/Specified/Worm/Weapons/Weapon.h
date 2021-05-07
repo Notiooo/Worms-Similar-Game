@@ -9,6 +9,7 @@
 
 #include "../../../../NodeScene.h"
 #include "../../../../../Resources/Resources.h"
+#include "../../../../Particles/NodeParticle.h"
 
 class Worm;
 
@@ -19,7 +20,7 @@ class Worm;
 class Weapon : public NodeScene
 {
 public:
-	Weapon(b2World& world, sf::Texture& weapon, sf::Texture& thumbnail, sf::Texture& bullet);
+	Weapon(b2World& world, sf::Texture& weapon, sf::Texture& thumbnail, sf::Texture& bullet, const TextureManager& textures);
 
 	/**
 	 * \brief The firing function of a weapon that will be executed when the shooting bar is loaded.
@@ -101,7 +102,8 @@ protected:
 	sf::Sprite thumbnailSprite; //!< Sprite which is a visual representation of the weapon in the inventory
 	sf::Texture& bulletTexture; //!< Sprite which is a visual representation of the bullet in the game
 	sf::Color bulletSparksColor = sf::Color::White; //!< Colour of the explosion after the projectile explosion
-
+	const TextureManager& textures;
+	
 
 	// === Parameters === //
 	float attackDmg = 0.f; //!< Maximum damage this weapon can deal

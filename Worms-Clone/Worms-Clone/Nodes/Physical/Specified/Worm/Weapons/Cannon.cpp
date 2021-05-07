@@ -6,7 +6,7 @@
 
 
 Cannon::Cannon(b2World& world, TextureManager& textures):
-	Weapon(world, textures.getResourceReference(Textures_ID::Cannon), textures.getResourceReference(Textures_ID::CannonThumbnail), textures.getResourceReference(Textures_ID::CannonBullet))
+	Weapon(world, textures.getResourceReference(Textures_ID::Cannon), textures.getResourceReference(Textures_ID::CannonThumbnail), textures.getResourceReference(Textures_ID::CannonBullet), textures)
 {
 	weaponSprite.setPosition(getPosition().x, getPosition().y + 40);
 	setSparkColor(sf::Color::Black);
