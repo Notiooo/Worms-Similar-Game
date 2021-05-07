@@ -30,7 +30,7 @@ struct Bullet : public NodePhysicalSprite
 	 * \brief Sets the color of the particles that will disperse when the projectile explodes.
 	 * \param color Color of the particles
 	 */
-	void setSparkColor(const sf::Color& color);
+	void setSparkColor(const sf::Color& color) noexcept;
 
 protected:
 	/**

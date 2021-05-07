@@ -31,9 +31,6 @@ WormPlayState::WormPlayState(StateStack& stack, Worm& worm) :
 	shootingBar.setPosition(0, -50.f);
 }
 
-void WormPlayState::draw() const
-{
-}
 
 void WormPlayState::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
@@ -49,10 +46,10 @@ void WormPlayState::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 	worm.selectedWeapon->second->drawThis(target, states);
 }
 
-bool WormPlayState::update(sf::Time deltatime)
+bool WormPlayState::update(sf::Time deltaTime)
 {
-	updateMovement(deltatime);
-	updateShooting(deltatime);
+	updateMovement(deltaTime);
+	updateShooting(deltaTime);
 
 	return false;
 }
@@ -96,7 +93,7 @@ void WormPlayState::shoot()
 	{
 		if (!weapon->isActivation())
 			weapon->shoot(worm.getRootNode(), worm.getAbsolutePosition() + triangularPointer.getPosition(),
-			              sf::Vector2f(direction * pointer.x * currentShootingForce, pointer.y * currentShootingForce));
+			              sf::Vector2f(static_cast<float>(direction) * pointer.x * currentShootingForce, pointer.y * currentShootingForce));
 		else
 			weapon->activation(worm);
 
@@ -113,7 +110,7 @@ void WormPlayState::handleShooting(const sf::Event& event)
 		shoot();
 }
 
-void WormPlayState::updateShooting(sf::Time deltatime)
+void WormPlayState::updateShooting(sf::Time deltaTime)
 {
 	// Controls the pointer that shows the direction of shooting
 	if (sf::Keyboard::isKeyPressed(pointHigherKey) || sf::Keyboard::isKeyPressed(pointLowerKey))
@@ -123,12 +120,12 @@ void WormPlayState::updateShooting(sf::Time deltatime)
 			(sf::Keyboard::isKeyPressed(pointLowerKey) && worm.facingRight()))
 		{
 			if (pointerAngle < b2_pi)
-				pointerAngle += pointerSpeed * deltatime.asSeconds();
+				pointerAngle += pointerSpeed * deltaTime.asSeconds();
 		}
 		else
 		{
 			if (pointerAngle > 0)
-				pointerAngle -= pointerSpeed * deltatime.asSeconds();
+				pointerAngle -= pointerSpeed * deltaTime.asSeconds();
 		}
 
 		// Pointer moves in circular path
@@ -139,7 +136,7 @@ void WormPlayState::updateShooting(sf::Time deltatime)
 	if (sf::Keyboard::isKeyPressed(shootingKey))
 	{
 		if (currentShootingForce < maxShootingForce)
-			currentShootingForce += shootingLoadingSpeed * deltatime.asSeconds();
+			currentShootingForce += shootingLoadingSpeed * deltaTime.asSeconds();
 		else
 			shoot();
 	}

@@ -70,7 +70,7 @@ public:
 	 * \brief It checks if any bullet has been pinned to the scene.
 	 * \return True if there is any bullet pinned to the scene, false otherwise
 	 */
-	bool anyBullet();
+	bool anyBullet() const;
 
 	/**
 	 * \brief Returns itself as RootNode. This ensures that any bullets are assigned to this node.
@@ -88,7 +88,7 @@ public:
 	 * \brief Checks whether the game has already finished 
 	 * \return True if the game has finished, false otherwise
 	 */
-	bool isGameFinished() const;
+	bool isGameFinished() const noexcept;
 
 private:
 	/**

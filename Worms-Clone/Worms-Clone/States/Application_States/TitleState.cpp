@@ -6,39 +6,35 @@ TitleState::TitleState(StateStack& stack, sf::RenderWindow& window, const FontMa
 {
 
 	// Loads and sets texture of the background
-	background_texture.loadFromFile("Resources/Textures/TitleState/example.png");
-	background_sprite.setTexture(background_texture);
+	backgroundTexture.loadFromFile("Resources/Textures/TitleState/example.png");
+	backgroundSprite.setTexture(backgroundTexture);
 	
 	// Loads the font
 	information.setFont(fonts.getResourceReference(Fonts_ID::ArialNarrow));
 
 	// Get dimensions of the screen and scales background to the size of the window
-	sf::Vector2f screen_dimensions = window.getView().getSize();
-	background_sprite.setScale(
-		screen_dimensions.x / background_sprite.getLocalBounds().width,
-		screen_dimensions.y / background_sprite.getLocalBounds().height);
+	const auto screenDimensions = window.getView().getSize();
+	backgroundSprite.setScale(
+		screenDimensions.x / backgroundSprite.getLocalBounds().width,
+		screenDimensions.y / backgroundSprite.getLocalBounds().height);
 
 
 	// Sets text such that it is white with black outline, and set its position
 	// to the right-bottom corner of the screen with some padding
-	unsigned int character_size = information.getCharacterSize();
+	auto characterSize = information.getCharacterSize();
 	information.setFillColor(sf::Color::White);
 	information.setOutlineColor(sf::Color::Black);
 	information.setOutlineThickness(1.f);
 
 	information.setString("Click any button to play");
-	information.setPosition(screen_dimensions.x - information.getLocalBounds().width - text_padding,
-							screen_dimensions.y - information.getLocalBounds().height - text_padding);
+	information.setPosition(screenDimensions.x - information.getLocalBounds().width - textPadding,
+							screenDimensions.y - information.getLocalBounds().height - textPadding);
 }
 
-void TitleState::draw() const
+void TitleState::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	window->draw(background_sprite);
+	window->draw(backgroundSprite);
 	window->draw(information);
-}
-
-void TitleState::draw(sf::RenderTarget&, sf::RenderStates) const
-{
 }
 
 bool TitleState::update(sf::Time)

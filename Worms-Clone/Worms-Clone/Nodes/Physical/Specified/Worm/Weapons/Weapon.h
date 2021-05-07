@@ -41,7 +41,7 @@ public:
 	 * \brief Sets the maximum damage this weapon is capable of dealing.
 	 * \param dmg Maximum possible damage
 	 */
-	void setMaxDmg(float dmg);
+	void setMaxDmg(float dmg) noexcept;
 
 	
 	/**
@@ -49,33 +49,33 @@ public:
 	 * from which it deals damage
 	 * \param rng Maximum possible range at which it still deals damage
 	 */
-	void setRange(float rng);
+	void setRange(float rng) noexcept;
 
 	
 	/**
 	 * \brief Sets the colour of the particles present after the explosion
 	 * \param color Colour of the particles
 	 */
-	void setSparkColor(const sf::Color& color);
+	void setSparkColor(const sf::Color& color) noexcept;
 
 	/**
 	 * \brief Check if weapon should have shooting bar, or it should just activate with a button
 	 * \return True if it is activated with a button, False if it should have been loaded with shooting bar
 	 */
-	virtual bool isActivation() = 0;
+	virtual bool isActivation() const noexcept = 0;
 
 	
 	/**
 	 * \brief Check if usage of the weapon should end the round
 	 * \return True usage ends the round, false otherwise
 	 */
-	virtual bool isRoundEnding() = 0;
+	virtual bool isRoundEnding() const noexcept = 0;
 
 	/**
 	 * \brief Returns a sprite which is a graphical representation of the weapon thumbnail in the inventory
 	 * \return A thumbnail that is a graphical representation of a weapon in an inventory.
 	 */
-	sf::Sprite& getThumbnailSprite();
+	sf::Sprite& getThumbnailSprite() noexcept;
 	
 	/**
 	 * \brief Adjusts the weapon to a given angle

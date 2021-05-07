@@ -18,11 +18,6 @@ public:
 	EditorState(StateStack& stack, sf::RenderWindow& window, const FontManager& fonts);
 
 	/**
-	 * \brief Draws only this state.
-	 */
-	void draw() const override;
-
-	/**
 	 * \brief Draws only this state to the passed target
 	 * \param target where it should be drawn to
 	 * \param states provides information about rendering process (transform, shader, blend mode)
@@ -42,8 +37,6 @@ public:
 	bool handleEvent(const sf::Event& event) override;
 
 private:
-	sf::RenderWindow& window; //!< Window to which this status is displayed
-	const FontManager& fonts; //!< Manager containing loaded and ready to use fonts
 	Editor levelEditor; //!< An editor that allows you to create and modify the game world
 };
 

@@ -15,12 +15,12 @@ Bazooka::Bazooka(b2World& world, TextureManager& textures):
 	setRange(220.f);
 }
 
-bool Bazooka::isActivation()
+bool Bazooka::isActivation() const noexcept
 {
 	return false;
 }
 
-bool Bazooka::isRoundEnding()
+bool Bazooka::isRoundEnding() const noexcept
 {
 	return true;
 }

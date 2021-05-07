@@ -98,14 +98,14 @@ void NodeDestructibleRectangle::addHole(std::vector<ClipperLib::IntPoint>& figur
 	// can subtract them from each other.
 	ClipperLib::Paths shape(polyline.size()), clip(1), solution(1);
 
-	unsigned shapeNumber = 0;
+	auto shapeNumber = 0u;
 	for (auto& shapes : polyline)
 	{
 		for (auto& point : shapes)
 		{
 			// The point building the contour must be transformed in such
 			// a way that its absolute position and rotation match.
-			auto transformedPoint = getTransform().transformPoint(static_cast<float>(point->x),
+			const auto transformedPoint = getTransform().transformPoint(static_cast<float>(point->x),
 				static_cast<float>(point->y));
 			shape[shapeNumber].emplace_back(ClipperLib::IntPoint(transformedPoint.x, transformedPoint.y));
 		}
@@ -118,7 +118,7 @@ void NodeDestructibleRectangle::addHole(std::vector<ClipperLib::IntPoint>& figur
 
 	// I then carry out the operations to cut the object
 	ClipperLib::Clipper c;
-	for(int i = 0; i < polyline.size(); ++i)
+	for(auto i = 0; i < polyline.size(); ++i)
 		c.AddPath(shape[i], ClipperLib::ptSubject, true);
 	c.AddPath(clip[0], ClipperLib::ptClip, true);
 	c.Execute(ClipperLib::ctDifference, solution, ClipperLib::pftNonZero, ClipperLib::pftNonZero);
@@ -154,7 +154,7 @@ void NodeDestructibleRectangle::addHole(std::vector<ClipperLib::IntPoint>& figur
 		{
 			// I process the points obtained so that they are again independent of absolute position
 			// and rotation -- that is, I calculate the relativistic position for that object.
-			auto transformedPoint = getInverseTransform().transformPoint(static_cast<float>(point.X),
+			const auto transformedPoint = getInverseTransform().transformPoint(static_cast<float>(point.X),
 				static_cast<float>(point.Y));
 			polyline[shapeNumber][pointNumber++] = new p2t::Point(transformedPoint.x, transformedPoint.y);
 		}
@@ -212,13 +212,13 @@ void NodeDestructibleRectangle::createBody()
 	}
 
 	fixtures.resize(polyline.size());
-	for (int shape = 0; shape < polyline.size(); ++shape)
+	for (auto shape = 0; shape < polyline.size(); ++shape)
 	{
 		// The new physical contour shape
 		b2ChainShape Shape;
 
 		// Each of the object's contour points is converted to its physical coordinates matching Box2D.
-		for (int point = 0; point < polyline[shape].size(); ++point)
+		for (size_t point = 0; point < polyline[shape].size(); ++point)
 			physicalShape[shape][point].Set(polyline[shape][point]->x / B2_SCALAR, polyline[shape][point]->y / B2_SCALAR);
 
 		// I close the last point with the first to form a kind of polygon.

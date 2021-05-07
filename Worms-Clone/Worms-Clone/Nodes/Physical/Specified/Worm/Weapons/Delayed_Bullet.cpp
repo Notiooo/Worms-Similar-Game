@@ -37,7 +37,7 @@ Delayed_Bullet::Delayed_Bullet(b2World& world, const FontManager& fonts, sf::Vec
 void Delayed_Bullet::updateThis(sf::Time deltaTime)
 {
 	NodePhysicalSprite::updateThis(deltaTime);
-	const int timeLeft = static_cast<int>((timeToDestroy - clock.getElapsedTime()).asSeconds());
+	const auto timeLeft = static_cast<int>((timeToDestroy - clock.getElapsedTime()).asSeconds());
 	counter.setString(std::to_string(timeLeft));
 	if (timeLeft <= 0)
 		setDestroyed();

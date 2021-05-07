@@ -13,7 +13,7 @@
  * \brief Editor object that allows to rotate and position on the map.
  * Contains information needed for the map export to file
  */
-class NodeEditorObject : public sf::Drawable, public sf::Transformable
+class NodeEditorObject final : public sf::Drawable, public sf::Transformable
 {
 public:
 	NodeEditorObject(const TextureManager& textures, const FontManager& fonts);
@@ -60,7 +60,7 @@ public:
 	 * \brief Sets the object the given identifier (which the object will now represent).
 	 * \param id Identifier of object to represent.
 	 */
-	void setId(unsigned id);
+	void setId(unsigned id) noexcept;
 
 	/**
 	 * \brief Get the global bounding rectangle of the entity
@@ -78,29 +78,29 @@ public:
 	 * \brief Returns the object identifier that this object represents.
 	 * \return The object identifier that this object represents
 	 */
-	unsigned getId();
+	unsigned getId() const noexcept;
 
 	/**
 	 * \brief A function that checks if the mouse hovers over an object.
 	 * \return True if user hovers with the mouse over an object, false otherwise
 	 */
-	bool isSelected();
+	bool isSelected() const noexcept;
 
 	/**
 	 * \brief A function that executes once when the user hovers over an object.
 	 */
-	void select();
+	void select() noexcept;
 	
 	/**
 	 * \brief The function that executes once when the user leaves the object with the cursor.
 	 */
-	void unselect();
+	void unselect() noexcept;
 	
 	/**
 	 * \brief Checks if objects are activated (user selected / pressed).
 	 * \return True if it is activated, false otherwise
 	 */
-	bool isActivated();
+	bool isActivated() const noexcept;
 	
 	/**
 	 * \brief The function that is executed when user click on the object (check it) -- otherwise known as deactivating the object.
@@ -115,12 +115,12 @@ public:
 	/**
 	 * \brief A function that marks an object as ready for deletion.
 	 */
-	void setDestroyed();
+	void setDestroyed() noexcept;
 	/**
 	 * \brief A function that checks if the object is ready to be deleted.
 	 * \return True if ready for removal, false otherwise
 	 */
-	bool isDestroyed() const;
+	bool isDestroyed() const noexcept;
 
 private:
 	// === Button Mechanics === //

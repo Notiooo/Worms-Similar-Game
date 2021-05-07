@@ -31,7 +31,7 @@ bool GameState::update(sf::Time deltaTime)
 
 	// Because some for example moving object
 	// works according to
-	// d = st (distane = speed * time)
+	// d = st (distance = speed * time)
 	gameWorld.update(deltaTime);
 
 	if(gameWorld.isGameFinished())
@@ -46,12 +46,7 @@ bool GameState::update(sf::Time deltaTime)
 	return true;
 }
 
-void GameState::draw() const
+void GameState::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	// Now draw object on the empty window
 	gameWorld.draw();
-}
-
-void GameState::draw(sf::RenderTarget&, sf::RenderStates) const
-{
 }

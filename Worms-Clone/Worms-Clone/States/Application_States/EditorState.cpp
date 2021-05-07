@@ -5,20 +5,14 @@
 
 EditorState::EditorState(StateStack& stack, sf::RenderWindow& window, const FontManager& fonts):
 	State(stack),
-	window(window),
-	fonts(fonts),
 	levelEditor(window, fonts)
 {
 	
 }
 
-void EditorState::draw() const
+void EditorState::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	levelEditor.draw();
-}
-
-void EditorState::draw(sf::RenderTarget&, sf::RenderStates) const
-{
 }
 
 bool EditorState::update(sf::Time deltaTime)

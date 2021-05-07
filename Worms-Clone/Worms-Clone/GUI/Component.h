@@ -14,6 +14,7 @@ namespace GUI
 	{
 	public:
 		Component();
+		
 		~Component() override = default;
 
 		/**

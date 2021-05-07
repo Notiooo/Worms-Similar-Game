@@ -11,7 +11,7 @@ int main()
 
     // Moved this game to the heap according to the error:
     // warning C6262: Function uses '104688' bytes of stack: exceeds /analyze:stacksize '16384'. Consider moving some data to heap
-    Game* game = new Game;
+    auto* game = new Game;
     game->run();
 
     delete game;

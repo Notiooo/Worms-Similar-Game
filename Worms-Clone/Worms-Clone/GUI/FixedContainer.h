@@ -16,7 +16,7 @@ namespace GUI
 	class FixedContainer : public Container
 	{
 	public:
-		FixedContainer(sf::RenderWindow& window);
+		explicit FixedContainer(sf::RenderWindow& window);
 
 		/**
 		 * \brief Adds a component to the container

@@ -12,7 +12,7 @@
  * it draws the texture in many ways, many times. It can be a fading trace
  * of a moving texture. With this you can do many effects like smoke effect.
  */
-class NodeParticle : public NodeScene
+class NodeParticle final : public NodeScene
 {
 public:
 	explicit NodeParticle(const sf::Texture& texture);
@@ -31,41 +31,41 @@ public:
 	 * \brief Sets how long a particular particle lives. After this time, the particle disappears (by continuous fading)
 	 * \param time Time how long the particle lives
 	 */
-	void setParticleLifeTime(sf::Time time);
+	void setParticleLifeTime(sf::Time time) noexcept;
 	
 	/**
 	 * \brief Sets what of what colour the particles are
 	 * \param color Color of the particles
 	 */
-	void setParticleColor(sf::Color color);
+	void setParticleColor(sf::Color color) noexcept;
 
 	
 	/**
 	 * \brief Sets the time after which the whole node (all particles) disappears through a gentle fade.
 	 * \param time Time to for the node to gently disappear.
 	 */
-	void setFadingOut(sf::Time time);
+	void setFadingOut(sf::Time time) noexcept;
 
 	
 	/**
 	 * \brief Sets the maximum possible opacity that this node has.
 	 * \param opacity Opacity from 0 - 1 (0 is invisible, 1 is perfectly visible)
 	 */
-	void setDefaultOpacity(float opacity);
+	void setDefaultOpacity(float opacity) noexcept;
 
 	
 	/**
 	 * \brief Sets how long particles are generated. Over time they become more transparent until they are no longer drawn.
 	 * \param time Time to stop drawing by the increasing transparency of newer particles.
 	 */
-	void setFadingLasts(sf::Time time);
+	void setFadingLasts(sf::Time time) noexcept;
 
 	
 	/**
 	 * \brief A flag that controls whether particles should have eternal life or disappear over time.
 	 * \param flag True if they should not disappear after time, false otherwise
 	 */
-	void setParticleInfiniteLifeTime(bool flag);
+	void setParticleInfiniteLifeTime(bool flag) noexcept;
 	
 
 private:

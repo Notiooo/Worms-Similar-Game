@@ -90,16 +90,6 @@ public:
 
 	
 	/**
-	 * \brief Draws the states in the stack to the screen.
-	 *
-	 * Draws the states at the top of the stack. If the state is transparent (returns true)
-	 * then it also draw the state below it. The state below it is also checked for
-	 * transparency and the process repeats itself.
-	 */
-	void draw() const;
-
-	
-	/**
 	 * \brief Draws the states in the stack to the given target with given states.
 	 * \param target where drawable object should be drawn to.
 	 * \param state provides informations about rendering process (transform, shader, blend mode)

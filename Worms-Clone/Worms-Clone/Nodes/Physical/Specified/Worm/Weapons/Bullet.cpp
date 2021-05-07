@@ -43,10 +43,10 @@ bool Bullet::isDestroyed()
 
 void Bullet::explode()
 {
-	std::unique_ptr<Hitbox> hitbox = std::make_unique<Hitbox>(*World, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()), range, force);
+	auto hitbox = std::make_unique<Hitbox>(*World, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()), range, force);
 	this->getRootNode()->pinNode(std::move(hitbox));
 
-	std::unique_ptr<NodePhysicalSpark> spark = std::make_unique<NodePhysicalSpark>(*World, smokeTexture, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()), sparkColor);
+	auto spark = std::make_unique<NodePhysicalSpark>(*World, smokeTexture, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()), sparkColor);
 	this->getRootNode()->pinNode(std::move(spark));
 }
 
@@ -55,7 +55,7 @@ void Bullet::collision()
 	setDestroyed();
 }
 
-void Bullet::setSparkColor(const sf::Color& color)
+void Bullet::setSparkColor(const sf::Color& color) noexcept
 {
 	sparkColor = color;
 }

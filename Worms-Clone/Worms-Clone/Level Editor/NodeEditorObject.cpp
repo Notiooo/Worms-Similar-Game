@@ -53,13 +53,11 @@ void NodeEditorObject::update(sf::Time deltaTime)
 	if(isActivated())
 	{
 		// Faster moving
-		float additionalSpeed;
+		auto additionalSpeed = 0.f;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R))
 			additionalSpeed = 150.f;
-		else
-			additionalSpeed = 0.f;
 
-		float movingSpeed = this->movingSpeed + additionalSpeed;
+		auto movingSpeed = this->movingSpeed + additionalSpeed;
 		movingSpeed *= deltaTime.asSeconds();
 		
 		// Standard moving the object with keyboard
@@ -72,7 +70,7 @@ void NodeEditorObject::update(sf::Time deltaTime)
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 			move(movingSpeed, 0);
 
-		float rotationSpeed = this->rotationSpeed + additionalSpeed;
+		auto rotationSpeed = this->rotationSpeed + additionalSpeed;
 		rotationSpeed *= deltaTime.asSeconds();
 		
 		// Rotation of the object with keyboard
@@ -81,7 +79,7 @@ void NodeEditorObject::update(sf::Time deltaTime)
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q))
 			setRotation(getRotation() - rotationSpeed);
 
-		float sizeChangeSpeed = this->sizeChangeSpeed + additionalSpeed;
+		auto sizeChangeSpeed = this->sizeChangeSpeed + additionalSpeed;
 		sizeChangeSpeed *= deltaTime.asSeconds();
 		
 		// Changing height of the object
@@ -98,22 +96,22 @@ void NodeEditorObject::update(sf::Time deltaTime)
 	}
 }
 
-bool NodeEditorObject::isSelected()
+bool NodeEditorObject::isSelected() const noexcept
 {
 	return _isSelected;
 }
 
-void NodeEditorObject::select()
+void NodeEditorObject::select() noexcept
 {
 	_isSelected = true;
 }
 
-void NodeEditorObject::unselect()
+void NodeEditorObject::unselect() noexcept
 {
 	_isSelected = false;
 }
 
-bool NodeEditorObject::isActivated()
+bool NodeEditorObject::isActivated() const noexcept
 {
 	return _isActivated;
 }
@@ -132,12 +130,12 @@ void NodeEditorObject::deactivate()
 	nodeSprite.setColor(sf::Color::White);
 }
 
-void NodeEditorObject::setId(unsigned id)
+void NodeEditorObject::setId(unsigned id) noexcept
 {
 	objectId = id;
 }
 
-unsigned NodeEditorObject::getId()
+unsigned NodeEditorObject::getId() const noexcept
 {
 	return objectId;
 }
@@ -161,12 +159,12 @@ sf::Vector2f NodeEditorObject::getSize() const
 	return size;
 }
 
-void NodeEditorObject::setDestroyed()
+void NodeEditorObject::setDestroyed() noexcept
 {
 	_isDestroyed = true;
 }
 
-bool NodeEditorObject::isDestroyed() const
+bool NodeEditorObject::isDestroyed() const noexcept
 {
 	return _isDestroyed;
 }

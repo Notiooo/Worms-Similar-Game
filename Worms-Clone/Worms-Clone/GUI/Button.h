@@ -53,7 +53,7 @@ namespace GUI
          * \brief Sets the function that is performed when the button is activated
          * \param onActivate Function to execute
          */
-        void setActiveFunction(std::function<void(Button&) > onActivate);
+        void setActiveFunction(std::function<void(Button&)> onActivate);
 
         /**
          * \brief Sets the function that is performed when the button is deactivated
@@ -136,9 +136,9 @@ namespace GUI
     template <typename T>
     void Button::setPositionBelow(const T& object, float padding)
     {
-    	sf::Vector2f pos(object.getPosition().x, object.getPosition().y);
+    	const sf::Vector2f pos(object.getPosition().x, object.getPosition().y);
     	
-        sf::Vector2f offset = sf::Vector2f(0, object.getGlobalBounds().height);
+        auto offset = sf::Vector2f(0, object.getGlobalBounds().height);
 
         padding *= getScale().y;
         offset *= getScale().y;

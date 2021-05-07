@@ -30,11 +30,11 @@ WormInventoryState::WormInventoryState(StateStack& stack, Worm& worm, TextureMan
 
 	// Prepare proper text to display amount of left bullets
 	amounts.reserve(worm.inventory.size());
-	for (auto& weapon : worm.inventory)
+	for (auto& [numberOfUses, weapon] : worm.inventory)
 	{
 		sf::Text amountOfBullets;
 		amountOfBullets.setFont(font);
-		amountOfBullets.setString(std::to_string(weapon.first));
+		amountOfBullets.setString(std::to_string(numberOfUses));
 		amountOfBullets.setOutlineColor(sf::Color::Black);
 		amountOfBullets.setOutlineThickness(1.f);
 		amountOfBullets.setCharacterSize(18);
@@ -44,21 +44,17 @@ WormInventoryState::WormInventoryState(StateStack& stack, Worm& worm, TextureMan
 
 }
 
-void WormInventoryState::draw() const
-{
-}
-
 void WormInventoryState::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	// Both object are drawn independent of transform
 	target.draw(ropeSprite);
 	target.draw(menuSprite);
 	
-	for(auto& weapon : worm.inventory)
-		target.draw(weapon.second->getThumbnailSprite());
+	for(const auto& [numberOfUses, weapon] : worm.inventory)
+		target.draw(weapon->getThumbnailSprite());
 
-	for (auto& bullets_left : amounts)
-		target.draw(bullets_left);
+	for (const auto& bulletsLeft : amounts)
+		target.draw(bulletsLeft);
 }
 
 bool WormInventoryState::update(sf::Time deltaTime)
@@ -79,24 +75,24 @@ bool WormInventoryState::update(sf::Time deltaTime)
 
 	// Variables used to proper placement of items
 	const auto globalBounds = menuSprite.getGlobalBounds();
-	float rowSpacing = 0;
-	float columnSpacing = 0;
+	auto rowSpacing = 0.f;
+	auto columnSpacing = 0.f;
 
 	// Display weapon thumbnails
 
 	// The bullets are iterated separately
-	auto bullets_left = amounts.begin();
-	for (auto& weapon : worm.inventory)
+	auto bulletsLeft = amounts.begin();
+	for (auto& [numberOfUses, weapon] : worm.inventory)
 	{
 		// Set position of thumbnail and the bullets
-		auto& thumbnail = weapon.second->getThumbnailSprite();
+		auto& thumbnail = weapon->getThumbnailSprite();
 
 		thumbnail.setPosition(globalBounds.left + padding + columnSpacing,
 								globalBounds.top + padding + rowSpacing);
 		
-		bullets_left->setPosition(thumbnail.getPosition() + 
+		bulletsLeft->setPosition(thumbnail.getPosition() + 
 			sf::Vector2f(thumbnail.getLocalBounds().width, thumbnail.getLocalBounds().height));
-		++bullets_left;
+		++bulletsLeft;
 
 		// Move further to the next column
 		columnSpacing += spacing + thumbnail.getLocalBounds().width;
@@ -119,7 +115,7 @@ bool WormInventoryState::handleEvent(const sf::Event& event)
 	// and display the chosen weapon in different way in equipment
 	if(event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Left)
 	{
-		sf::Vector2f position = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+		const auto position = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 		if(menuSprite.getGlobalBounds().contains(position))
 		{
 			for (auto& weapon : worm.inventory)

@@ -69,13 +69,13 @@ public:
 	 * \brief A function that checks what state the worm is currently in
 	 * \return Identifier of the state the worm is in
 	 */
-	State_ID getCurrentState() const;
+	State_ID getCurrentState() const noexcept;
 
 	/**
 	 * \brief Checks if the worm's face is facing the right side of the screen
 	 * \return True if the worm's 'sprite' is facing right, false otherwise
 	 */
-	bool facingRight();
+	bool facingRight() const noexcept;
 
 	
 	/**
@@ -88,25 +88,25 @@ public:
 	 * \brief Sets a new name for the worm.
 	 * \param name New name of the worm
 	 */
-	auto setName(const std::string& name) -> void;
+	void setName(const std::string& name);
 	
 	/**
 	 * \brief Returns the name of the worm.
 	 * \return String with name of the worm.
 	 */
-	std::string getName();
+	std::string getName() const noexcept;
 	
 	/**
 	 * \brief A function that returns the color of the team the worm is in.
 	 * \return Color of the team of the worm
 	 */
-	sf::Color getTeam() const;
+	sf::Color getTeamColor() const noexcept;
 
 	/**
 	 * \brief Sets a new team for the worm
 	 * \param teamColor Color of the new team of the worm
 	 */
-	void setTeam(sf::Color teamColor);
+	void setTeam(sf::Color teamColor) noexcept;
 
 	/**
 	 * \brief Checks whether the worm is to be deleted

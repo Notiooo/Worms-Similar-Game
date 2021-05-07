@@ -7,7 +7,7 @@ WormMoveableState::WormMoveableState(StateStack& stack, Worm& worm) :
 {
 }
 
-bool WormMoveableState::facingRight()
+bool WormMoveableState::facingRight() const noexcept
 {
 	return ((direction == 1) ? true : false);
 }
@@ -60,7 +60,7 @@ void WormMoveableState::handleMovement(const sf::Event& event)
 	}
 }
 
-void WormMoveableState::updateMovement(sf::Time deltatime)
+void WormMoveableState::updateMovement(sf::Time deltaTime)
 {
 	// If the Worm's legs collide with the ground
 	// Then it should be possible to make a jump

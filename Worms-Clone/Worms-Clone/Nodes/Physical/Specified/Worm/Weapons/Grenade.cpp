@@ -18,18 +18,18 @@ Grenade::Grenade(b2World& world, TextureManager& textures, const FontManager& fo
 
 void Grenade::shoot(NodeScene* rootNode, sf::Vector2f position, sf::Vector2f force)
 {
-	std::unique_ptr<Delayed_Bullet> bullet = std::make_unique<Delayed_Bullet>(physicalWorld, fonts, position, bulletTexture, textures, attackDmg, range, sf::seconds(8));
+	auto bullet = std::make_unique<Delayed_Bullet>(physicalWorld, fonts, position, bulletTexture, textures, attackDmg, range, sf::seconds(8));
 	bullet->setSparkColor(bulletSparksColor);
 	bullet->applyForce(force);
 	rootNode->pinNode(std::move(bullet));
 }
 
-bool Grenade::isActivation()
+bool Grenade::isActivation() const noexcept
 {
 	return false;
 }
 
-bool Grenade::isRoundEnding()
+bool Grenade::isRoundEnding() const noexcept
 {
 	return true;
 }

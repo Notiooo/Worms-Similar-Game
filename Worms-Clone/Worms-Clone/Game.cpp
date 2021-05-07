@@ -39,7 +39,7 @@ void Game::run()
 	// performance has the player
 
 	sf::Clock clock;
-	sf::Time frameTimeElapsed = sf::Time::Zero;
+	auto frameTimeElapsed = sf::Time::Zero;
 	while (gameWindow.isOpen())
 	{
 		frameTimeElapsed += clock.restart();
@@ -77,7 +77,6 @@ void Game::render()
 	gameWindow.clear();
 
 	// draw the application
-	appStack.draw();
 	appStack.draw(gameWindow, sf::Transform::Identity);
 
 	// display to the window

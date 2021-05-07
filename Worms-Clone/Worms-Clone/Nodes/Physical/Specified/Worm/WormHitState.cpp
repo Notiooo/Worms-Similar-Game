@@ -13,10 +13,6 @@ WormHitState::WormHitState(StateStack& stack, Worm& worm, TextureManager& textur
 	savedPosition = worm.Body->GetPosition();
 }
 
-void WormHitState::draw() const
-{
-}
-
 void WormHitState::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= worm.wormSprite.getTransform();
@@ -25,7 +21,7 @@ void WormHitState::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 bool WormHitState::update(sf::Time)
 {
-	float velocity = worm.Body->GetLinearVelocity().Length();
+	auto velocity = worm.Body->GetLinearVelocity().Length();
 
 	if (!blocked)
 	{

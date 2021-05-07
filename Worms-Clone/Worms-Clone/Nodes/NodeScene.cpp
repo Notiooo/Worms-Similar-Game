@@ -22,30 +22,30 @@ void NodeScene::pinNode(Node node)
 NodeScene::Node NodeScene::unpinNode(const NodeScene& node_scene)
 {
 	// The address of given NodeScene have to match one of the addresses inside our vector of pinnedNodes
-	auto found_node = std::find_if(pinnedNodes.begin(), pinnedNodes.end(), [&node_scene](Node& pinned_node) -> bool { return pinned_node.get() == &node_scene; });
+	auto foundNode = std::find_if(pinnedNodes.begin(), pinnedNodes.end(), [&node_scene](Node& pinned_node) -> bool { return pinned_node.get() == &node_scene; });
 
 	// Make sure that we found such a Node to unpin
-	assert(found_node != pinnedNodes.end());
+	assert(foundNode != pinnedNodes.end());
 
 	// Now as we found the given NodeScene we must unpin it from our vector
 	// First take the ownership from the vector
-	Node stolen_node = std::move(*found_node);
+	auto stolenNode = std::move(*foundNode);
 
 	// std::move makes sure it is in valid state to run destructor, so we delete it
-	pinnedNodes.erase(found_node);
+	pinnedNodes.erase(foundNode);
 	
 	// Right now the stolen_node is not part of this Scene anymore.
 	// We may remove its "parentness"
-	stolen_node->parent = nullptr;
+	stolenNode->parent = nullptr;
 
-	return stolen_node;
+	return stolenNode;
 }
 
 sf::Vector2f NodeScene::getAbsolutePosition() const
 {
 	// To do this we have to add all transforms till the top of the hierarchy.
 	sf::Transform transform; //sf::Transform::Identity;
-	for (const NodeScene* node = this; node != nullptr; node = node->parent)
+	for (const auto* node = this; node != nullptr; node = node->parent)
 		transform = node->getTransform() * transform;
 	
 	// By applying this transform on empty Vector2f we move it to the desired position
@@ -91,8 +91,8 @@ void NodeScene::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	// Right after we did this, we can forward drawing to the nodes lower in the hierarchy.
 	// This way we will draw all nodes to the screen starting from the root.
 	// Also it will help us to maintain the order of which should be in front or in the back of the screen
-	for (const Node& pinned_node : pinnedNodes)
-		pinned_node->draw(target, states);
+	for (const auto& pinnedNode : pinnedNodes)
+		pinnedNode->draw(target, states);
 }
 
 void NodeScene::drawThis(sf::RenderTarget& target, sf::RenderStates states) const
@@ -106,8 +106,8 @@ void NodeScene::update(sf::Time deltaTime)
 	updateThis(deltaTime);
 
 	// And then we update all pinnedNodes -- which updates all nodes pinned to them
-	for (auto& pinned_node : pinnedNodes)
-		pinned_node->update(deltaTime);
+	for (auto& pinnedNode : pinnedNodes)
+		pinnedNode->update(deltaTime);
 }
 
 void NodeScene::updateThis(sf::Time deltaTime)
@@ -117,8 +117,8 @@ void NodeScene::updateThis(sf::Time deltaTime)
 
 void NodeScene::removeDestroyed()
 {
-	auto removal_mark = std::remove_if(pinnedNodes.begin(), pinnedNodes.end(), std::mem_fn(&NodeScene::isDestroyed));
-	pinnedNodes.erase(removal_mark, pinnedNodes.end());
+	const auto removalMark = std::remove_if(pinnedNodes.begin(), pinnedNodes.end(), std::mem_fn(&NodeScene::isDestroyed));
+	pinnedNodes.erase(removalMark, pinnedNodes.end());
 
 	for (auto& node : pinnedNodes)
 		node->removeDestroyed();
@@ -130,8 +130,8 @@ void NodeScene::handleEvents(const sf::Event& event)
 	handleThisEvents(event);
 
 	// And next pass the event to all pinned nodes
-	for (auto& pinned_node : pinnedNodes)
-		pinned_node->handleEvents(event);
+	for (auto& pinnedNode : pinnedNodes)
+		pinnedNode->handleEvents(event);
 }
 
 void NodeScene::handleThisEvents(const sf::Event& event)

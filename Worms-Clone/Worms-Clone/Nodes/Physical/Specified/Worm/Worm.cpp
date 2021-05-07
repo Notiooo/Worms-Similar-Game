@@ -30,7 +30,7 @@ Worm::Worm(b2World& world, TextureManager& textures, const FontManager& fonts, s
 	
 	// ======= Setup the healthbar ===== //
 	healthBar.setSize({ healthBarWidth, healthBarHeight });
-	sf::FloatRect boundaries_of_healthBar = healthBar.getLocalBounds();
+	auto boundaries_of_healthBar = healthBar.getLocalBounds();
 	healthBar.setOrigin(boundaries_of_healthBar.width / 2.f, boundaries_of_healthBar.height / 2.f);
 	healthBar.setFillColor(sf::Color(0, 255, 0, 150)); // a little transparent green
 	healthBar.setOutlineThickness(2.f);
@@ -46,11 +46,11 @@ Worm::Worm(b2World& world, TextureManager& textures, const FontManager& fonts, s
 	ropeSprite.setPosition({0, 0});
 
 	// Set origin to centered-bottom of the rope
-	const sf::FloatRect boundaries_of_rope = ropeSprite.getLocalBounds();
+	const auto boundaries_of_rope = ropeSprite.getLocalBounds();
 	ropeSprite.setOrigin(boundaries_of_rope.width / 2.f, boundaries_of_rope.height);
 
 	// Set origin of the Sprite to the center
-	const sf::FloatRect boundaries_of_worm = wormSprite.getLocalBounds();
+	const auto boundaries_of_worm = wormSprite.getLocalBounds();
 	wormSprite.setOrigin(boundaries_of_worm.width / 2.f, boundaries_of_worm.height / 2.f);
 
 
@@ -114,9 +114,9 @@ Worm::Worm(b2World& world, TextureManager& textures, const FontManager& fonts, s
 
 
 	// Test purposes
-	inventory.push_back(std::move(std::make_pair(99, std::make_unique<Bazooka>(world, textures))));
-	inventory.push_back(std::move(std::make_pair(1, std::make_unique<Cannon>(world, textures))));
-	inventory.push_back(std::move(std::make_pair(1, std::make_unique<Grenade>(world, textures, fonts))));
+	inventory.emplace_back(std::make_pair(99, std::make_unique<Bazooka>(world, textures)));
+	inventory.emplace_back(std::make_pair(1, std::make_unique<Cannon>(world, textures)));
+	inventory.emplace_back(std::make_pair(1, std::make_unique<Grenade>(world, textures, fonts)));
 	selectedWeapon = &inventory.front();
 	
 }
@@ -131,8 +131,7 @@ void Worm::drawThis(sf::RenderTarget& target, sf::RenderStates states) const
 	
 	target.draw(wormName, states);
 	target.draw(healthBar, states);
-	
-	wormStack.draw();
+
 	wormStack.draw(target, states);
 }
 
@@ -163,12 +162,12 @@ void Worm::activateState(State_ID state)
 	wormStack.push(state);
 }
 
-State_ID Worm::getCurrentState() const
+State_ID Worm::getCurrentState() const noexcept
 {
 	return currentState;
 }
 
-bool Worm::facingRight()
+bool Worm::facingRight() const noexcept
 {
 	return wormSprite.getScale().x > 0;
 }
@@ -181,23 +180,23 @@ void Worm::setDamage(int _dmg)
 	healthBar.setSize({ healthBarWidth * health/maxHealth, healthBarHeight });
 }
 
-void Worm::setName(const std::string& name)
+void Worm::setName(const std::string& name) 
 {
 	wormName.setString(name);
 	wormName.setOrigin(wormName.getLocalBounds().width / 2.f, wormName.getLocalBounds().height / 2.f);
 }
 
-std::string Worm::getName()
+std::string Worm::getName() const noexcept
 {
 	return wormName.getString();
 }
 
-sf::Color Worm::getTeam() const
+sf::Color Worm::getTeamColor() const noexcept
 {
 	return teamColor;
 }
 
-void Worm::setTeam(sf::Color _teamColor)
+void Worm::setTeam(sf::Color _teamColor) noexcept
 {
 	teamColor = _teamColor;
 	wormName.setFillColor(teamColor);
@@ -208,7 +207,7 @@ bool Worm::isDestroyed()
 {
 	if (health <= 0)
 	{
-		std::unique_ptr<NodePhysicalSprite> dead_body = std::make_unique<NodePhysicalSprite>(*World, Physical_Types::Dynamic_Type, deadWorm, getPosition());
+		auto dead_body = std::make_unique<NodePhysicalSprite>(*World, Physical_Types::Dynamic_Type, deadWorm, getPosition());
 		getRootNode()->pinNode(std::move(dead_body));
 		return true;
 	}

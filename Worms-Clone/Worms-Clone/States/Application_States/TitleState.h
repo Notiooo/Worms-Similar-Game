@@ -18,11 +18,6 @@ public:
 	TitleState(StateStack& stack, sf::RenderWindow& window, const FontManager& fonts);
 
 	/**
-	 * \brief Draws only this state.
-	 */
-	void draw() const override;
-
-	/**
 	 * \brief Draws only this state to the passed target
 	 * \param target where it should be drawn to
 	 * \param states provides information about rendering process (transform, shader, blend mode)
@@ -43,10 +38,10 @@ public:
 
 
 private:
-	sf::Sprite background_sprite; //!< Main image displayed on the screen
-	sf::Texture background_texture; //!< The image that should appear (loaded as texture)
+	sf::Sprite backgroundSprite; //!< Main image displayed on the screen
+	sf::Texture backgroundTexture; //!< The image that should appear (loaded as texture)
 	sf::Text information; //!< Text information about the possibility of moving to the next state
-	float text_padding = 15.f; //!< Additional distance from bottom right corner of screen
+	float textPadding = 15.f; //!< Additional distance from bottom right corner of screen
 
 	sf::RenderWindow* window; //!< Window to which this status is displayed
 };

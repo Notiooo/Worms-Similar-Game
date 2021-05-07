@@ -9,11 +9,6 @@ public:
 	WormWaitState(StateStack&, Worm&);
 
 	/**
-	 * \brief Draws only this state.
-	 */
-	void draw() const override;
-
-	/**
 	 * \brief Draws only this state (current state of the worm) to the passed target
 	 * \param target where it should be drawn to
 	 * \param states provides information about rendering process (transform, shader, blend mode)

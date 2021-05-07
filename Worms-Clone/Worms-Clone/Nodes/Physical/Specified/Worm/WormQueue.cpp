@@ -2,7 +2,7 @@
 
 void WormQueue::addWorm(std::unique_ptr<Worm>& worm)
 {
-	sf::Color teamColor = worm->getTeam();
+	auto teamColor = worm->getTeamColor();
 	auto found = std::find_if(wormQueue.begin(), wormQueue.end(), [teamColor](Team& team)
 		{
 			return (team.color == teamColor);
@@ -24,7 +24,7 @@ Worm& WormQueue::getNextWorm()
 
 	if (previousTeam->worms.size() > 1)
 	{
-		std::unique_ptr<Worm> wormPtr = std::move(previousTeam->worms.front());
+		auto wormPtr = std::move(previousTeam->worms.front());
 		previousTeam->worms.pop_front();
 		previousTeam->worms.push_back(std::move(wormPtr));
 	}
@@ -35,12 +35,12 @@ Worm& WormQueue::getNextWorm()
 	return *currentTeam->worms.front();
 }
 
-bool WormQueue::isEmpty() const
+bool WormQueue::isEmpty() const noexcept
 {
 	return wormQueue.empty();
 }
 
-int WormQueue::aliveTeams()
+int WormQueue::aliveTeams() const noexcept
 {
 	return wormQueue.size();
 }
@@ -62,7 +62,7 @@ void WormQueue::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	if (wormQueue.empty())
 		return;
 	
-	std::list<Team>::const_iterator team = currentTeam;
+	auto team = static_cast<std::list<Team>::const_iterator>(currentTeam);
 	++team;
 	
 	if (team == wormQueue.cend())
@@ -106,8 +106,8 @@ void WormQueue::removeDestroyed()
 	for(auto team = wormQueue.begin(), end = wormQueue.end(); team != end;)
 	{
 		// I start with removal of the worms from the teams
-		auto marked_remove = std::remove_if(team->worms.begin(), team->worms.end(), std::mem_fn(&NodeScene::isDestroyed));
-		team->worms.erase(marked_remove, team->worms.end());
+		const auto markedRemove = std::remove_if(team->worms.begin(), team->worms.end(), std::mem_fn(&NodeScene::isDestroyed));
+		team->worms.erase(markedRemove, team->worms.end());
 
 		// Then If any team is empty I want to remove it from the list
 		if (team->worms.empty())

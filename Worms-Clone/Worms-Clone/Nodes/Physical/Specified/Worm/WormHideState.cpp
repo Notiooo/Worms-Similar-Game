@@ -1,10 +1,5 @@
 #include "WormHideState.h"
 
-void WormHideState::draw() const
-{
-
-}
-
 WormHideState::WormHideState(StateStack& stack, Worm& worm) :
 	WormMoveableState(stack, worm)
 {

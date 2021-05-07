@@ -10,17 +10,17 @@ State::~State()
 {
 }
 
-void State::requestPush(State_ID stateID)
+void State::requestPush(State_ID stateID) const
 {
 	stack->push(stateID);
 }
 
-void State::requestPop()
+void State::requestPop() const
 {
 	stack->pop();
 }
 
-void State::requestClear()
+void State::requestClear() const
 {
 	stack->clear();
 }

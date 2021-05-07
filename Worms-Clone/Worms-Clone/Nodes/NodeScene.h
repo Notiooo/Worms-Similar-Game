@@ -59,7 +59,7 @@ public:
 	using Node = std::unique_ptr<NodeScene>;
 
 	NodeScene();
-	virtual ~NodeScene() = default;
+	virtual ~NodeScene() override = default;
 
 	/**
 	 * \brief Steals ownership, and puts it into the vector of pinned nodes

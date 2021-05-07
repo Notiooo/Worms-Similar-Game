@@ -84,33 +84,33 @@ void World::processEvents(const sf::Event& event)
 		};
 
 		// Zoom in & out, and also scales the timer size
-		auto current_zoom = worldView.getSize().x;
-		auto maximum_zoom = worldWindow.getDefaultView().getSize().x * maxZoomFactor;
-		auto minimum_zoom = worldWindow.getDefaultView().getSize().x / maxZoomFactor;
+		const auto currentZoom = worldView.getSize().x;
+		const auto maximumZoom = worldWindow.getDefaultView().getSize().x * maxZoomFactor;
+		const auto minimumZoom = worldWindow.getDefaultView().getSize().x / maxZoomFactor;
 
 
 		// Zooming in
 		if (event.mouseWheelScroll.delta > 0)
 		{
-			if (current_zoom > minimum_zoom)
+			if (currentZoom > minimumZoom)
 				worldView.zoom(1.f / 1.1f);
 		}
 		// Zooming out
 		else
 		{
-			if (current_zoom < maximum_zoom)
+			if (currentZoom < maximumZoom)
 				worldView.zoom(1.1f);
 
 
 			// This check if player do not scroll outside world boundaries
 
 			// First I create a boundary of the screen
-			auto viewTopLeft = worldWindow.mapPixelToCoords({ 0, 0 });
+			const auto viewTopLeft = worldWindow.mapPixelToCoords({ 0, 0 });
 			sf::RectangleShape viewBorder(sf::Vector2f(worldView.getSize()));
 			viewBorder.setPosition(viewTopLeft);
 
 			// And a proper parameters
-			auto viewBottomRight = sf::Vector2f(viewBorder.getPosition().x + viewBorder.getGlobalBounds().width, viewBorder.getPosition().y + viewBorder.getGlobalBounds().height);
+			const auto viewBottomRight = sf::Vector2f(viewBorder.getPosition().x + viewBorder.getGlobalBounds().width, viewBorder.getPosition().y + viewBorder.getGlobalBounds().height);
 			
 			// Check if player do not zoom outside the world boundary
 			// If so, then zoom back again
@@ -122,7 +122,7 @@ void World::processEvents(const sf::Event& event)
 		worldWindow.setView(worldView);
 
 		// Reads the "new" position of the mouse (it changed since the zoom is different)
-		const sf::Vector2f newCoordinates{
+		const auto newCoordinates{
 			worldWindow.mapPixelToCoords({event.mouseWheelScroll.x, event.mouseWheelScroll.y})
 		};
 
@@ -131,7 +131,7 @@ void World::processEvents(const sf::Event& event)
 		worldWindow.setView(worldView);
 
 		// Fixes the background
-		backgroundSprite.setTextureRect(sf::IntRect(0, 0, worldView.getSize().x, worldView.getSize().y));
+		backgroundSprite.setTextureRect(sf::IntRect(0, 0, static_cast<int>(worldView.getSize().x), static_cast<int>(worldView.getSize().y)));
 		backgroundSprite.setPosition(worldWindow.mapPixelToCoords({0, 0}));
 	}
 
@@ -212,7 +212,7 @@ void World::createWorld()
 	}
 
 	// Setup the GameplayManager
-	std::unique_ptr<GameplayManager> gameManager = std::make_unique<GameplayManager>(b2_World, worldTextures, worldFonts, worldWindow);
+	auto gameManager = std::make_unique<GameplayManager>(b2_World, worldTextures, worldFonts, worldWindow);
 	worldGameManager = gameManager.get();
 	worldLayers[static_cast<unsigned>(WorldLayers::Foreground)]->pinNode(std::move(gameManager));
 
@@ -330,9 +330,9 @@ void World::createWorld()
 		auto wormSpawnPointIter = wormSpawnPoints.cbegin();
 
 		// For testing purposes they are hardcoded here
-		for (int i = 0; i < numberOfTeams; ++i)
+		for (auto i = 0; i < numberOfTeams; ++i)
 		{
-			for (int j = 0; j < wormAmount; ++j)
+			for (auto j = 0; j < wormAmount; ++j)
 			{
 				if (wormNameIter == wormNames.cend())
 					wormNameIter = wormNames.cbegin();
@@ -364,10 +364,10 @@ void World::updateWorldBoundaries(sf::Vector2f position, sf::Vector2f dimensions
 
 void World::moveScreenWithMouse()
 {
-	static sf::Vector2i oldMouseCoordinates = sf::Mouse::getPosition();
+	static auto oldMouseCoordinates = sf::Mouse::getPosition();
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
 	{
-		sf::Vector2i newMouseCoordinates = sf::Mouse::getPosition();
+		const auto newMouseCoordinates = sf::Mouse::getPosition();
 		worldView.move(
 			worldWindow.mapPixelToCoords(oldMouseCoordinates) - worldWindow.mapPixelToCoords(newMouseCoordinates));
 
@@ -377,12 +377,12 @@ void World::moveScreenWithMouse()
 		// Check if player do not scroll outside the world boundaries
 
 		// I create a boundary of the sceen
-		auto viewTopLeft = worldWindow.mapPixelToCoords({0, 0});
+		const auto viewTopLeft = worldWindow.mapPixelToCoords({0, 0});
 		sf::RectangleShape viewBorder(sf::Vector2f(worldView.getSize()));
 		viewBorder.setPosition(viewTopLeft);
 
 		// And a proper points
-		auto viewBottomRight = sf::Vector2f(viewBorder.getPosition().x + viewBorder.getGlobalBounds().width, viewBorder.getPosition().y + viewBorder.getGlobalBounds().height);
+		const auto viewBottomRight = sf::Vector2f(viewBorder.getPosition().x + viewBorder.getGlobalBounds().width, viewBorder.getPosition().y + viewBorder.getGlobalBounds().height);
 
 		// Now I check for boundaries and correct them
 		if (viewBottomRight.x > mostPositionedX)

@@ -7,7 +7,7 @@ NodeRectangularPhysical::NodeRectangularPhysical(b2World& world, sf::Vector2f si
 	rectangle(size)
 {
 	// set origin to the center
-	sf::FloatRect boundaries_of_rectangle = rectangle.getLocalBounds();
+	auto boundaries_of_rectangle = rectangle.getLocalBounds();
 	rectangle.setOrigin(boundaries_of_rectangle.width / 2.f, boundaries_of_rectangle.height / 2.f);
 
 	// Set color

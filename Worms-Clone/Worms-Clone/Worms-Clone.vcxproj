@@ -216,6 +216,7 @@
     <ClInclude Include="Nodes\GameplayManager.h" />
     <ClInclude Include="Nodes\Particles\NodeEmitter.h" />
     <ClInclude Include="Nodes\Particles\NodeParticle.h" />
+    <ClInclude Include="Nodes\Particles\Particles.h" />
     <ClInclude Include="Nodes\Physical\CollideTypes.h" />
     <ClInclude Include="Nodes\Physical\NodeDestructibleRectangle.h" />
     <ClInclude Include="Nodes\Physical\NodePhysicalBody.h" />
@@ -239,7 +240,6 @@
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormPlayState.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormQueue.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormWaitState.h" />
-    <ClInclude Include="Particles\Particles.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Resources\Resources.h" />

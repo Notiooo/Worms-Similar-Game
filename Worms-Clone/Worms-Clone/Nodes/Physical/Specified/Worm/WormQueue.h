@@ -93,7 +93,7 @@ public:
 	 * \brief Checks that there is no worm in the queue
 	 * \return True if there is no worm in the queue, false otherwise
 	 */
-	bool isEmpty() const;
+	bool isEmpty() const noexcept;
 
 	// Later it will be made with iterators
 	// For now those functions are used to update and draw
@@ -136,7 +136,7 @@ public:
 	 * \brief Calculates the number of teams currently alive (still playing).
 	 * \return Number of teams currently alive
 	 */
-	int aliveTeams();
+	int aliveTeams() const noexcept;
 
 private:
 	std::list<Team> wormQueue; //!< Queue containing all the Teams with worms

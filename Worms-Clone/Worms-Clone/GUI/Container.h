@@ -16,7 +16,7 @@ namespace GUI
 	{
 	public:
 
-		Container(const sf::RenderWindow& window);
+		explicit Container(const sf::RenderWindow& window);
 		
 		/**
 		 * \brief Adds a component to the container
@@ -28,7 +28,7 @@ namespace GUI
 		 * \brief Checks and returns information whether a container is empty
 		 * \return True if container is empty, false otherwise
 		 */
-		bool isEmpty();
+		bool isEmpty() const noexcept;
 
 		/**
 		 * \brief Returns the reference to the element at the front of the container
@@ -65,7 +65,7 @@ namespace GUI
 		 * \brief Request for clearing the container -- the request
 		 * is only processed at the beginning of the next iteration
 		 */
-		void requestClear();
+		void requestClear() noexcept;
 
 		// Inserts into the public scope the necessary functions that are normally hidden
 		using sf::Transformable::setOrigin;

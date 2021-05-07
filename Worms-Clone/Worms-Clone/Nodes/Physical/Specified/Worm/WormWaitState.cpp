@@ -12,10 +12,6 @@ WormWaitState::WormWaitState(StateStack& stack, Worm& worm) :
 	savedPosition = worm.Body->GetPosition();
 }
 
-void WormWaitState::draw() const
-{
-}
-
 void WormWaitState::draw(sf::RenderTarget&, sf::RenderStates) const
 {
 }

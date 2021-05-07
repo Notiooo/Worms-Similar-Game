@@ -24,11 +24,6 @@ public:
 
 
 	/**
-	 * \brief Draws only this state.
-	 */
-	virtual void draw() const = 0;
-
-	/**
 	 * \brief Draws only this state to the passed target
 	 * \param target where it should be drawn to
 	 * \param states provides information about rendering process (transform, shader, blend mode)
@@ -52,21 +47,21 @@ protected:
 	 * \brief The state will be pushed out in the next iteration of the stack.
 	 * \param stateID Identifier of the state to be pushed
 	 */
-	void requestPush(State_ID stateID);
+	void requestPush(State_ID stateID) const;
 
 	
 	/**
 	 * \brief The state on the top of the stack will be removed in
 	 * the next iteration of the stack.
 	 */
-	void requestPop();
+	void requestPop() const;
 
 	
 	/**
 	 * \brief All states on the stack will be removed in the
 	 * next iteration of the stack.
 	 */
-	void requestClear();
+	void requestClear() const;
 
 private:
 

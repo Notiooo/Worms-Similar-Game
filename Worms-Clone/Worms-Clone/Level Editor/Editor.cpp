@@ -53,14 +53,14 @@ void Editor::handleEvent(const sf::Event& event)
 	if (event.type == sf::Event::MouseWheelScrolled)
 	{
 		// Saves coordinates of the mouse on the screen
-		const sf::Vector2f oldCoordinates{
+		const auto oldCoordinates(
 			editorWindow.mapPixelToCoords({event.mouseWheelScroll.x, event.mouseWheelScroll.y})
-		};
+		);
 
 		// Zoom in & out, and also scales the timer size
-		auto current_zoom = editorView.getSize().x;
-		auto maximum_zoom = editorWindow.getDefaultView().getSize().x * maxZoomFactor;
-		auto minimum_zoom = editorWindow.getDefaultView().getSize().x / maxZoomFactor;
+		const auto current_zoom = editorView.getSize().x;
+		const auto maximum_zoom = editorWindow.getDefaultView().getSize().x * maxZoomFactor;
+		const auto minimum_zoom = editorWindow.getDefaultView().getSize().x / maxZoomFactor;
 
 		// Zooming in
 		if (event.mouseWheelScroll.delta > 0)
@@ -79,26 +79,27 @@ void Editor::handleEvent(const sf::Event& event)
 		editorWindow.setView(editorView);
 
 		// Reads the "new" position of the mouse (it changed since the zoom is different)
-		const sf::Vector2f newCoordinates{
+		const auto newCoordinates(
 			editorWindow.mapPixelToCoords({event.mouseWheelScroll.x, event.mouseWheelScroll.y})
-		};
+		);
 
 		// It moves the view, so it will "zoom into" the cursor, and not into the center of the screen
 		editorView.move({oldCoordinates - newCoordinates});
 		editorWindow.setView(editorView);
 
 		// Fixes the background
-		backgroundSprite.setTextureRect(sf::IntRect(0, 0, editorView.getSize().x, editorView.getSize().y));
+		backgroundSprite.setTextureRect(sf::IntRect(0, 0, static_cast<int>(editorView.getSize().x),
+		                                            static_cast<int>(editorView.getSize().y)));
 		backgroundSprite.setPosition(editorWindow.mapPixelToCoords({0, 0}));
 	}
 }
 
 void Editor::moveScreenWithMouse()
 {
-	static sf::Vector2i oldMouseCoordinates = sf::Mouse::getPosition();
+	static auto oldMouseCoordinates = sf::Mouse::getPosition();
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
 	{
-		sf::Vector2i newMouseCoordinates = sf::Mouse::getPosition();
+		const auto newMouseCoordinates = sf::Mouse::getPosition();
 		editorView.move(
 			editorWindow.mapPixelToCoords(oldMouseCoordinates) - editorWindow.mapPixelToCoords(newMouseCoordinates));
 		editorWindow.setView(editorView);
@@ -193,28 +194,28 @@ void Editor::loadWorld()
 			}
 			break;
 
-		case static_cast<unsigned>(WorldObjects::Water) :
-		{
-			float positionX, positionY, width, height, rotation;
-			ss >> positionX >> positionY >> width >> height >> rotation;
+		case static_cast<unsigned>(WorldObjects::Water):
+			{
+				float positionX, positionY, width, height, rotation;
+				ss >> positionX >> positionY >> width >> height >> rotation;
 
-			newlyCreatedObject.setPosition(positionX, positionY);
-			newlyCreatedObject.setSize(width, height);
-			newlyCreatedObject.setRotation(rotation);
-			newlyCreatedObject.setName(inGameObjects[objectId]);
-		}
-		break;
-		case static_cast<unsigned>(WorldObjects::DestructibleBlock) :
-		{
-			float positionX, positionY, width, height, rotation;
-			ss >> positionX >> positionY >> width >> height >> rotation;
+				newlyCreatedObject.setPosition(positionX, positionY);
+				newlyCreatedObject.setSize(width, height);
+				newlyCreatedObject.setRotation(rotation);
+				newlyCreatedObject.setName(inGameObjects[objectId]);
+			}
+			break;
+		case static_cast<unsigned>(WorldObjects::DestructibleBlock):
+			{
+				float positionX, positionY, width, height, rotation;
+				ss >> positionX >> positionY >> width >> height >> rotation;
 
-			newlyCreatedObject.setPosition(positionX, positionY);
-			newlyCreatedObject.setSize(width, height);
-			newlyCreatedObject.setRotation(rotation);
-			newlyCreatedObject.setName(inGameObjects[objectId]);
-		}
-		break;
+				newlyCreatedObject.setPosition(positionX, positionY);
+				newlyCreatedObject.setSize(width, height);
+				newlyCreatedObject.setRotation(rotation);
+				newlyCreatedObject.setName(inGameObjects[objectId]);
+			}
+			break;
 		}
 	}
 	worldMap.close();
@@ -224,8 +225,8 @@ void Editor::registerInGameObjects()
 {
 	inGameObjects.insert({static_cast<unsigned>(WorldObjects::WormSpawnPoint), "Worm Spawn Point"});
 	inGameObjects.insert({static_cast<unsigned>(WorldObjects::StaticPaperBlock), "Static Paper Block"});
-	inGameObjects.insert({static_cast<unsigned>(WorldObjects::DynamicPaperBlock), "Dynamic Paper Block" });
-	inGameObjects.insert({ static_cast<unsigned>(WorldObjects::DestructibleBlock), "Destructible Block" });
+	inGameObjects.insert({static_cast<unsigned>(WorldObjects::DynamicPaperBlock), "Dynamic Paper Block"});
+	inGameObjects.insert({static_cast<unsigned>(WorldObjects::DestructibleBlock), "Destructible Block"});
 	inGameObjects.insert({static_cast<unsigned>(WorldObjects::Water), "Water"});
 }
 
@@ -262,7 +263,7 @@ void Editor::createObject(unsigned objectId, const sf::Vector2f& position)
 {
 	createdObjects.emplace_back(textures, fonts);
 
-	NodeEditorObject& newlyCreatedObject = createdObjects.back();
+	auto& newlyCreatedObject = createdObjects.back();
 	newlyCreatedObject.setId(objectId);
 	newlyCreatedObject.setPosition(mousePosition.x, mousePosition.y);
 	newlyCreatedObject.setName(inGameObjects[objectId]);
@@ -297,14 +298,14 @@ void Editor::saveWorld()
 			          object.getSize().x, object.getSize().y, object.getRotation());
 			break;
 
-		case static_cast<unsigned>(WorldObjects::Water) :
+		case static_cast<unsigned>(WorldObjects::Water):
 			printLine(worldMap, object.getId(), object.getPosition().x, object.getPosition().y,
-				object.getSize().x, object.getSize().y, object.getRotation());
+			          object.getSize().x, object.getSize().y, object.getRotation());
 			break;
 
-		case static_cast<unsigned>(WorldObjects::DestructibleBlock) :
+		case static_cast<unsigned>(WorldObjects::DestructibleBlock):
 			printLine(worldMap, object.getId(), object.getPosition().x, object.getPosition().y,
-				object.getSize().x, object.getSize().y, object.getRotation());
+			          object.getSize().x, object.getSize().y, object.getRotation());
 			break;
 		}
 	}
@@ -313,7 +314,7 @@ void Editor::saveWorld()
 
 void Editor::removeDestroyed()
 {
-	auto removal_mark = std::remove_if(createdObjects.begin(), createdObjects.end(),
-	                                   std::mem_fn(&NodeEditorObject::isDestroyed));
-	createdObjects.erase(removal_mark, createdObjects.end());
+	const auto removalMark = std::remove_if(createdObjects.begin(), createdObjects.end(),
+	                                        std::mem_fn(&NodeEditorObject::isDestroyed));
+	createdObjects.erase(removalMark, createdObjects.end());
 }

@@ -8,7 +8,7 @@ NodePhysicalSpark::NodePhysicalSpark(b2World& world, const sf::Texture& smokeTex
 	sparkColor(color),
 	smokeParticles(smokeTexture)
 {
-	smokeParticles.setFadingOut(sf::seconds(timeToDelete.asSeconds() / 1.5f));
+	smokeParticles.setFadingOut(sf::seconds(timeToDelete.asSeconds()));
 	smokeParticles.setDefaultOpacity(0.05f);
 	smokeParticles.setParticleColor(color);
 	//smokeParticles.setParticleLifeTime(sf::seconds(timeToDelete.asSeconds() * 2.f));

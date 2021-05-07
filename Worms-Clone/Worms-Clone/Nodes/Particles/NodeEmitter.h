@@ -10,7 +10,7 @@
  * Depending on the NodeParticle to which the emitter is attached, particles are created in its position.
  * If the attached NodeParticle generates smoke, it will be smoke. If it is fire, it will be fire.
  */
-class NodeEmitter : public NodeScene
+class NodeEmitter final : public NodeScene
 {
 public:
 	explicit NodeEmitter(NodeParticle& particle, float emissionPerSecond = 60.f);

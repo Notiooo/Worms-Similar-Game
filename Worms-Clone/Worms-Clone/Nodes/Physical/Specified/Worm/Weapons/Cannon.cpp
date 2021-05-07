@@ -14,12 +14,12 @@ Cannon::Cannon(b2World& world, TextureManager& textures):
 	setRange(80.f);
 }
 
-bool Cannon::isActivation()
+bool Cannon::isActivation() const noexcept
 {
 	return false;
 }
 
-bool Cannon::isRoundEnding()
+bool Cannon::isRoundEnding() const noexcept
 {
 	return true;
 }

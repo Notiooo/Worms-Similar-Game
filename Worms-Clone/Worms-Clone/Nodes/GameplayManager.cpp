@@ -25,7 +25,7 @@ GameplayManager::GameplayManager(b2World& _physicalWorld, TextureManager& _textu
 
 void GameplayManager::addWorm(const std::string& name, sf::Color teamColor, sf::Vector2f position)
 {
-	std::unique_ptr<Worm> worm = std::make_unique<Worm>(physicalWorld, textures, fonts, window, position);
+	auto worm = std::make_unique<Worm>(physicalWorld, textures, fonts, window, position);
 	worm->setName(name);
 	worm->setTeam(teamColor);
 
@@ -80,7 +80,7 @@ void GameplayManager::handleThisEvents(const sf::Event& event)
 			                                     roundTimeText.getCharacterSize())));
 
 		// Current zoom of the window
-		auto currentScale = sf::Vector2f(window.getView().getSize().x / window.getDefaultView().getSize().x,
+		const auto currentScale = sf::Vector2f(window.getView().getSize().x / window.getDefaultView().getSize().x,
 		                                 window.getView().getSize().y / window.getDefaultView().getSize().y);
 
 		// Updates all fixed text to stay at proper scale
@@ -113,7 +113,7 @@ void GameplayManager::addTime(sf::Time time)
 	additionalTime = time;
 }
 
-bool GameplayManager::anyBullet()
+bool GameplayManager::anyBullet() const
 {
 	return std::any_of(pinnedNodes.cbegin(), pinnedNodes.cend(), [](const Node& node)
 	{
@@ -132,7 +132,7 @@ const NodeScene* GameplayManager::getRootNode() const
 	return this;
 }
 
-bool GameplayManager::isGameFinished() const
+bool GameplayManager::isGameFinished() const noexcept
 {
 	return gameFinished;
 }
@@ -140,12 +140,12 @@ bool GameplayManager::isGameFinished() const
 void GameplayManager::updateTurn()
 {
 	// On default the game should stay with PlayState for some worm
-	static bool hideState = false;
+	static auto hideState = false;
 
 	// The game should go on if there are worms in the queue
 	if (!isGameFinished() && !wormQueue.isEmpty())
 	{
-		sf::Time timeElapsed = roundClock.getElapsedTime();
+		auto timeElapsed = roundClock.getElapsedTime();
 
 		// The game should allow to play another worm if
 		// a) The time has passed
@@ -178,7 +178,7 @@ void GameplayManager::updateTurn()
 			wormQueue.front().activateState(State_ID::WormWaitState);
 			wormQueue.getNextWorm().activateState(State_ID::WormPlayState);
 
-			sf::Color currentTeam = wormQueue.front().getTeam();
+			auto currentTeam = wormQueue.front().getTeamColor();
 
 			setWorldMessage("Lets go, " + wormQueue.front().getName() + "!", sf::Color::White, sf::seconds(2));
 
@@ -190,7 +190,7 @@ void GameplayManager::updateTurn()
 		// Displays time in decreasing order
 		sf::Time timeDisplay = ((hideState) ? timePerHide : timePerTurn);
 		timeDisplay = timeDisplay + additionalTime - timeElapsed;
-		int timeSeconds = static_cast<int>(timeDisplay.asSeconds());
+		const auto timeSeconds = static_cast<int>(timeDisplay.asSeconds());
 		if (timeSeconds >= 0)
 			roundTimeText.setString(std::to_string(timeSeconds));
 		roundTimeText.setOrigin(roundTimeText.getLocalBounds().width / 2.f,
@@ -200,9 +200,9 @@ void GameplayManager::updateTurn()
 	{
 		hideState = false;
 
-		sf::Time timeElapsed = roundClock.getElapsedTime();
-		sf::Time timeDisplay = leaveGameTime - timeElapsed;
-		int timeSeconds = static_cast<int>(timeDisplay.asSeconds());
+		const auto timeElapsed = roundClock.getElapsedTime();
+		const auto timeDisplay = leaveGameTime - timeElapsed;
+		const auto timeSeconds = static_cast<int>(timeDisplay.asSeconds());
 		if (timeSeconds >= 0)
 		{
 			roundTimeText.setString("You'll be redirected to menu in " + std::to_string(timeSeconds) + " seconds");
@@ -218,7 +218,7 @@ void GameplayManager::updateGameResult()
 	if (isGameFinished())
 		return;
 
-	int numberOfAliveTeams = wormQueue.aliveTeams();
+	const auto numberOfAliveTeams = wormQueue.aliveTeams();
 
 	if (numberOfAliveTeams == 0)
 	{
@@ -230,9 +230,9 @@ void GameplayManager::updateGameResult()
 		setGameFinished();
 		std::string winner;
 
-		sf::Color teamColor = wormQueue.front().getTeam();
+		auto teamColor = wormQueue.front().getTeamColor();
 
-		// Wrong way to do this! I have to change it later.
+		// TODO: Wrong way to do this! I have to change it later.
 		if (teamColor == sf::Color::Red)
 			winner = "red";
 		else if (teamColor == sf::Color::Blue)

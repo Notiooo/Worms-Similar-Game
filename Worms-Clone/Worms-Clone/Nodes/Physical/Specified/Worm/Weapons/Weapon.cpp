@@ -27,17 +27,17 @@ void Weapon::activation(Worm& worm)
 {
 }
 
-void Weapon::setMaxDmg(float dmg)
+void Weapon::setMaxDmg(float dmg) noexcept
 {
 	attackDmg = dmg;
 }
 
-void Weapon::setRange(float rng)
+void Weapon::setRange(float rng) noexcept
 {
 	range = rng;
 }
 
-void Weapon::setSparkColor(const sf::Color& color)
+void Weapon::setSparkColor(const sf::Color& color) noexcept
 {
 	bulletSparksColor = color;
 }
@@ -57,7 +57,7 @@ void Weapon::rotateWeapon(float angle)
 	weaponSprite.setRotation(angle);
 }
 
-sf::Sprite& Weapon::getThumbnailSprite()
+sf::Sprite& Weapon::getThumbnailSprite() noexcept
 {
 	return thumbnailSprite;
 }

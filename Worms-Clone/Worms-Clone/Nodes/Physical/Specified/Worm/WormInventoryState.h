@@ -16,10 +16,6 @@ class WormInventoryState : public State
 public:
 	WormInventoryState(StateStack&, Worm&, TextureManager& textures, const FontManager& fonts, sf::RenderWindow& window);
 
-	/**
-	 * \brief Draws only this state.
-	 */
-	void draw() const override;
 
 	/**
 	 * \brief Draws only this state (current state of the worm) to the passed target

@@ -29,7 +29,7 @@ NodePhysicalBody::NodePhysicalBody(b2World& world, Physical_Types physical_type,
 NodePhysicalBody::~NodePhysicalBody()
 {
 	// Need to remove collision information before deleting the object.
-	for (b2Fixture* fix = Body->GetFixtureList(); fix; fix = fix->GetNext())
+	for (auto* fix = Body->GetFixtureList(); fix; fix = fix->GetNext())
 	{
 		delete reinterpret_cast<Collision*>(fix->GetUserData().pointer);
 	}

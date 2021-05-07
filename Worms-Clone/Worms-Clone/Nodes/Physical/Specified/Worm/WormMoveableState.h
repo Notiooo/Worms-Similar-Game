@@ -18,11 +18,6 @@ protected:
 public:
 
 	/**
-	 * \brief Draws only this state.
-	 */
-	void draw() const override = 0;
-
-	/**
 	 * \brief Draws only this state (current state of the worm) to the passed target
 	 * \param target where it should be drawn to
 	 * \param states provides information about rendering process (transform, shader, blend mode)
@@ -45,7 +40,7 @@ public:
 	 * \brief Checks whether the worm's face turns to the right
 	 * \return True if the worm looks to the right of the screen, false otherwise
 	 */
-	bool facingRight();
+	bool facingRight() const noexcept;
 
 
 protected:
@@ -62,9 +57,9 @@ protected:
 	
 	/**
 	 * \brief Updates the state of the worm in terms of worm movement.
-	 * \param deltatime Time elapsed since the previous frame.
+	 * \param deltaTime Time elapsed since the previous frame.
 	 */
-	void updateMovement(sf::Time deltatime);
+	void updateMovement(sf::Time deltaTime);
 
 	/**
 	 * \brief Determines the direction in which the worm is looking.

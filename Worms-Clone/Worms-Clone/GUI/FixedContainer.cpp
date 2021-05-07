@@ -15,12 +15,12 @@ void GUI::FixedContainer::store(std::unique_ptr<Component> component)
 
 void GUI::FixedContainer::update()
 {	
-	sf::Vector2f mousePosition = sf::Vector2f(sf::Mouse::getPosition(window));
+	const auto mousePosition = sf::Vector2f(sf::Mouse::getPosition(window));
 	
 	for (auto& pinnedComponent : pinnedComponents)
 		pinnedComponent->update(mousePosition);
 	
-	const sf::Vector2f leftUppercorner = window.mapPixelToCoords({ 0, 0 });
+	const auto leftUppercorner = window.mapPixelToCoords({ 0, 0 });
 	setPosition(leftUppercorner);
 	
 	viewScale.x = window.getView().getSize().x / window.getDefaultView().getSize().x;

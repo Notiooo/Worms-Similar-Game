@@ -47,10 +47,6 @@ PauseState::PauseState(StateStack& stack, sf::RenderWindow& window, const FontMa
 	containerOfButtons.store(std::move(exitGameButton));
 }
 
-void PauseState::draw() const
-{
-}
-
 void PauseState::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(darkBackground, target.getView().getInverseTransform());

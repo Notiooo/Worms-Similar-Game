@@ -33,34 +33,34 @@ void NodeParticle::addParticle(sf::Vector2f pos)
 	particles.push_back(particle);
 }
 
-void NodeParticle::setParticleLifeTime(sf::Time time)
+void NodeParticle::setParticleLifeTime(const sf::Time time) noexcept
 {
 	particleLifeTime = time;
 }
 
-void NodeParticle::setParticleColor(sf::Color color)
+void NodeParticle::setParticleColor(const sf::Color color) noexcept
 {
 	particleColor = color;
 }
 
-void NodeParticle::setFadingOut(sf::Time time)
+void NodeParticle::setFadingOut(const sf::Time time) noexcept
 {
 	fadingOut.isActivated = true;
 	fadingOut.endTime = time;
 }
 
-void NodeParticle::setDefaultOpacity(float opacity)
+void NodeParticle::setDefaultOpacity(const float opacity) noexcept
 {
 	defaultOpacity = opacity;
 }
 
-void NodeParticle::setFadingLasts(sf::Time time)
+void NodeParticle::setFadingLasts(const sf::Time time) noexcept
 {
 	fadingLast.isActivated = true;
 	fadingLast.endTime = time;
 }
 
-void NodeParticle::setParticleInfiniteLifeTime(bool flag)
+void NodeParticle::setParticleInfiniteLifeTime(const bool flag) noexcept
 {
 	infiniteParticleLifeTime = flag;
 }

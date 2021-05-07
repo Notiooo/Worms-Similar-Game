@@ -40,9 +40,9 @@ void GUI::Component::deactivate()
 
 void GUI::Component::setPositionBelow(const Component& object, float padding)
 {
-	sf::Vector2f pos(object.getPosition().x, object.getPosition().y);
+	const sf::Vector2f pos(object.getPosition().x, object.getPosition().y);
 
-	sf::Vector2f offset = sf::Vector2f(0, object.getGlobalBounds().height);
+	sf::Vector2f offset(0, object.getGlobalBounds().height);
 
 	padding *= getScale().y;
 	offset *= getScale().y;

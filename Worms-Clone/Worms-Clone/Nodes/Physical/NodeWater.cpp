@@ -41,7 +41,7 @@ NodeWater::NodeWater(b2World& world, const sf::Texture& texture) :
 void NodeWater::setSize(float width, float height)
 {
 	// I don't want the waves to repeat in the Y axis, so I don't allow too much height that will bug it.
-	float maxHeight = waterBottomLayer.waterLayerSprite.getGlobalBounds().height;
+	auto maxHeight = waterBottomLayer.waterLayerSprite.getGlobalBounds().height;
 	height = ((height > maxHeight) ? maxHeight : height);
 
 	// For each water layer
