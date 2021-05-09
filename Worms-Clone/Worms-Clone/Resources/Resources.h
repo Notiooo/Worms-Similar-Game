@@ -17,12 +17,15 @@ enum class Textures_ID
 	WorldBackground,
 	Water,
 	Paper,
-	AnExemplaryWorm,
-	DeadWorm,
-	HitWorm,
 	Rope,
 	SmokeParticle,
 
+	// === Worm === //
+	AnExemplaryWorm,
+	HitWorm,
+	DeadWorm,
+	WormWalking,
+	
 	// === TitleState === /
 	TitleStateBackground,
 

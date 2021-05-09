@@ -182,6 +182,7 @@ void World::loadResources()
 	worldTextures.storeResource(Textures_ID::HitWorm, "Resources/Textures/Worm_Hit.png");
 	worldTextures.storeResource(Textures_ID::DeadWorm, "Resources/Textures/Dead_Worm.png");
 	worldTextures.storeResource(Textures_ID::Inventory, "Resources/Textures/Weapons/Inventory/background.png");
+	worldTextures.storeResource(Textures_ID::WormWalking, "Resources/Textures/WormWalking.png");
 
 
 	// === World === //

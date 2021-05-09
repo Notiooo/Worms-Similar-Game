@@ -189,6 +189,7 @@
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormPlayState.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormQueue.cpp" />
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormWaitState.cpp" />
+    <ClCompile Include="Resources\Animation.cpp" />
     <ClCompile Include="States\Application_States\EditorState.cpp" />
     <ClCompile Include="States\Application_States\GameState.cpp" />
     <ClCompile Include="States\Application_States\MenuState.cpp" />
@@ -241,6 +242,7 @@
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormQueue.h" />
     <ClInclude Include="Nodes\Physical\Specified\Worm\WormWaitState.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Resources\Animation.h" />
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Resources\Resources.h" />
     <ClInclude Include="States\Application_States\EditorState.h" />

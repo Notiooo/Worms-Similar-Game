@@ -1,17 +1,21 @@
 #include "WormPlayState.h"
+
+#include <iostream>
 #include <memory>
 
 #include "../../../../utils.h"
 
-WormPlayState::WormPlayState(StateStack& stack, Worm& worm) :
+WormPlayState::WormPlayState(StateStack& stack, Worm& worm, const TextureManager& textures) :
 	WormMoveableState(stack, worm),
 	triangularPointer(10.f, 3),
-	shootingBar({shootingBarSize, 10.f})
+	shootingBar({shootingBarSize, 10.f}),
+	walkingAnimation(textures.getResourceReference(Textures_ID::WormWalking), sf::Vector2i(45, 49), 8, sf::seconds(1))
 {
-#ifdef SHOW_WORM_STATES
-		worm.setName("PlayState");
-#endif // DEBUG
+	#ifdef SHOW_WORM_STATES
+			worm.setName("PlayState");
+	#endif // DEBUG
 
+	walkingAnimation.setReversing(true);
 	const auto wormTeamColor = worm.teamColor;
 
 	pointer = {std::sin(pointerAngle), std::cos(pointerAngle)};
@@ -41,6 +45,20 @@ void WormPlayState::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 	if (currentShootingForce && worm.selectedWeapon->first)
 		target.draw(shootingBar, states);
 
+
+	// From the given speed, a worm walking animation is drawn
+	if (direction * worm.Body->GetLinearVelocity().x > animationSpeedThreshold && worm.footCollisions)
+	{
+		sf::RenderStates renderstate = states;
+		renderstate.transform *= worm.wormSprite.getTransform();
+		target.draw(walkingAnimation, renderstate);
+	}
+	// A standard worm is drawn otherwise
+	else
+	{
+		target.draw(worm.wormSprite, states);
+	}
+
 	states.transform *= worm.wormSprite.getTransform();
 	worm.selectedWeapon->second->rotateWeapon((pointerAngle * 180 / b2_pi) - 90);
 	worm.selectedWeapon->second->drawThis(target, states);
@@ -50,6 +68,7 @@ bool WormPlayState::update(sf::Time deltaTime)
 {
 	updateMovement(deltaTime);
 	updateShooting(deltaTime);
+	walkingAnimation.update(deltaTime);
 
 	return false;
 }
@@ -65,7 +84,7 @@ bool WormPlayState::handleEvent(const sf::Event& event)
 	{
 		// When key is released, and worm collide with the ground
 		// then it velocity should be instantly reduced to zero
-	case (sf::Event::KeyReleased):
+		case (sf::Event::KeyReleased):
 		{
 			if (event.key.code == sf::Keyboard::Key::E)
 			{
@@ -77,8 +96,13 @@ bool WormPlayState::handleEvent(const sf::Event& event)
 
 
 		// If ANY key is pressed I should
-	case (sf::Event::KeyPressed):
+		case (sf::Event::KeyPressed):
 		{
+			// If the player starts moving then the animation should start from the beginning.
+			if (event.key.code == worm.leftButton || event.key.code == worm.rightButton)
+			{
+				walkingAnimation.restartAnimation();
+			}
 		}
 		break;
 	}

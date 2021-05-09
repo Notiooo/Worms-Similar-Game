@@ -16,6 +16,7 @@ Game::Game():
 {
 	// Limit the framerate to 60 frames per second
 	gameWindow.setFramerateLimit(60);
+	gameWindow.setKeyRepeatEnabled(false);
 
 	// Setup all application-flow states
 	appStack.saveState<TitleState>(State_ID::TitleState, gameWindow, fonts);

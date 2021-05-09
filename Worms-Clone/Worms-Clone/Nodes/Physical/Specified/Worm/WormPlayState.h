@@ -7,6 +7,7 @@
 #include "SFML/Graphics/CircleShape.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "WormMoveableState.h"
+#include "../../../../Resources/Animation.h"
 
 #include "Weapons/Weapon.h"
 
@@ -19,7 +20,7 @@
 class WormPlayState : public WormMoveableState
 {
 public:
-	WormPlayState(StateStack&, Worm&);
+	WormPlayState(StateStack& stack, Worm& worm, const TextureManager& textures);
 
 	/**
 	 * \brief Draws only this state (current state of the worm) to the passed target
@@ -61,6 +62,10 @@ private:
 	 */
 	void updateShooting(sf::Time deltaTime);
 
+
+	// === Animation === //
+	Animation walkingAnimation; //!< Sprite showing animation of the worm walking
+	float animationSpeedThreshold = worm.movingSpeed / 2.f; //!< Speed at which the walking animation starts
 
 	//// ====== SHOOTING ====== ////
 
