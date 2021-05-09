@@ -18,7 +18,7 @@
 class WormHideState : public WormMoveableState
 {
 public:
-	WormHideState(StateStack&, Worm&);
+	WormHideState(StateStack& stack, Worm& worm, const TextureManager& textures);
 
 	/**
 	 * \brief Draws only this state (current state of the worm) to the passed target

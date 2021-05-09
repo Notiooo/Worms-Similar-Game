@@ -14,7 +14,7 @@ WormHitState::WormHitState(StateStack& stack, Worm& worm, TextureManager& textur
 }
 
 void WormHitState::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
+{	
 	states.transform *= worm.wormSprite.getTransform();
 	target.draw(hitWorm, states);
 }

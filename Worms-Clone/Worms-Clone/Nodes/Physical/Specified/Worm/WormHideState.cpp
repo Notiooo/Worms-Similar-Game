@@ -1,15 +1,16 @@
 #include "WormHideState.h"
 
-WormHideState::WormHideState(StateStack& stack, Worm& worm) :
-	WormMoveableState(stack, worm)
+WormHideState::WormHideState(StateStack& stack, Worm& worm, const TextureManager& textures) :
+	WormMoveableState(stack, worm, textures)
 {
 	#ifdef SHOW_WORM_STATES
 	worm.setName("HideState");
 	#endif
 }
 
-void WormHideState::draw(sf::RenderTarget&, sf::RenderStates) const
+void WormHideState::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	drawMovement(target, states);
 }
 
 bool WormHideState::update(sf::Time dt)

@@ -1,10 +1,12 @@
 #include "WormMoveableState.h"
 
-WormMoveableState::WormMoveableState(StateStack& stack, Worm& worm) :
+WormMoveableState::WormMoveableState(StateStack& stack, Worm& worm, const TextureManager& textures) :
 	State(stack),
 	worm(worm),
-	direction(worm.Worm::facingRight() ? -1 : 1)
+	direction(worm.Worm::facingRight() ? -1 : 1),
+	walkingAnimation(textures.getResourceReference(Textures_ID::WormWalking), sf::Vector2i(45, 49), 8, sf::seconds(1))
 {
+	walkingAnimation.setReversing(true);
 }
 
 bool WormMoveableState::facingRight() const noexcept
@@ -55,6 +57,12 @@ void WormMoveableState::handleMovement(const sf::Event& event)
 				worm.Body->ApplyForceToCenter({ direction * worm.jumpStrength, -3 * worm.jumpStrength }, true);
 			}
 		}
+
+		// If the player starts moving then the animation should start from the beginning.
+		if (event.key.code == worm.leftButton || event.key.code == worm.rightButton)
+		{
+			walkingAnimation.restartAnimation();
+		}
 	}
 	break;
 	}
@@ -71,5 +79,23 @@ void WormMoveableState::updateMovement(sf::Time deltaTime)
 
 		if (sf::Keyboard::isKeyPressed(worm.rightButton))
 			worm.Body->SetLinearVelocity({ worm.movingSpeed, worm.Body->GetLinearVelocity().y });
+	}
+
+	// Update the walking animation
+	walkingAnimation.update(deltaTime);
+}
+
+void WormMoveableState::drawMovement(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	// If the worm does not move at a certain speed or touch the ground, a normal worm is drawn
+	if (!(direction * worm.Body->GetLinearVelocity().x > animationSpeedThreshold && worm.footCollisions))
+	{
+		target.draw(worm.wormSprite, states);
+	}
+	// Otherwise, an animated sprite is drawn containing animation of the worm walking
+	else
+	{
+		states.transform *= worm.wormSprite.getTransform();
+		target.draw(walkingAnimation, states);
 	}
 }

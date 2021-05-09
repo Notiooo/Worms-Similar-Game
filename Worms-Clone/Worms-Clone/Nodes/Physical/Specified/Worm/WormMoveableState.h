@@ -2,6 +2,7 @@
 #define WORMMOVEABLESTATE_H
 #include "../../../../States/State.h"
 #include "Worm.h"
+#include "../../../../Resources/Animation.h"
 
 
 /**
@@ -13,7 +14,7 @@
 class WormMoveableState : public State
 {
 protected:
-	WormMoveableState(StateStack&, Worm&);
+	WormMoveableState(StateStack& stack, Worm& worm, const TextureManager& textures);
 
 public:
 
@@ -61,6 +62,14 @@ protected:
 	 */
 	void updateMovement(sf::Time deltaTime);
 
+
+	/**
+	 * \brief Draws a walking worm animation when it moves and a standard sprite when it doesn't move.
+	 * \param target where it should be drawn to
+	 * \param states provides information about rendering process (transform, shader, blend mode)
+	 */
+	void drawMovement(sf::RenderTarget& target, sf::RenderStates states) const;
+
 	/**
 	 * \brief Determines the direction in which the worm is looking.
 	 *
@@ -71,6 +80,10 @@ protected:
 	int direction;
 	
 	Worm& worm;
+
+	// === Animation === //
+	Animation walkingAnimation; //!< Sprite showing animation of the worm walking
+	float animationSpeedThreshold = worm.movingSpeed / 2.f; //!< Speed at which the walking animation starts
 
 };
 #endif

@@ -104,7 +104,7 @@ Worm::Worm(b2World& world, TextureManager& textures, const FontManager& fonts, s
 	// ======= Setup the WormStack States ======= //
 
 	// Save states of the worms
-	wormStack.saveState<WormHideState>(State_ID::WormHideState, *this);
+	wormStack.saveState<WormHideState>(State_ID::WormHideState, *this, textures);
 	wormStack.saveState<WormPlayState>(State_ID::WormPlayState, *this, textures);
 	wormStack.saveState<WormWaitState>(State_ID::WormWaitState, *this);
 	wormStack.saveState<WormHitState>(State_ID::WormHitState, *this, textures);
@@ -125,7 +125,8 @@ Worm::Worm(b2World& world, TextureManager& textures, const FontManager& fonts, s
 void Worm::drawThis(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(ropeSprite, states);
-	
+
+	// These two states independently draw the worm in their own way.
 	if(currentState != State_ID::WormHitState && currentState != State_ID::WormPlayState)
 		target.draw(wormSprite, states);
 	
