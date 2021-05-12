@@ -3,6 +3,7 @@
 
 #include "../State.h"
 #include "../../World.h"
+#include "../../Sounds/MusicPlayer.h"
 
 class StateStack;
 
@@ -13,7 +14,7 @@ class StateStack;
 class GameState : public State
 {
 public:
-	GameState(StateStack& stack, sf::RenderWindow& window, int& wormAmount, int& numberOfTeams);
+	GameState(StateStack& stack, sf::RenderWindow& window, int& wormAmount, int& numberOfTeams, MusicPlayer& music);
 
 	/**
 	 * \brief Draws only this state to the passed target

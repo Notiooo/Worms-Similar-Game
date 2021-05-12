@@ -91,6 +91,12 @@
     <Filter Include="Source Files\Resources">
       <UniqueIdentifier>{581bb647-f6ae-42bc-ba4c-769f99e38e0d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Sounds">
+      <UniqueIdentifier>{565662fb-b210-4bf4-baf0-65876d7771cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sounds">
+      <UniqueIdentifier>{7606357c-b6fe-4bcd-b0ab-439860a3e799}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Worms-Clone.cpp">
@@ -255,6 +261,12 @@
     <ClCompile Include="Resources\Animation.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="Sounds\MusicPlayer.cpp">
+      <Filter>Source Files\Sounds</Filter>
+    </ClCompile>
+    <ClCompile Include="Sounds\SoundEffect.cpp">
+      <Filter>Source Files\Sounds</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -418,6 +430,12 @@
     </ClInclude>
     <ClInclude Include="Resources\Animation.h">
       <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Sounds\MusicPlayer.h">
+      <Filter>Header Files\Sounds</Filter>
+    </ClInclude>
+    <ClInclude Include="Sounds\SoundEffect.h">
+      <Filter>Header Files\Sounds</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

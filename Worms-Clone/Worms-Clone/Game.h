@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include "World.h"
+#include "Sounds/MusicPlayer.h"
 #include "States/StateStack.h"
 
 /**
@@ -88,6 +89,7 @@ private:
 
 	int wormAmount = 4; //!< The default number of worms per team
 	int numberOfTeams = 2; //!< The default number of teams in the game
+	MusicPlayer music; // Allows to play music in the app.
 };
 
 

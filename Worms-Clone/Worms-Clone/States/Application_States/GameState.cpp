@@ -3,11 +3,12 @@
 #include "../StateStack.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 
-GameState::GameState(StateStack& stack, sf::RenderWindow& window, int& wormAmount, int& numberOfTeams):
+GameState::GameState(StateStack& stack, sf::RenderWindow& window, int& wormAmount, int& numberOfTeams, MusicPlayer& music):
 	State(stack),
 	gameWindow(window),
 	gameWorld(window, wormAmount, numberOfTeams)
 {
+	music.play(Music_ID::GameState);
 
 }
 

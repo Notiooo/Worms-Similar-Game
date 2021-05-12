@@ -11,7 +11,7 @@
 #include "../../Nodes/Physical/Specified/Worm/Weapons/Delayed_Bullet.h"
 
 MenuState::MenuState(StateStack& stack, const FontManager& fonts, sf::RenderWindow& window, int& _wormAmount,
-                     int& _numberOfTeams) :
+                     int& _numberOfTeams, MusicPlayer& music) :
 	State(stack),
 	fonts(fonts),
 	window(window),
@@ -25,6 +25,9 @@ MenuState::MenuState(StateStack& stack, const FontManager& fonts, sf::RenderWind
 	numberOfTeams(_numberOfTeams),
 	World(b2Vec2(0, 9.8f))
 {
+	// Plays the music until it is changed or stopped (actually it is changed only in gamestate)
+	music.play(Music_ID::MainMenu);
+	
 	// It makes sure that the view is at proper place
 	window.setView(window.getDefaultView());
 

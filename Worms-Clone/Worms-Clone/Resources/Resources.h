@@ -93,4 +93,14 @@ enum class Fonts_ID
  */
 using FontManager = ResourceManager<sf::Font, Fonts_ID>;
 
+
+/**
+ * \brief Music IDs which describes particular musics
+ */
+enum class Music_ID
+{
+	MainMenu,
+	GameState,
+};
+
 #endif

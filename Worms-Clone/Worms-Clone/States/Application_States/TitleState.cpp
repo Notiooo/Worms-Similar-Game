@@ -5,6 +5,7 @@ TitleState::TitleState(StateStack& stack, sf::RenderWindow& window, const FontMa
 	window(&window)
 {
 
+
 	// Loads and sets texture of the background
 	backgroundTexture.loadFromFile("Resources/Textures/TitleState/example.png");
 	backgroundSprite.setTexture(backgroundTexture);

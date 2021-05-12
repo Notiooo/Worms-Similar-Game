@@ -12,6 +12,7 @@
 #include "../../Resources/Resources.h"
 #include "../../GUI/FixedContainer.h"
 #include "../../Nodes/NodeScene.h"
+#include "../../Sounds/MusicPlayer.h"
 
 class StateStack;
 
@@ -24,7 +25,7 @@ class StateStack;
 class MenuState : public State
 {
 public:
-	MenuState(StateStack& stack, const FontManager& fonts, sf::RenderWindow& window, int& wormAmount, int& numberOfTeams);
+	MenuState(StateStack& stack, const FontManager& fonts, sf::RenderWindow& window, int& wormAmount, int& numberOfTeams, MusicPlayer& music);
 	
 	/**
 	 * \brief Creates a live background for the menu
