@@ -2,6 +2,7 @@
 #define BULLET_H
 
 #include "../../../../../Resources/Resources.h"
+#include "../../../../../Sounds/SoundPlayer.h"
 #include "../../../../Particles/NodeParticle.h"
 #include "../../../../Physical/NodePhysicalSprite.h"
 
@@ -12,7 +13,7 @@
  */
 struct Bullet : public NodePhysicalSprite
 {
-	Bullet(b2World& world, sf::Vector2f position, sf::Texture& bulletTexture, const TextureManager& textures, float force, float range);
+	Bullet(b2World& world, SoundPlayer& sounds, sf::Vector2f position, sf::Texture& bulletTexture, const TextureManager& textures, float force, float range);
 
 	void updateThis(sf::Time deltaTime) override;
 
@@ -47,6 +48,8 @@ private:
 	bool collided = false; //!< A flag that checks if there has been a collision between a bullet and another physical object.
 	sf::Color sparkColor = sf::Color::White; //!< Color of the particles that will disperse when the projectile explodes.
 	const sf::Texture& smokeTexture; //!< Texture left after the falling sparks after the explosion
+	
+	SoundPlayer& soundPlayer; //!< A player that allows to play sounds in the game world
 
 };
 

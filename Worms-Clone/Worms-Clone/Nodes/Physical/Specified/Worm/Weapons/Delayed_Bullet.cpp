@@ -6,9 +6,10 @@
 #include "../../../NodePhysicalSpark.h"
 
 
-Delayed_Bullet::Delayed_Bullet(b2World& world, const FontManager& fonts, sf::Vector2f position, sf::Texture& bulletTexture, const TextureManager& textures, float force, float range, sf::Time timeToDestroy):
-	Bullet(world, position, bulletTexture, textures, force, range),
-	timeToDestroy(timeToDestroy)
+Delayed_Bullet::Delayed_Bullet(b2World& world, SoundPlayer& sounds, const FontManager& fonts, sf::Vector2f position, sf::Texture& bulletTexture, const TextureManager& textures, float force, float range, sf::Time timeToDestroy):
+	Bullet(world, sounds, position, bulletTexture, textures, force, range),
+	timeToDestroy(timeToDestroy),
+	soundPlayer(sounds)
 {
 	counter.setFont(fonts.getResourceReference(Fonts_ID::ArialNarrow));
 	counter.setFillColor(sf::Color::White);

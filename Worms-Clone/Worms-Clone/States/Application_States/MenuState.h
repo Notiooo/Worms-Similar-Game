@@ -13,6 +13,7 @@
 #include "../../GUI/FixedContainer.h"
 #include "../../Nodes/NodeScene.h"
 #include "../../Sounds/MusicPlayer.h"
+#include "../../Sounds/SoundPlayer.h"
 
 class StateStack;
 
@@ -74,6 +75,7 @@ private:
 	const FontManager& fonts; //!< Manager containing loaded and ready to use fonts
 	sf::RenderWindow& window; //!< Window to which this status is displayed
 	TextureManager textures; //!< Manager containing the textures available for use
+	SoundPlayer soundPlayer; //!< A player that allows to play sounds in the game world
 	std::array<sf::Vector2u, 5> availableResolutions; //!< An array of selectable screen resolutions
 	std::array<sf::Vector2u, 5>::const_iterator selectedResolution; //!< Currently selected screen resolution
 	unsigned fullScreen = 0; //!< Bit value containing information about whether fullscreen is running

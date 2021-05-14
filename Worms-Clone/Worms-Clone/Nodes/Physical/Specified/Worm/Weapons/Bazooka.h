@@ -13,7 +13,7 @@
 class Bazooka final : public Weapon
 {
 public:
-	Bazooka(b2World& world, TextureManager& textures);
+	Bazooka(b2World& world, TextureManager& textures, SoundPlayer& soundPlayer);
 
 	/**
 	 * \brief Is the bazooka an activated weapon or a loaded weapon (via the shooting bar).

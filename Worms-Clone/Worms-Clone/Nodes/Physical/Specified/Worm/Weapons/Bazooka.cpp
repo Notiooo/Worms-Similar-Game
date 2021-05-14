@@ -6,13 +6,14 @@
 #include <memory>
 
 
-Bazooka::Bazooka(b2World& world, TextureManager& textures):
-	Weapon(world, textures.getResourceReference(Textures_ID::Bazooka), textures.getResourceReference(Textures_ID::BazookaThumbnail), textures.getResourceReference(Textures_ID::BazookaBullet), textures)
+Bazooka::Bazooka(b2World& world, TextureManager& textures, SoundPlayer& soundPlayer):
+	Weapon(world, soundPlayer, textures.getResourceReference(Textures_ID::Bazooka), textures.getResourceReference(Textures_ID::BazookaThumbnail), textures.getResourceReference(Textures_ID::BazookaBullet), textures)
 {
 	weaponSprite.setPosition(getPosition().x, getPosition().y + 40);
 	setSparkColor(sf::Color::Blue);
 	setMaxDmg(80.f);
 	setRange(220.f);
+	setSound(Sound_ID::DefaultWeaponShoot);
 }
 
 bool Bazooka::isActivation() const noexcept

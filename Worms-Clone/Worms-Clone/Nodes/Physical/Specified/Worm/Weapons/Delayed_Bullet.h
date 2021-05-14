@@ -14,7 +14,7 @@
  */
 struct Delayed_Bullet : public Bullet
 {
-	Delayed_Bullet(b2World& world, const FontManager& fonts, sf::Vector2f position, sf::Texture& bulletTexture, const TextureManager& textures, float force, float range, sf::Time timeToDestroy);
+	Delayed_Bullet(b2World& world, SoundPlayer& sounds, const FontManager& fonts, sf::Vector2f position, sf::Texture& bulletTexture, const TextureManager& textures, float force, float range, sf::Time timeToDestroy);
 
 	/**
 	 * \brief A function that updates the projectile status and checks
@@ -41,6 +41,8 @@ private:
 	sf::Clock clock; //!< Clock that measures time to explosion
 
 	sf::Text counter; //!< Text displaying the time left to explosion
+
+	SoundPlayer& soundPlayer;
 	
 
 };

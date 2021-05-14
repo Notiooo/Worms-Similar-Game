@@ -43,6 +43,10 @@ void World::update(sf::Time deltaTime)
 {
 	// Allows the player to move the camera around the game world
 	moveScreenWithMouse();
+
+	// Update sound player position to the position of the camera
+	worldSounds.setListenerPosition(worldView.getCenter());
+	worldSounds.removeFinishedSounds();
 	
 	// Update the Game World
 	rootScene.update(deltaTime);
@@ -213,7 +217,7 @@ void World::createWorld()
 	}
 
 	// Setup the GameplayManager
-	auto gameManager = std::make_unique<GameplayManager>(b2_World, worldTextures, worldFonts, worldWindow);
+	auto gameManager = std::make_unique<GameplayManager>(b2_World, worldTextures, worldFonts, worldWindow, worldSounds);
 	worldGameManager = gameManager.get();
 	worldLayers[static_cast<unsigned>(WorldLayers::Foreground)]->pinNode(std::move(gameManager));
 

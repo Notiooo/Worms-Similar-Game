@@ -123,7 +123,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>sfml-main.lib;sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-audio-s-d.lib;sfml-system-s-d.lib;opengl32.lib;gdi32.lib;winmm.lib;freetype.lib;openal32.lib;ogg.lib;vorbis.lib;vorbisfile.lib;vorbisenc.lib;flac.lib;box2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)External Libraries\box2d\lib;$(SolutionDir)External Libraries\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -191,7 +191,7 @@
     <ClCompile Include="Nodes\Physical\Specified\Worm\WormWaitState.cpp" />
     <ClCompile Include="Resources\Animation.cpp" />
     <ClCompile Include="Sounds\MusicPlayer.cpp" />
-    <ClCompile Include="Sounds\SoundEffect.cpp" />
+    <ClCompile Include="Sounds\SoundPlayer.cpp" />
     <ClCompile Include="States\Application_States\EditorState.cpp" />
     <ClCompile Include="States\Application_States\GameState.cpp" />
     <ClCompile Include="States\Application_States\MenuState.cpp" />
@@ -248,7 +248,7 @@
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Resources\Resources.h" />
     <ClInclude Include="Sounds\MusicPlayer.h" />
-    <ClInclude Include="Sounds\SoundEffect.h" />
+    <ClInclude Include="Sounds\SoundPlayer.h" />
     <ClInclude Include="States\Application_States\EditorState.h" />
     <ClInclude Include="States\Application_States\GameState.h" />
     <ClInclude Include="States\Application_States\MenuState.h" />

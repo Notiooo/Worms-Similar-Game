@@ -9,6 +9,7 @@
 
 #include "../../../../NodeScene.h"
 #include "../../../../../Resources/Resources.h"
+#include "../../../../../Sounds/SoundPlayer.h"
 #include "../../../../Particles/NodeParticle.h"
 
 class Worm;
@@ -20,7 +21,7 @@ class Worm;
 class Weapon : public NodeScene
 {
 public:
-	Weapon(b2World& world, sf::Texture& weapon, sf::Texture& thumbnail, sf::Texture& bullet, const TextureManager& textures);
+	Weapon(b2World& world, SoundPlayer& sounds, sf::Texture& weapon, sf::Texture& thumbnail, sf::Texture& bullet, const TextureManager& textures);
 
 	/**
 	 * \brief The firing function of a weapon that will be executed when the shooting bar is loaded.
@@ -96,6 +97,9 @@ public:
 	 */
 	void updateThis(sf::Time deltaTime) override;
 
+	void setSound(Sound_ID sound) noexcept;
+	
+
 protected:
 	// === Graphical === //
 	sf::Sprite weaponSprite; //!< Sprite which is a visual representation of the weapon in the game
@@ -108,8 +112,12 @@ protected:
 	// === Parameters === //
 	float attackDmg = 0.f; //!< Maximum damage this weapon can deal
 	float range = 0.f; //!< Weapon striking range
-	
+
 	b2World& physicalWorld; //!< Physical simulation of the game world
+
+	// === Sounds === //
+	SoundPlayer& soundPlayer; //!< A player that allows to play sounds in the game world
+	Sound_ID weaponSound = Sound_ID::None; //!< The sound the weapon makes when fired
 };
 
 #endif // !WEAPON_H

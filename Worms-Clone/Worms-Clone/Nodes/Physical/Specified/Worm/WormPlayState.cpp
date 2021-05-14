@@ -3,10 +3,11 @@
 
 #include "../../../../utils.h"
 
-WormPlayState::WormPlayState(StateStack& stack, Worm& worm, const TextureManager& textures) :
+WormPlayState::WormPlayState(StateStack& stack, Worm& worm, const TextureManager& textures, SoundPlayer& sounds) :
 	WormMoveableState(stack, worm, textures),
 	triangularPointer(10.f, 3),
-	shootingBar({shootingBarSize, 10.f})
+	shootingBar({shootingBarSize, 10.f}),
+	soundPlayer(sounds)
 {
 	#ifdef SHOW_WORM_STATES
 			worm.setName("PlayState");
@@ -94,8 +95,11 @@ void WormPlayState::shoot()
 	if (bulletsLeft)
 	{
 		if (!weapon->isActivation())
-			weapon->shoot(worm.getRootNode(), worm.getAbsolutePosition() + triangularPointer.getPosition(),
-			              sf::Vector2f(static_cast<float>(direction) * pointer.x * currentShootingForce, pointer.y * currentShootingForce));
+		{
+			const auto positionOfBullet = worm.getAbsolutePosition() + triangularPointer.getPosition();
+			const auto directionOfBullet = sf::Vector2f(static_cast<float>(direction) * pointer.x * currentShootingForce, pointer.y * currentShootingForce);
+			weapon->shoot(worm.getRootNode(), positionOfBullet, directionOfBullet);
+		}
 		else
 			weapon->activation(worm);
 

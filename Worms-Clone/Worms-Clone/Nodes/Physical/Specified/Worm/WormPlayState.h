@@ -19,7 +19,7 @@
 class WormPlayState : public WormMoveableState
 {
 public:
-	WormPlayState(StateStack& stack, Worm& worm, const TextureManager& texturesd);
+	WormPlayState(StateStack& stack, Worm& worm, const TextureManager& textures, SoundPlayer& sounds);
 
 	/**
 	 * \brief Draws only this state (current state of the worm) to the passed target
@@ -60,6 +60,8 @@ private:
 	 * \param deltaTime Time elapsed since the previous frame
 	 */
 	void updateShooting(sf::Time deltaTime);
+
+	SoundPlayer& soundPlayer; //!< A player that allows to play sounds in the game world
 
 	//// ====== SHOOTING ====== ////
 

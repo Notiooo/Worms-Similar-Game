@@ -6,8 +6,8 @@
 #include "SFML/Graphics/RenderTarget.hpp"
 
 
-Grenade::Grenade(b2World& world, TextureManager& textures, const FontManager& fonts):
-	Weapon(world, textures.getResourceReference(Textures_ID::Grenade), textures.getResourceReference(Textures_ID::GrenadeThumbnail), textures.getResourceReference(Textures_ID::GrenadeBullet), textures),
+Grenade::Grenade(b2World& world, TextureManager& textures, const FontManager& fonts, SoundPlayer& soundPlayer):
+	Weapon(world, soundPlayer, textures.getResourceReference(Textures_ID::Grenade), textures.getResourceReference(Textures_ID::GrenadeThumbnail), textures.getResourceReference(Textures_ID::GrenadeBullet), textures),
 	fonts(fonts)
 {
 	weaponSprite.setPosition(getPosition().x, getPosition().y + 40);
@@ -18,7 +18,7 @@ Grenade::Grenade(b2World& world, TextureManager& textures, const FontManager& fo
 
 void Grenade::shoot(NodeScene* rootNode, sf::Vector2f position, sf::Vector2f force)
 {
-	auto bullet = std::make_unique<Delayed_Bullet>(physicalWorld, fonts, position, bulletTexture, textures, attackDmg, range, sf::seconds(8));
+	auto bullet = std::make_unique<Delayed_Bullet>(physicalWorld, soundPlayer, fonts, position, bulletTexture, textures, attackDmg, range, sf::seconds(8));
 	bullet->setSparkColor(bulletSparksColor);
 	bullet->applyForce(force);
 	rootNode->pinNode(std::move(bullet));

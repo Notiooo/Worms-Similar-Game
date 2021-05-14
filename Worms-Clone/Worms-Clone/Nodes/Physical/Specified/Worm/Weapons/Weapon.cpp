@@ -5,22 +5,26 @@
 
 #include "Bullet.h"
 
-Weapon::Weapon(b2World& world, sf::Texture& weapon, sf::Texture& thumbnail, sf::Texture& bullet, const TextureManager& textures):
+Weapon::Weapon(b2World& world, SoundPlayer& sounds, sf::Texture& weapon, sf::Texture& thumbnail, sf::Texture& bullet, const TextureManager& textures):
 	weaponSprite(weapon),
 	thumbnailSprite(thumbnail, sf::IntRect(0, 0, 60, 60)),
 	bulletTexture(bullet),
 	physicalWorld(world),
-	textures(textures)
+	textures(textures),
+	soundPlayer(sounds)
 {
 	
 }
 
 void Weapon::shoot(NodeScene* rootNode, sf::Vector2f position, sf::Vector2f force)
 {
-	auto bullet = std::make_unique<Bullet>(physicalWorld, position, bulletTexture, textures, attackDmg, range);
+	auto bullet = std::make_unique<Bullet>(physicalWorld, soundPlayer, position, bulletTexture, textures, attackDmg, range);
 	bullet->setSparkColor(bulletSparksColor);
 	bullet->applyForce(force);
 	rootNode->pinNode(std::move(bullet));
+
+	if(weaponSound != Sound_ID::None)
+		soundPlayer.play(weaponSound, position);
 }
 
 void Weapon::activation(Worm& worm)
@@ -49,6 +53,11 @@ void Weapon::drawThis(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Weapon::updateThis(sf::Time deltaTime)
 {
+}
+
+void Weapon::setSound(Sound_ID sound) noexcept
+{
+	weaponSound = sound;
 }
 
 void Weapon::rotateWeapon(float angle)

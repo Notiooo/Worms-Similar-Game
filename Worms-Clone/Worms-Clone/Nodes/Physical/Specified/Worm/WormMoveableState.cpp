@@ -4,7 +4,8 @@ WormMoveableState::WormMoveableState(StateStack& stack, Worm& worm, const Textur
 	State(stack),
 	worm(worm),
 	direction(worm.Worm::facingRight() ? -1 : 1),
-	walkingAnimation(textures.getResourceReference(Textures_ID::WormWalking), sf::Vector2i(45, 49), 8, sf::seconds(1))
+	walkingAnimation(textures.getResourceReference(Textures_ID::WormWalking), sf::Vector2i(45, 49), 8, sf::seconds(1)),
+	walkingSoundTime(worm.soundPlayer.getSoundLength(soundOfWalking))
 {
 	walkingAnimation.setReversing(true);
 }
@@ -79,6 +80,13 @@ void WormMoveableState::updateMovement(sf::Time deltaTime)
 
 		if (sf::Keyboard::isKeyPressed(worm.rightButton))
 			worm.Body->SetLinearVelocity({ worm.movingSpeed, worm.Body->GetLinearVelocity().y });
+
+		// It check if the worm is moving at a high enough speed to trigger its moving sound
+		if (direction * worm.Body->GetLinearVelocity().x > animationSpeedThreshold && soundTimeElapsed.getElapsedTime() > walkingSoundTime)
+		{
+			worm.soundPlayer.play(soundOfWalking, worm.getAbsolutePosition());
+			soundTimeElapsed.restart();
+		}
 	}
 
 	// Update the walking animation

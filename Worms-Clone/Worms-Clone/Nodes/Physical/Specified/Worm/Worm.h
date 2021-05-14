@@ -6,6 +6,7 @@
 #include "../../NodePhysicalBody.h"
 #include "SFML/Graphics/Sprite.hpp"
 #include "../../../../Resources/Resources.h"
+#include "../../../../Sounds/SoundPlayer.h"
 #include "../../../../States/StateStack.h"
 #include "SFML/Graphics/Text.hpp"
 #include "Weapons/Weapon.h"
@@ -38,7 +39,7 @@ public:
 	 * \param position Position in which the worm should appear
 	 * \param wormQueue Queue of movements in which the worm is placed
 	 */
-	Worm(b2World& world, TextureManager& textures, const FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position);
+	Worm(b2World& world, TextureManager& textures, const FontManager& fonts, sf::RenderWindow& window, SoundPlayer& sounds, sf::Vector2f position);
 	
 	/**
 	 * \brief Draws the worm to the given target
@@ -124,6 +125,9 @@ private:
 	//#define SHOW_WORM_STATES
 	// Uncomment if you want to see current State of
 	// the worm, instead of its name
+
+	// === Sounds === //
+	SoundPlayer& soundPlayer; //!< A player that allows to play sounds in the game world
 	
 	// === Graphical variables === //
 	sf::Sprite wormSprite; //!< Sprite being the visual representation of the worm

@@ -26,7 +26,9 @@ MenuState::MenuState(StateStack& stack, const FontManager& fonts, sf::RenderWind
 	World(b2Vec2(0, 9.8f))
 {
 	// Plays the music until it is changed or stopped (actually it is changed only in gamestate)
-	music.play(Music_ID::MainMenu);
+	// The condition allows to not reset the music if it was playing already
+	if(music.getCurrentMusic() != Music_ID::MainMenu)
+		music.play(Music_ID::MainMenu);
 	
 	// It makes sure that the view is at proper place
 	window.setView(window.getDefaultView());
@@ -115,7 +117,7 @@ void MenuState::createGrenades(sf::Vector2f pos)
 	{
 		clock.restart();
 
-		auto bullet = std::make_unique<Delayed_Bullet>(World, fonts, sf::Vector2f(pos.x + offsetX(e), pos.y),
+		auto bullet = std::make_unique<Delayed_Bullet>(World, soundPlayer, fonts, sf::Vector2f(pos.x + offsetX(e), pos.y),
 		                                               textures.getResourceReference(Textures_ID::GrenadeBullet),
 		                                               textures, 0, 0, sf::seconds(timeExplosion(e)));
 		bullet->setSparkColor(sf::Color::Cyan);
@@ -148,6 +150,8 @@ bool MenuState::update(sf::Time deltaTime)
 
 	// Removes nodes to be removed (mainly grenades).
 	rootScene.removeDestroyed();
+
+	soundPlayer.removeFinishedSounds();
 
 	// Creates grenades in the background
 	createGrenades(sf::Vector2f(window.getSize().x / 1.5f, -100.f));

@@ -22,11 +22,13 @@ void MusicPlayer::play(Music_ID musicID)
 	music.setVolume(volume);
 	music.setLoop(true);
 	music.play();
+	currentMusic = musicID;
 }
 
 void MusicPlayer::stop()
 {
 	music.stop();
+	currentMusic = Music_ID::None;
 }
 
 void MusicPlayer::setPaused(bool paused)
@@ -40,4 +42,17 @@ void MusicPlayer::setPaused(bool paused)
 void MusicPlayer::setVolume(float volume)
 {
 	music.setVolume(volume);
+}
+
+Music_ID MusicPlayer::getCurrentMusic() const noexcept
+{
+	return currentMusic;
+}
+
+void MusicPlayer::reset()
+{
+	if(getCurrentMusic() != Music_ID::None)
+	{
+		music.setPlayingOffset(sf::Time::Zero);
+	}
 }

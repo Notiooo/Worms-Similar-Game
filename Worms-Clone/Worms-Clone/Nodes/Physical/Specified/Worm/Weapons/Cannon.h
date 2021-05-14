@@ -11,7 +11,7 @@
 class Cannon : public Weapon
 {
 public:
-	Cannon(b2World& world, TextureManager& textures);
+	Cannon(b2World& world, TextureManager& textures, SoundPlayer& soundPlayer);
 
 	/**
 	 * \brief Is the cannon an activated weapon or a loaded weapon (via the shooting bar).

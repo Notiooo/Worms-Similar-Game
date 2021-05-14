@@ -7,6 +7,7 @@
 
 #include "../GUI/Container.h"
 #include "../GUI/FixedContainer.h"
+#include "../Sounds/SoundPlayer.h"
 #include "Physical/Specified/Worm/Worm.h"
 #include "Physical/Specified/Worm/WormQueue.h"
 
@@ -18,7 +19,7 @@
 class GameplayManager final : public NodeScene
 {
 public:
-	GameplayManager(b2World& physicalWorld, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window);
+	GameplayManager(b2World& physicalWorld, TextureManager& textures, FontManager& fonts, sf::RenderWindow& window, SoundPlayer& sounds);
 
 	/**
 	 * \brief Creates a worm inside the game
@@ -112,6 +113,7 @@ private:
 	TextureManager& textures; //!< Manager with loaded textures
 	FontManager& fonts; //!< Manager with loaded fonts
 	sf::RenderWindow& window; //!< Window to which the game is displayed
+	SoundPlayer& sounds; //!< A player that allows to play sounds in the game world
 	
 	// Variables used to control the turn-based game system.
 

@@ -99,8 +99,23 @@ using FontManager = ResourceManager<sf::Font, Fonts_ID>;
  */
 enum class Music_ID
 {
+	None,
 	MainMenu,
 	GameState,
 };
+
+/**
+ * \brief Sound IDs which describes particular sounds
+ */
+enum class Sound_ID
+{
+	None,
+	Explosion,
+	FloorHit,
+	DefaultWeaponShoot,
+	WormWalking,
+};
+
+using SoundManager = ResourceManager<sf::SoundBuffer, Sound_ID>;
 
 #endif

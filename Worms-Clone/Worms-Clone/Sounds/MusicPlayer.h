@@ -42,10 +42,25 @@ public:
 	 */
 	void setVolume(float volume);
 
+
+	/**
+	 * \brief It returns currently playing (or paused) music
+	 * \return Identifier of currently playing music
+	 */
+	Music_ID getCurrentMusic() const noexcept;
+
+	
+	/**
+	 * \brief Plays the same song again from beginning
+	 * \warning If no music was set, nothing happens
+	 */
+	void reset();
+
 private:
 	sf::Music music; //!< Streamed music from the audio file
 	std::map<Music_ID, std::string> filePaths; //!< Assigns a music identifier to the corresponding file path
 	float volume = 100.f; //!< Music volume from 0 to 100
+	Music_ID currentMusic = Music_ID::None; //!< Identifier of currently playing music
 };
 
 

@@ -7,11 +7,12 @@
 #include "Physical/Specified/Worm/Weapons/Hitbox.h"
 
 GameplayManager::GameplayManager(b2World& _physicalWorld, TextureManager& _textures, FontManager& _fonts,
-                                 sf::RenderWindow& _window) :
+                                 sf::RenderWindow& _window, SoundPlayer& _sounds) :
 	physicalWorld(_physicalWorld),
 	textures(_textures),
 	fonts(_fonts),
-	window(_window)
+	window(_window),
+	sounds(_sounds)
 {
 	// Set up the round timer
 	roundTimeText.setFont(fonts.getResourceReference(Fonts_ID::ArialNarrow));
@@ -25,7 +26,7 @@ GameplayManager::GameplayManager(b2World& _physicalWorld, TextureManager& _textu
 
 void GameplayManager::addWorm(const std::string& name, sf::Color teamColor, sf::Vector2f position)
 {
-	auto worm = std::make_unique<Worm>(physicalWorld, textures, fonts, window, position);
+	auto worm = std::make_unique<Worm>(physicalWorld, textures, fonts, window, sounds, position);
 	worm->setName(name);
 	worm->setTeam(teamColor);
 

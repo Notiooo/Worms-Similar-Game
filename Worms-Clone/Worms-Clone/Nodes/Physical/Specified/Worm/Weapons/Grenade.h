@@ -14,7 +14,7 @@
 class Grenade : public Weapon
 {
 public:
-	Grenade(b2World& world, TextureManager& textures, const FontManager& fonts);
+	Grenade(b2World& world, TextureManager& textures, const FontManager& fonts, SoundPlayer& soundPlayer);
 
 	/**
 	 * \brief The firing function of a weapon that will be executed when the shooting bar is loaded.

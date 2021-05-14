@@ -8,11 +8,12 @@
 #include "../../../NodePhysicalSpark.h"
 
 
-Bullet::Bullet(b2World& world, sf::Vector2f position, sf::Texture& bulletTexture, const TextureManager& textures, float force, float range):
+Bullet::Bullet(b2World& world, SoundPlayer& sounds, sf::Vector2f position, sf::Texture& bulletTexture, const TextureManager& textures, float force, float range):
 	NodePhysicalSprite(world, Physical_Types::Dynamic_Type, bulletTexture, position),
 	force(force),
 	range(range),
-	smokeTexture(textures.getResourceReference(Textures_ID::SmokeParticle))
+	smokeTexture(textures.getResourceReference(Textures_ID::SmokeParticle)),
+	soundPlayer(sounds)
 {
 	// Potentially risky, 
 	// actually the Body should be created here
@@ -46,7 +47,7 @@ void Bullet::explode()
 	auto hitbox = std::make_unique<Hitbox>(*World, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()), range, force);
 	this->getRootNode()->pinNode(std::move(hitbox));
 
-	auto spark = std::make_unique<NodePhysicalSpark>(*World, smokeTexture, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()), sparkColor);
+	auto spark = std::make_unique<NodePhysicalSpark>(*World, soundPlayer, smokeTexture, b2VecToSfVector<sf::Vector2f>(Body->GetPosition()), sparkColor);
 	this->getRootNode()->pinNode(std::move(spark));
 }
 

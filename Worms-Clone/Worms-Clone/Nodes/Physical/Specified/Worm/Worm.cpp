@@ -19,10 +19,11 @@
 #include "Weapons/Grenade.h"
 
 
-Worm::Worm(b2World& world, TextureManager& textures, const FontManager& fonts, sf::RenderWindow& window, sf::Vector2f position):
+Worm::Worm(b2World& world, TextureManager& textures, const FontManager& fonts, sf::RenderWindow& window, SoundPlayer& sounds, sf::Vector2f position) :
 	NodePhysicalBody(world, Physical_Types::Dynamic_Type, position),
 	wormSprite(textures.getResourceReference(Textures_ID::AnExemplaryWorm)),
-	deadWorm(textures.getResourceReference(Textures_ID::DeadWorm))
+	deadWorm(textures.getResourceReference(Textures_ID::DeadWorm)),
+	soundPlayer(sounds)
 {
 	wormName.setOutlineThickness(1.5f);
 	setName("Unnamed");
@@ -105,7 +106,7 @@ Worm::Worm(b2World& world, TextureManager& textures, const FontManager& fonts, s
 
 	// Save states of the worms
 	wormStack.saveState<WormHideState>(State_ID::WormHideState, *this, textures);
-	wormStack.saveState<WormPlayState>(State_ID::WormPlayState, *this, textures);
+	wormStack.saveState<WormPlayState>(State_ID::WormPlayState, *this, textures, soundPlayer);
 	wormStack.saveState<WormWaitState>(State_ID::WormWaitState, *this);
 	wormStack.saveState<WormHitState>(State_ID::WormHitState, *this, textures);
 	wormStack.saveState<WormInventoryState>(State_ID::WormInventoryState, *this, textures, fonts, window);
@@ -114,9 +115,9 @@ Worm::Worm(b2World& world, TextureManager& textures, const FontManager& fonts, s
 
 
 	// Test purposes
-	inventory.emplace_back(std::make_pair(99, std::make_unique<Bazooka>(world, textures)));
-	inventory.emplace_back(std::make_pair(1, std::make_unique<Cannon>(world, textures)));
-	inventory.emplace_back(std::make_pair(1, std::make_unique<Grenade>(world, textures, fonts)));
+	inventory.emplace_back(std::make_pair(99, std::make_unique<Bazooka>(world, textures, soundPlayer)));
+	inventory.emplace_back(std::make_pair(1, std::make_unique<Cannon>(world, textures, soundPlayer)));
+	inventory.emplace_back(std::make_pair(1, std::make_unique<Grenade>(world, textures, fonts, soundPlayer)));
 	selectedWeapon = &inventory.front();
 	
 }

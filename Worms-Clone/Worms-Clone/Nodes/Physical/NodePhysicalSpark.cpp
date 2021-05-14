@@ -3,11 +3,14 @@
 #include "SFML/Graphics/RenderStates.hpp"
 #include <random>
 
-NodePhysicalSpark::NodePhysicalSpark(b2World& world, const sf::Texture& smokeTexture, sf::Vector2f position, sf::Color color) :
+NodePhysicalSpark::NodePhysicalSpark(b2World& world, SoundPlayer& sounds, const sf::Texture& smokeTexture, sf::Vector2f position, sf::Color color) :
 	NodePhysicalBase(world),
 	sparkColor(color),
-	smokeParticles(smokeTexture)
+	smokeParticles(smokeTexture),
+	soundPlayer(sounds)
 {
+	soundPlayer.play(Sound_ID::Explosion, position);
+	
 	smokeParticles.setFadingOut(sf::seconds(timeToDelete.asSeconds()));
 	smokeParticles.setDefaultOpacity(0.05f);
 	smokeParticles.setParticleColor(color);
@@ -79,7 +82,7 @@ void NodePhysicalSpark::updateThis(sf::Time deltaTime)
 		setDestroyed();
 
 	smokeParticles.update(deltaTime);
-	
+
 	for (auto& spark : particles)
 		spark.smokeEmitter->update(deltaTime);
 }

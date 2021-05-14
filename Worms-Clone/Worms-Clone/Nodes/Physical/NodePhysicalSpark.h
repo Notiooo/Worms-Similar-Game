@@ -8,6 +8,8 @@
 #include <array>
 
 
+
+#include "../../Sounds/SoundPlayer.h"
 #include "../Particles/NodeEmitter.h"
 #include "../Particles/NodeParticle.h"
 
@@ -21,7 +23,7 @@
 class NodePhysicalSpark : public NodePhysicalBase
 {
 public:
-	NodePhysicalSpark(b2World& world, const sf::Texture& smokeTexture, sf::Vector2f position, sf::Color color = sf::Color::White);
+	NodePhysicalSpark(b2World& world, SoundPlayer& sounds, const sf::Texture& smokeTexture, sf::Vector2f position, sf::Color color = sf::Color::White);
 	~NodePhysicalSpark() override;
 
 	/**
@@ -57,13 +59,15 @@ private:
 		std::unique_ptr<NodeEmitter> smokeEmitter;
 	};
 
-	NodeParticle smokeParticles;
+	NodeParticle smokeParticles; //!< A facility that generates smoke particles at given positions
 
 	std::array<Sparkle, 40> particles; //!<  It stores all the particles created. Their number is constantly 40.
 	sf::Color sparkColor; //!< Color of the particle
 
 	sf::Clock clock; //!< A timer measuring time for the removal of particles.
 	sf::Time timeToDelete = sf::seconds(5); //!< Time after which the particles are deleted
+
+	SoundPlayer& soundPlayer; //!< A player that allows to play sounds in the game world
 };
 
 

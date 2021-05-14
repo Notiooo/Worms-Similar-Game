@@ -264,7 +264,7 @@
     <ClCompile Include="Sounds\MusicPlayer.cpp">
       <Filter>Source Files\Sounds</Filter>
     </ClCompile>
-    <ClCompile Include="Sounds\SoundEffect.cpp">
+    <ClCompile Include="Sounds\SoundPlayer.cpp">
       <Filter>Source Files\Sounds</Filter>
     </ClCompile>
   </ItemGroup>
@@ -434,7 +434,7 @@
     <ClInclude Include="Sounds\MusicPlayer.h">
       <Filter>Header Files\Sounds</Filter>
     </ClInclude>
-    <ClInclude Include="Sounds\SoundEffect.h">
+    <ClInclude Include="Sounds\SoundPlayer.h">
       <Filter>Header Files\Sounds</Filter>
     </ClInclude>
   </ItemGroup>

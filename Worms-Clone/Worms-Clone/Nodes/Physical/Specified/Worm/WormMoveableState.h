@@ -81,6 +81,11 @@ protected:
 	
 	Worm& worm;
 
+	// === Sounds === //
+	Sound_ID soundOfWalking = Sound_ID::WormWalking; //!< A sound that worm makes when it walks
+	sf::Time walkingSoundTime; //!< Time how long the sound of the worm walking lasts
+	sf::Clock soundTimeElapsed; //!< Time elapsed since last walking sound
+
 	// === Animation === //
 	Animation walkingAnimation; //!< Sprite showing animation of the worm walking
 	float animationSpeedThreshold = worm.movingSpeed / 2.f; //!< Speed at which the walking animation starts

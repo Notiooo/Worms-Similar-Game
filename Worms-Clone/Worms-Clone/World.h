@@ -18,6 +18,7 @@
 
 #include "WorldListener.h"
 #include "Nodes/GameplayManager.h"
+#include "Sounds/SoundPlayer.h"
 
 
 class Worm;
@@ -104,6 +105,7 @@ private:
 	DebugBox2D debugDraw; //!< Object for displaying hitboxes
 	NodeScene rootScene; //!< Main stage of the game
 	WorldListener worldListener; //!< It carries all collisions inside the world
+	SoundPlayer worldSounds; //!< A player that allows to play sounds in the game world
 
 	// === Properties of the game world === //
 	sf::Sprite backgroundSprite; //!< Game background
