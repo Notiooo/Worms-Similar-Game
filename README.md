@@ -14,8 +14,21 @@ My main knowledge comes from the documentation of individual libraries. In the p
 * Clipper Library -- under the [BSL-1.0 license](https://opensource.org/licenses/BSL-1.0 "Terms of the BSL-1.0 license")
 * Poly2Tri Library -- under the [BSD-3-Clause license](https://opensource.org/licenses/BSD-3-Clause "Terms of the BSD-3-Clause")
 
+And [Doxygen](https://www.doxygen.nl/index.html) as standard tool for generating documentation -- under the [GNU General Public License](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+
+### How to install
+#### Windows
+On Windows, simply run the [buildVSProject.bat](buildVSProject.bat) file. This will create the Visual Studio project files. You can then open the project in Visual Studio and compile.
+
+#### Linux
+On Linux you will most likely need to give the appropriate permissions to [buildMakeFiles.sh](buildMakeFiles.sh) and [Worms-Clone/vendor/bin/premake/premake5](Worms-Clone/vendor/bin/premake/premake5).
+
+Then we perform:
+> \$ ./buildMakeFiles.sh   
+> \$ make
+
 ### How to play
-[Instructions on how to play the game](readme/How_to_play.pdf)
+[Instructions on how to play the game](docs/instructions/How_to_play.pdf)
 
 ### The report
-[A report describing the status of the project as at day of 18.04.2021](readme/Worms_Clone_Computer_Programming_Final_Project.pdf)
+[A report describing the status of the project as at day of 18.04.2021](docs/instructions/Worms_Clone_Computer_Programming_Final_Project.pdf)

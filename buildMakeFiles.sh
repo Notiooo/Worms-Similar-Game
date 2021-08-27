@@ -1,0 +1,1 @@
+./Worms-Clone/vendor/bin/premake/premake5 gmake2
