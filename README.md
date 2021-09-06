@@ -1,8 +1,8 @@
 ## Worms Similar Game
 The game was created for the project during the 4th semester of studies in computer science at the Silesian University of Technology. The time I spent on the project oscillated around 4 - 5 weeks.
 <div align="center">
-<a href="https://www.youtube.com/watch?v=iI0FcAPFU6o"><img src="http://img.youtube.com/vi/iI0FcAPFU6o/0.jpg"/></a>
-<p>A video showing how the game works</p>
+<a href="https://www.youtube.com/watch?v=iI0FcAPFU6o"><img src="docs/instructions/demo.gif" alt="Gif presenting the game"/></a>
+<p>A <a href="https://www.youtube.com/watch?v=iI0FcAPFU6o">video</a> showing how the game works</p>
 </div>
 
 ### Source of Knowledge
